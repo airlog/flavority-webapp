@@ -145,6 +145,7 @@ a img:hover {
 img.recipe {
 	width: 125px;
 	height: 125px;
+	border: 1px solid #AAAAAA;
 }
 
 img.star {
