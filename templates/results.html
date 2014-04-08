@@ -1,0 +1,91 @@
+
+	<h3 class="title">
+		<span>Results of search:</span> <span style="margin-left: 10px;"><%= search %></span>
+	</h3>
+
+	<% _.each(recipes, function(recipe) { %>
+
+		<div class="recipe_box">
+		   <a href="/recipes/<%= recipe['id']%>">
+				<img class="recipe" alt="" src="<%= recipe['img']%>"/>
+				<br/>
+				<% if (recipe['taste'] < 0.25) { %>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 0.75) { %>
+					<img class="star" src="/images/star_half.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 1.25) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 1.75) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_half.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 2.25) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_half.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 2.75) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_half.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 3.25) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 3.75) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_half.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 4.25) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_gray.png"/>
+				<%} else if (recipe['taste'] < 4.75) { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star_half.png"/>
+				<%} else { %>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+					<img class="star" src="/images/star.png"/>
+				<%} %>
+			   <p><%= recipe['name'] %></p>
+			</a>
+	   </div>
+	<% }); %>
+	<h4 class="title" style="text-align:center;">
+		<% if (results['from'] > 1) { %>
+			<img class="arrow" src="/images/arrow_l.png"/>
+		<% } %>
+			<%= results['from']%>-<%= results['to']%> of <%= results['all'] %>
+		<% if (results['to'] < results['all']) { %>
+			<img class="arrow" src="/images/arrow_r.png"/>
+		<% } %>
+	</h4>

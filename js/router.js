@@ -5,11 +5,14 @@ define([
     'underscore',
     'backbone',
     
-    'text!templates/sample.html',
-], function($, _, Backbone, template) {
+	'views/panelTop',
+	'views/tags',
+	'views/results',
+], function($, _, Backbone, PanelTopView, TagsView, ResultsView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
+            'search/results': 'searchResults',
         }
     });
     
@@ -19,11 +22,20 @@ define([
 //        });
         
         var router = new AppRouter;
+		
+		var panelTopView = new PanelTopView();
+		var tagsView = new TagsView();
 
+		panelTopView.render();
+		tagsView.render();
+				
         router.on('route:home', function() {
-            // render '/'
-            var compiledTemplate = _.template(template, {});
-            $('#sample').html(compiledTemplate);
+        });
+
+        router.on('route:searchResults', function() {
+
+		var resultsView = new ResultsView();
+			resultsView.render();
         });
         
         Backbone.history.start();
