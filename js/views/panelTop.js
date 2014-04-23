@@ -5,10 +5,12 @@ define([
     'backbone',
     
     'util/loginmanager',
+    'util/regmanager',
     
+    'text!templates/register.html',
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, loggedTemplate, notLoggedTemplate) {	
+], function($, _, Backbone, loginManager, loggedTemplate, notLoggedTemplate, regManager, registerTemplate) {	
 	var PanelTopView = Backbone.View.extend({
 		el: $("#panelTop"),
 		formVisible: false,
@@ -17,9 +19,44 @@ define([
 		events: {
 			'click #log_in a': 'triggerLoginForm',
 			'submit #login-form form': 'onLoginFormSubmit',
+
+			'click #register a': 'triggerRegisterForm',
+			'submit #registerform form': 'registerFormSubmit',
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
+		},
+
+		triggerRegisterForm: function()
+		{
+			if(!this.formVisible)
+			{
+				$('#registerform').show();
+				this.formVisible = !this.formVisible;
+			}
+			else
+			{
+				$('#registerform').hide();
+				this.formVisible = !this.formVisible;
+			}
+		},
+
+		registerFormSubmit: function()
+		{
+			regManager.register($('#registerform input[name=email]').val(),
+								$('#registerform input[name=pass]').val(),
+								{
+									error: function()
+									{
+										alert("Register failed!");
+									},
+									success: function()
+									{
+										alert("Register successful!");
+										location.reload();
+									}
+								}
+								);
 		},
 		
 		triggerLoginForm: function() {

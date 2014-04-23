@@ -1,0 +1,39 @@
+<script src="../js/util/regValidator.js"></script>
+<script type="text/javascript">
+    window.onload = fillNumbers;
+    function fillNumbers()
+    {
+        var firstValue = Math.floor((Math.random()*10)+1);
+        var secondValue = Math.floor((Math.random()*10)+1);
+        document.getElementById("fNum").innerHTML = firstValue;
+        document.getElementById("sNum").innerHTML = secondValue;
+    }
+</script>
+<div id="container">
+    <form name="registerform" id="registerform" onSubmit="return validate();">
+        <h1>Register new user</h1>
+        <div class="line">
+        	<label for="pass">Password <font color="red">*</font></label>
+        	<input type="password" id="pass" name="pass"/>
+        </div>
+        <div class="line">
+        	<label for="repass">Repeat password <font color="red">*</font></label>
+        	<input type="password" id="repass" name="repass"/>
+        </div>
+        <div class="line">
+        	<label for="email">Email <font color="red">*</font></label>
+        	<input type="email" id="email" name="email"/>
+        </div>
+        <div class="line">
+            <label for="check">Before submitting confirm that You are not a chicken!</label>
+            <br />
+            <label id="fNum"></label>
+            +
+            <label id="sNum" for="check">=</label>
+            <input type="text" id="check" name="check"/>
+        </div>
+        <div class="line submit"><input type="submit" value="Submit" /></div>
+
+        <p>Fields marked with <font color="red">*</font> are required.</p>
+            </form>
+</div>
