@@ -10,7 +10,7 @@ define([
     'text!templates/register.html',
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, loggedTemplate, notLoggedTemplate, regManager, registerTemplate) {	
+], function($, _, Backbone, loginManager, regManager, registerTemplate, loggedTemplate, notLoggedTemplate) {	
 	var PanelTopView = Backbone.View.extend({
 		el: $("#panelTop"),
 		formVisible: false,
