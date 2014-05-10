@@ -1,12 +1,9 @@
 
-	  <h3 class="title">Tags:</h3>
-	  
-	  <div id="tags">
-		  
-		  <a class="t<%= tags[0]['count']%>" href="results.html"><%= tags[0]['tag']%></a><br/>
-		  <% for (i = 1; i < tags.length-2; i++) { %>
-			<a class="t<%= tags[i]['count']%>" href="results.html"><%= tags[i]['tag']%></a>
-		  <% } %>
-		  <br/><a class="t<%= tags[tags.length-1]['count']%>" href="results.html"><%= tags[tags.length-1]['tag']%></a>      
-	  
-	  </div>
+<div id="tags">
+    <a class="t<%= tags[0]['count']%>" href="results.html"><%= tags[0]['tag']%></a><br/>
+    <% for (i = 1; i < tags.length-2; i++) { %>
+        <a class="t<%= tags[i]['count']%>" href="results.html"><%= tags[i]['tag']%></a>
+    <% } %>
+    <br/><a class="t<%= tags[tags.length-1]['count']%>" href="results.html"><%= tags[tags.length-1]['tag']%></a>      
+</div>
+
