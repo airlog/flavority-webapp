@@ -8,7 +8,8 @@ define([
 	'views/panelTop',
 	'views/tags',
 	'views/results',
-], function($, _, Backbone, PanelTopView, TagsView, ResultsView) {
+	'views/LastAddedView',
+], function($, _, Backbone, PanelTopView, TagsView, ResultsView, LastAddedView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -25,17 +26,18 @@ define([
 		
 		var panelTopView = new PanelTopView();
 		var tagsView = new TagsView();
+		var lastAddedRecipeView = new LastAddedView();
 
 		panelTopView.render();
 		tagsView.render();
-				
+		lastAddedRecipeView.render();
+        		
         router.on('route:home', function() {
         });
-
+        
         router.on('route:searchResults', function() {
-
-		var resultsView = new ResultsView();
-			resultsView.render();
+            var resultsView = new ResultsView();
+            resultsView.render();
         });
         
         Backbone.history.start();
