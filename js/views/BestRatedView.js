@@ -6,12 +6,22 @@ define([
     
     'collections/RecipeCollection',
     
+    'views/Spinner',
+    
     'text!templates/best_rated_recipes.html',
-], function ($, _, Backbone, RecipeCollection, bestRatedRecipesTemplate) {
+], function ($, _, Backbone, RecipeCollection, Spinner, bestRatedRecipesTemplate) {
+    var elementString = ".recipe-best-rated ";
     var LastAddedView = Backbone.View.extend({
-        el: '.recipe-best-rated',
+        el: elementString + '.data',
         render: function () {
             var recipes = new RecipeCollection();
+            var spin = Spinner().spin();
+            
+            // this is to properly place a spinner
+            spin.el.style['position'] = null;
+            $(elementString + ".spinner-center")
+                .html(spin.el)
+                .css('position', 'relative');
             
             var that = this;
             recipes.fetch({
@@ -35,6 +45,14 @@ define([
                         ],
                         recipes: collection.models,
                     });                    
+                    
+                    // stop the spinner
+                    $(elementString + '.spinner').remove();
+                    spin.stop();
+                    
+                    // append compiled template
+                    that.$el.html(compiledTemplate);
+                    
                     that.$el.html(compiledTemplate);
                 },
                 

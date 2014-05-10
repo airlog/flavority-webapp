@@ -6,12 +6,22 @@ define([
     
     'collections/RecipeCollection',
     
+    'views/Spinner',
+    
     'text!templates/last_added_recipes.html',
-], function ($, _, Backbone, RecipeCollection, lastAddedRecipesTemplate) {
+], function ($, _, Backbone, RecipeCollection, Spinner, lastAddedRecipesTemplate) {    
+    var elementString = ".recipe-last-added ";
     var LastAddedView = Backbone.View.extend({
-        el: '.recipe-last-added',
+        el: elementString + '.data',
         render: function () {
             var recipes = new RecipeCollection();
+            var spin = Spinner().spin();
+            
+            // this is to properly place a spinner
+            spin.el.style['position'] = null;
+            $(elementString + ".spinner-center")
+                .html(spin.el)
+                .css('position', 'relative');
             
             var that = this;
             recipes.fetch({
@@ -34,7 +44,13 @@ define([
                             'http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=37434267',
                             'http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=42240617',
                         ],
-                    });                    
+                    });
+                    
+                    // stop the spinner
+                    $(elementString + '.spinner').remove();
+                    spin.stop();
+                    
+                    // append compiled template
                     that.$el.html(compiledTemplate);
                 },
                 
@@ -43,6 +59,7 @@ define([
                     console.log(response);
                 },
             });
+
         },
     });
 

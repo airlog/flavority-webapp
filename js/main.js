@@ -15,7 +15,7 @@ require.config({
         //
         // remote dependancies
         //
-                
+        spin: '//fgnass.github.io/spin.js/spin',
         text: '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',  // plugin for require.js, allows loading text files
 
         //
