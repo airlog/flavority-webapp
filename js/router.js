@@ -9,7 +9,9 @@ define([
 	'views/tags',
 	'views/results',
 	'views/LastAddedView',
-], function($, _, Backbone, PanelTopView, TagsView, ResultsView, LastAddedView) {
+	'views/BestRatedView',
+], function($, _, Backbone,
+        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -24,13 +26,15 @@ define([
         
         var router = new AppRouter;
 		
-		var panelTopView = new PanelTopView();
-		var tagsView = new TagsView();
-		var lastAddedRecipeView = new LastAddedView();
+        var panelTopView = new PanelTopView();
+        var tagsView = new TagsView();
+        var lastAddedRecipeView = new LastAddedView();
+        var bestRatedRecipeView = new BestRatedView();
 
-		panelTopView.render();
-		tagsView.render();
-		lastAddedRecipeView.render();
+        panelTopView.render();
+        tagsView.render();
+        lastAddedRecipeView.render();
+        bestRatedRecipeView.render();
         		
         router.on('route:home', function() {
         });
