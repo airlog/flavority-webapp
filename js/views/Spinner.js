@@ -1,9 +1,9 @@
 
 define([
-	'spin',
+    'spin',
 ], function (Spin) {
-	 var Spinner = function (jqelement) {
-    	var spin = new Spin({
+    var Spinner = function (jqelement) {
+        var spin = new Spin({
             lines: 13,              // The number of lines to draw
             length: 14,             // The length of each line
             width: 3,               // The line thickness
@@ -19,7 +19,7 @@ define([
             className: 'spinner',   // The CSS class to assign to the spinner
             zIndex: 2e9,            // The z-index (defaults to 2000000000)
         });
-            	
+
         return spin;
     };
 
