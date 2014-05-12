@@ -6,8 +6,8 @@ define([
     'backbone',
     
 	'views/panelTop',
-	'views/tags',
-	'views/results',
+	'views/TagsView',
+	'views/ResultsView',
 	'views/LastAddedView',
 	'views/BestRatedView',
 ], function($, _, Backbone,
