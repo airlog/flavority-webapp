@@ -7,9 +7,10 @@ define([
     'collections/RecipeCollection',
 
     'views/Spinner',
+    'views/StarsView',
 
     'text!templates/results.html',
-], function ($, _, Backbone, RecipeCollection, Spinner, resultsTemplate) {
+], function ($, _, Backbone, RecipeCollection, Spinner, StarsView, resultsTemplate) {
     var elementString = ".recipe-last-added ";
     var LastAddedView = Backbone.View.extend({
         el: elementString + '.data',
@@ -32,8 +33,14 @@ define([
                 },
 
                 success: function (collection, response, options) {
+                    var getRankStars = function (model) {
+                        return new StarsView({
+                            rank: parseFloat(model.get('rank'))
+                        }).getCompiledTemplate();
+                    };
                     var compiledTemplate = _.template(resultsTemplate, {
                         recipes: collection.models,
+
                         getDefaultImage: function () {
                             var images = [
 		                        // paths to default images (when no image for recipe)
@@ -56,6 +63,13 @@ define([
 
                     // append compiled template
                     that.$el.html(compiledTemplate);
+
+                    // append stars
+                    for (var i = 0; i < collection.models.length; i++) {
+                        that.$el
+                            .find('.stars:eq(' + i + ')')
+                            .html(getRankStars(collection.models[i]));
+                    }
                 },
 
                 error: function (collection, response, options) {

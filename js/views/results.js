@@ -7,11 +7,12 @@ define([
     'collections/RecipeCollection',
 
     'views/Spinner',
+    'views/StarsView',
 
     'text!templates/results.html',
     'text!templates/results_spinner.html',
     'text!templates/page_selector.html',
-], function ($, _, Backbone, RecipeCollection, Spinner,
+], function ($, _, Backbone, RecipeCollection, Spinner, StarsView,
         resultsTemplate, resultsSpinnerTemplate, pageSelectorTemplate) {
     var getUrlForPage = function (newPage) {
         var parts = window.location.hash.split('/');
@@ -61,6 +62,11 @@ define([
                 },
 
                 success: function (collection, response, status) {
+                    var getRankStars = function (model) {
+                        return new StarsView({
+                            rank: parseFloat(model.get('rank'))
+                        }).getCompiledTemplate();
+                    };
                     var compiledResultsTemplate = _.template(resultsTemplate, {
                         recipes: collection.models,
                         getDefaultImage: function () {
@@ -90,6 +96,14 @@ define([
 
                     that.$el.find('.data').html(compiledResultsTemplate);
                     that.$el.find('.page-selector').html(compiledPageSelectorTemplate);
+
+                    // append stars
+                    for (var i = 0; i < collection.models.length; i++) {
+                        that.$el
+                            .find('.data')
+                                .find('.stars:eq(' + i + ')')
+                                .html(getRankStars(collection.models[i]));
+                    }
                 },
 
                 error: function (error, response, status) {
