@@ -12,44 +12,40 @@ define([
 	'views/BestRatedView',
 ], function($, _, Backbone,
         PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView) {
-    var AppRouter = Backbone.Router.extend({
+    var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
-        }
+        },
+        
+        initialize: function () {
+//          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+//              options.url = 'http://addressToRestfulServer' + options.url;
+//          });
+	
+            var panelTopView = new PanelTopView();
+            var tagsView = new TagsView();
+
+            panelTopView.render();
+            tagsView.render();
+            		
+            this.on('route:home', function() {
+                var lastAddedRecipeView = new LastAddedView();
+                var bestRatedRecipeView = new BestRatedView();
+
+                lastAddedRecipeView.render();
+                bestRatedRecipeView.render();
+            });
+            
+            this.on('route:searchResults', function(page) {
+                var resultsView = new ResultsView();
+                resultsView.render(page);
+            });
+            
+            Backbone.history.start();
+        },
     });
-    
-    var initialize = function() {
-//        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-//            options.url = 'http://addressToRestfulServer' + options.url;
-//        });
 
-        var router = new AppRouter;
-		
-        var panelTopView = new PanelTopView();
-        var tagsView = new TagsView();
-
-        panelTopView.render();
-        tagsView.render();
-        		
-        router.on('route:home', function() {
-            var lastAddedRecipeView = new LastAddedView();
-            var bestRatedRecipeView = new BestRatedView();
-
-            lastAddedRecipeView.render();
-            bestRatedRecipeView.render();
-        });
-        
-        router.on('route:searchResults', function(page) {
-            var resultsView = new ResultsView();
-            resultsView.render(page);
-        });
-        
-        Backbone.history.start();
-    };
-    
-    return {
-        initialize: initialize,
-    };
+    return Router;
 });
 

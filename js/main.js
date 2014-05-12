@@ -30,5 +30,6 @@ require([
     'app',
 ], function (App) {
     App.initialize();
+    window.app = App;	// attaching application for global scope
 });
 

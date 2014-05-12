@@ -5,13 +5,10 @@ define([
     'underscore',   // lib/underscore/underscore
     'backbone',     // lib/backbone/backbone
     'router',       // request router.js
-], function($, _, Backbone, Router){
-    var initialize = function () {        
-        Router.initialize();
-    };
-    
+], function($, _, Backbone, Router){    
     return {
-        initialize: initialize,
+        initialize: function () {},
+        router: new Router(),
     };
 });
 
