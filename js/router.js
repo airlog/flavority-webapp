@@ -11,8 +11,9 @@ define([
 	'views/LastAddedView',
 	'views/BestRatedView',
 	'views/RecipeView',
+	'views/CommentsView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView) {
+        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView, CommentsView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -53,7 +54,10 @@ define([
 
         router.on('route:getRecipe', function(id) {
             var recipeView = new RecipeView();
+            var commentsView = new CommentsView();
+            
             recipeView.render(id);
+            commentsView.render(id);
         });
         
         Backbone.history.start();

@@ -11,12 +11,15 @@ define([
     'text!templates/recipe.html',
 ], function($, _, Backbone, RecipeModel, Spinner, recipeTemplate) {
     var RecipeView = Backbone.View.extend({
-        el: '#main_left',
+        el: '#recipe_details',
         render: function(recipeId) {
             var recipe = new RecipeModel({id:recipeId});
-			
-			this.$el.empty();
-			
+            
+			$('#main_left').empty();
+			$('#main_left').append("<div id='recipe_details'></div>");
+			$('#main_left').append("<div id='recipe_comments'></div>");
+			console.log();
+						
             var that = this;
             recipe.fetch({
                 success: function (recipe, response, options) {
@@ -30,7 +33,7 @@ define([
                         ingredients1: ingredients1,
                         ingredients2: ingredients2,
                     });
-                    that.$el.html(compiledRecipeTemplate);    
+                    this.$('#recipe_details').html(compiledRecipeTemplate);    
                 },
 
                 error: function (collection, response, options) {
