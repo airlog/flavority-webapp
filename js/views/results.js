@@ -1,34 +1,89 @@
+// TODO: handle page changes
 
 define([
     'jquery',
     'underscore',
     'backbone',
 
+    'collections/RecipeCollection',
+
+    'views/Spinner',
+
     'text!templates/results.html',
-], function($, _, Backbone, resultsTemplate) {
+    'text!templates/results_spinner.html',
+    'text!templates/page_selector.html',
+], function ($, _, Backbone, RecipeCollection, Spinner,
+        resultsTemplate, resultsSpinnerTemplate, pageSelectorTemplate) {
+    var elementString = '#main_left ';
+    var ResultsView = Backbone.View.extend({
+        el: elementString,
+
+        render: function(page, limit) {
+            if (limit == null) limit = 30;
+
+            var recipes = new RecipeCollection();
+            var resultsSpinnerCompiledTemplate = _.template(resultsSpinnerTemplate, {});
+            var spin = Spinner().spin();
+
+            // remove older content
+            // and set loading view (spinner)
+            this.$el.children().remove();
+            this.$el.html(resultsSpinnerCompiledTemplate);
+
+            // this is to properly place a spinner
+            spin.el.style['position'] = null;
+            $(elementString + ".spinner-center")
+                .html(spin.el)
+                .css('position', 'relative');
+
+            var that = this;
+            recipes.fetch({
+                data: {
+                    limit: limit,
+                    short: true,
+                    page: page,
+                    sort_by: 'date_added',
+                },
+
+                success: function (collection, response, status) {
+                    var compiledResultsTemplate = _.template(resultsTemplate, {
+                        recipes: collection.models,
+                        getDefaultImage: function () {
+                            var images = [
+		                        // paths to default images (when no image for recipe)
+		                        // TODO: use our images
+		                        'http://images6.fanpop.com/image/photos/32900000/Sisters-applejack-my-little-pony-friendship-is-magic-32995815-300-300.jpg',
+		                        'http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=37434267',
+		                        'http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=42240617',
+                            ];
+                            var randint = function (min, max) {
+                                return Math.floor((Math.random() * max) + min);
+                            };
+
+                            return images[randint(0, images.length)];
+                        },
+                    });
+
+                    var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
+                        currentPage: page,
+                        maxPage: Math.ceil(response.totalElements / limit),
+                    });
+
+                    // stop the spinner
+                    $(elementString + '.spinner').remove();
+                    spin.stop();
+
+                    that.$el.find('.data').html(compiledResultsTemplate);
+                    that.$el.find('.page-selector').html(compiledPageSelectorTemplate);
+                },
+
+                error: function (error, response, status) {
+                    alert('Error retrieving recipes');
+                    console.log(response);
+                },
+            });
+        },
+    });
 	
-	var ResultsView = Backbone.View.extend({
-		el: $("#main_left"),
-		render: function() {
-			var compiledResultsTemplate = _.template(resultsTemplate, {
-				search: 'dinner',
-				results: {'all': 245, 'from': 1, 'to': 10}, 
-				recipes: [
-					{'id': 1,'name': 'Kotlety mielone', 'taste': 0.2, 'img': '/images/photo.png'},
-					{'id': 2,'name': 'Zupa cebulowa', 'taste': 0.7, 'img': 'http://hostedmedia.reimanpub.com/TOH/Images/Photos/37/300x300/exps14208_CB7482C157A.jpg'},
-					{'id': 3,'name': 'Naleśniki', 'taste': 1.2, 'img': '/images/photo.png'},
-					{'id': 4,'name': 'Lody', 'taste': 1.6, 'img': '/images/photo.png'},
-					{'id': 5,'name': 'Makaron', 'taste': 2.1, 'img': 'http://www.oikosyogurt.com/assets/images/oikos-recipes/images/pesto-chicken-broccoli-alfredo.jpg'},
-					{'id': 6,'name': 'Koktajl', 'taste': 2.7, 'img': '/images/photo.png'},
-					{'id': 7,'name': 'Zapiekanka', 'taste': 3.1, 'img': '/images/photo.png'},
-					{'id': 8,'name': 'Pizza', 'taste': 3.5, 'img': '/images/photo.png'},
-					{'id': 9,'name': 'Pieczona kaczka', 'taste': 4.0, 'img': '/images/photo.png'},
-					{'id': 10,'name': 'Kurczak w cieście francuskim', 'taste': 4.5, 'img': '/images/photo.png'},
-				],
-			});
-			this.$el.html(compiledResultsTemplate); 
-		},
-	});
-	
-	return ResultsView;
+    return ResultsView;
 });

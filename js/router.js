@@ -15,7 +15,7 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
-            'search/results': 'searchResults',
+            'search/lastadded/page/:page/': 'searchResults',
         }
     });
     
@@ -23,25 +23,26 @@ define([
 //        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 //            options.url = 'http://addressToRestfulServer' + options.url;
 //        });
-        
+
         var router = new AppRouter;
 		
         var panelTopView = new PanelTopView();
         var tagsView = new TagsView();
-        var lastAddedRecipeView = new LastAddedView();
-        var bestRatedRecipeView = new BestRatedView();
 
         panelTopView.render();
         tagsView.render();
-        lastAddedRecipeView.render();
-        bestRatedRecipeView.render();
         		
         router.on('route:home', function() {
+            var lastAddedRecipeView = new LastAddedView();
+            var bestRatedRecipeView = new BestRatedView();
+
+            lastAddedRecipeView.render();
+            bestRatedRecipeView.render();
         });
         
-        router.on('route:searchResults', function() {
+        router.on('route:searchResults', function(page) {
             var resultsView = new ResultsView();
-            resultsView.render();
+            resultsView.render(page);
         });
         
         Backbone.history.start();
