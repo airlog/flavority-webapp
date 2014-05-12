@@ -38,8 +38,10 @@ define([
             });
             
             this.on('route:searchResults', function(page) {
-                var resultsView = new ResultsView();
-                resultsView.render(page);
+                var resultsView = new ResultsView({
+                    page: page,
+                });
+                resultsView.render();
             });
             
             Backbone.history.start();

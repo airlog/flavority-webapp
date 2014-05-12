@@ -1,4 +1,3 @@
-// TODO: handle page changes
 
 define([
     'jquery',
@@ -14,13 +13,29 @@ define([
     'text!templates/page_selector.html',
 ], function ($, _, Backbone, RecipeCollection, Spinner,
         resultsTemplate, resultsSpinnerTemplate, pageSelectorTemplate) {
+    var getUrlForPage = function (newPage) {
+        var parts = window.location.hash.split('/');
+        parts[parts.length - 2] = newPage;
+
+        return parts.join('/');
+    };
+
     var elementString = '#main_left ';
     var ResultsView = Backbone.View.extend({
+        // default values
+        options: {
+            page: 1,
+            limit: 30,
+        },
+
+        initialize: function (options) {
+            $.extend(this.options, options);
+            this.options.page = parseInt(this.options.page);    // page may not be an integer
+        },
+
         el: elementString,
 
-        render: function(page, limit) {
-            if (limit == null) limit = 30;
-
+        render: function() {
             var recipes = new RecipeCollection();
             var resultsSpinnerCompiledTemplate = _.template(resultsSpinnerTemplate, {});
             var spin = Spinner().spin();
@@ -39,9 +54,9 @@ define([
             var that = this;
             recipes.fetch({
                 data: {
-                    limit: limit,
+                    limit: that.options.limit,
                     short: true,
-                    page: page,
+                    page: that.options.page,
                     sort_by: 'date_added',
                 },
 
@@ -65,8 +80,8 @@ define([
                     });
 
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
-                        currentPage: page,
-                        maxPage: Math.ceil(response.totalElements / limit),
+                        currentPage: that.options.page,
+                        maxPage: Math.ceil(response.totalElements / that.options.limit),
                     });
 
                     // stop the spinner
@@ -82,6 +97,16 @@ define([
                     console.log(response);
                 },
             });
+        },
+
+        events: {
+            'click .leftarrow': function () {
+                window.app.router.navigate(getUrlForPage(this.options.page - 1));
+            },
+
+            'click .rightarrow': function () {
+                window.app.router.navigate(getUrlForPage(this.options.page + 1));
+            },
         },
     });
 	
