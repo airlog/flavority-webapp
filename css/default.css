@@ -371,8 +371,8 @@ input {
 
 table.recipe_ingredients {
 	float: left;
-	margin-left: 40px;
-	margin-right: 40px;
+	margin-left: 20px;
+	margin-right: 0px;
 }
 
 td {

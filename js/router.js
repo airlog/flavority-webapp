@@ -10,16 +10,22 @@ define([
 	'views/results',
 	'views/LastAddedView',
 	'views/BestRatedView',
+	'views/RecipeView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView) {
+        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
             'search/results': 'searchResults',
+            'recipes/:id/': 'getRecipe',
         }
     });
     
     var initialize = function() {
+        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+            options.url = '//localhost:5000' + options.url;
+        });
+
 //        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 //            options.url = 'http://addressToRestfulServer' + options.url;
 //        });
@@ -28,20 +34,26 @@ define([
 		
         var panelTopView = new PanelTopView();
         var tagsView = new TagsView();
-        var lastAddedRecipeView = new LastAddedView();
-        var bestRatedRecipeView = new BestRatedView();
 
         panelTopView.render();
         tagsView.render();
-        lastAddedRecipeView.render();
-        bestRatedRecipeView.render();
         		
         router.on('route:home', function() {
+			var lastAddedRecipeView = new LastAddedView();
+			var bestRatedRecipeView = new BestRatedView();
+
+			lastAddedRecipeView.render();
+			bestRatedRecipeView.render();
         });
         
         router.on('route:searchResults', function() {
             var resultsView = new ResultsView();
             resultsView.render();
+        });
+
+        router.on('route:getRecipe', function(id) {
+            var recipeView = new RecipeView();
+            recipeView.render(id);
         });
         
         Backbone.history.start();

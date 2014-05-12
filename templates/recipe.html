@@ -1,0 +1,191 @@
+		
+    <div class="title"><h2><%= recipe.get('dish_name') %></h2></div>
+	<div style="margin-bottom:20px;">
+		<span class="sub_title">Tags: &nbsp; </span>
+		<% _.each(recipe.get('tags'), function (tag) { %>
+			<button class="green_button"><%= tag['name'] %> </button>
+		<% }); %>
+	</div>			
+
+    <img class="big_image" alt="" src="img2/recipe6.jpg"/>
+
+		<div class="recipe_info_table">
+
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>author:</b></div>
+			 <div class="recipe_info_c2"><a href="/#/users/<%= recipe.get('author_id') %>"><%= recipe.get('author_name') %></a></div>
+			</div>
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>time:</b></div>
+			 <div class="recipe_info_c2"><%= recipe.get('preparation_time') %></div>
+			</div>
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>servings:</b></div>
+			 <div class="recipe_info_c2"><%= recipe.get('portions') %></div>
+			</div>
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>taste:</b></div>
+			 <div class="recipe_info_c2">
+				<%= recipe.get('tasteMark') %>
+			 </div>
+			</div>			
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>difficulty:</b></div>
+			 <div class="recipe_info_c2">
+				<%= recipe.get('rank') %>
+			</div>
+			</div>			
+			<div class="normal_table_row">
+			 <div class="recipe_info_c1"><b>difficulty (by users):</b></div>
+			 <div class="recipe_info_c2">
+				<%= recipe.get('difficultyMark') %>
+			</div>
+			</div>			
+		</div>
+		
+	<div class="clear_div">
+		
+		<h4 class="sub_title">Ingredients</h4>				
+
+		<table class="recipe_ingredients">
+			<% _.each(ingredients1, function (ingredient) { %>
+				<tr>
+					<td class="right">
+						<%= ingredient['amount'] %>
+						<%= ingredient['unit_name'] %>
+					</td>
+					<td>&times;</td>
+					<td><%= ingredient['ingr_name'] %></td>
+				</tr>
+			<% }); %>
+		</table>
+
+		<table class="recipe_ingredients">
+			<% _.each(ingredients2, function (ingredient) { %>
+				<tr>
+					<td class="right">
+						<%= ingredient['amount'] %>
+						<%= ingredient['unit_name'] %>
+					</td>
+					<td>&times;</td>
+					<td><%= ingredient['ingr_name'] %></td>
+				</tr>
+			<% }); %>
+		</table>
+		
+	</div> 
+	
+	<div class="clear_div">
+		<h4 class="sub_title">Directions</h4>				
+		<div id="directions">
+		<%= recipe.get('recipe_text').replace(/\n/g,'<br/><br/>') %>
+		</div>
+	</div>
+
+	<h3 class="title">Comments</h3>
+		
+		<div class="comment_add">
+			<form action="">
+			  <textarea name="text" style="width:100%;height:100px;resize:none;" placeholder="Write your comment..."></textarea><br/>
+			  <span class="taste">
+			  Taste:
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+			  </span>
+			  <span class="difficulty">
+			  Difficulty:
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+			  </span>
+		     <button class="green_button_right">Add comment</button>
+			</form>
+		</div>
+		
+		<div class="comment">
+			<img class="avatar" src="img2/av1.jpg"/>
+			<div class="right_part"> 
+				<div><b><a href="user.html">robin3d</a></b><span class="time">2014-01-03</span></div>
+				<div>
+					<span class="taste">
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+					</span>
+					<span class="difficulty">
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+					</span>
+				</div>
+				<div class="text">
+				Bardzo bardzo smaczne. Mojej dziewczynie bardzo smakowało. :)
+				</div>
+			</div>
+			<div class="clear_div"></div>
+		</div>
+
+		<div class="comment">
+			<img class="avatar" src="img2/av2.png"/>
+			<div class="right_part"> 
+				<div><b><a href="user.html">lola</a></b> <span class="time">2014-01-03</span></div>
+				<div>
+					<span class="taste">
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50_gray.png"/>
+						<img class="star" src="img/star50_gray.png"/>
+						<img class="star" src="img/star50_gray.png"/>
+						<img class="star" src="img/star50_gray.png"/>
+					</span>
+					<span class="difficulty">
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+					</span>
+				</div>
+				<div class="text">
+					Obrzydliwe, można się tym zatruć. Powinni karac za umieszczanie w sieci takich przepisów.
+					Chyba nigdy nic nie ugotowałeś a przepis zmyśliłeś. Moje dzieci płakały jak to jadły.
+				</div>
+			</div>
+			<div class="clear_div"></div>
+		</div>
+
+		<div class="comment">
+			<img class="avatar" src="img2/av3.gif"/>
+			<div class="right_part"> 
+				<div><b><a href="user.html">panda</a></b> <span class="time">2014-01-03</span></div>
+				<div>
+					<span class="taste">
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+						<img class="star" src="img/star50.png"/>
+					</span>
+					<span class="difficulty">
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+						<img class="star" src="img/star2_50.png"/>
+					</span>
+				</div>
+				<div class="text">
+				Bardzo bardzo smaczne. Mojej dziewczynie bardzo smakowało. :)
+				</div>
+				<div class="clear_div"></div>
+			</div>
+		</div>
+		<div class="title" style="text-align:center;"><h4>1-3 of 3</h4></div>
