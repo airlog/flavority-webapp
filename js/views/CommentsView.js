@@ -14,9 +14,9 @@ define([
         el: '#recipe_comments',
         render: function(recipeId) {
             var comments = new CommentCollection();
-			
-			this.$el.empty();
-			
+
+            this.$el.empty();
+
             var that = this;
             comments.fetch({
                 data: {

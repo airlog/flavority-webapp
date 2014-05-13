@@ -15,19 +15,16 @@ define([
         render: function(recipeId) {
             var recipe = new RecipeModel({id:recipeId});
             
-			$('#main_left').empty();
-			$('#main_left').append("<div id='recipe_details'></div>");
-			$('#main_left').append("<div id='recipe_comments'></div>");
-			console.log();
-						
+            $('#main_left').empty();
+            $('#main_left').append("<div id='recipe_details'></div>");
+            $('#main_left').append("<div id='recipe_comments'></div>");
+
             var that = this;
             recipe.fetch({
                 success: function (recipe, response, options) {
-					
-					length = recipe.get('ingredients').length
-					ingredients1 = recipe.get('ingredients').slice(0,length/2)
-					ingredients2 = recipe.get('ingredients').slice(length/2,length)
-					
+                    length = recipe.get('ingredients').length
+                    ingredients1 = recipe.get('ingredients').slice(0,length/2)
+                    ingredients2 = recipe.get('ingredients').slice(length/2,length)
                     var compiledRecipeTemplate = _.template(recipeTemplate, {
                         recipe: recipe,
                         ingredients1: ingredients1,
