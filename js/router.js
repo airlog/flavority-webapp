@@ -49,10 +49,13 @@ define([
             
             this.on('route:getRecipe', function(id) {
                 var recipeView = new RecipeView();
-                var commentsView = new CommentsView();
+                var commentsView = new CommentsView({
+                    recipe_id:id,
+                    page: 0,
+                });
 
                 recipeView.render(id);
-                commentsView.render(id);
+                commentsView.render();
             });
 
             Backbone.history.start();

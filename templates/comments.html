@@ -6,19 +6,9 @@
       <textarea name="text" style="width:100%;height:100px;resize:none;" placeholder="Write your comment..."></textarea><br/>
       <span class="taste">
       Taste:
-                <img class="star" src="img/star50.png"/>
-                <img class="star" src="img/star50.png"/>
-                <img class="star" src="img/star50.png"/>
-                <img class="star" src="img/star50.png"/>
-                <img class="star" src="img/star50.png"/>
       </span>
       <span class="difficulty">
       Difficulty:
-                <img class="star" src="img/star2_50.png"/>
-                <img class="star" src="img/star2_50.png"/>
-                <img class="star" src="img/star2_50.png"/>
-                <img class="star" src="img/star2_50.png"/>
-                <img class="star" src="img/star2_50.png"/>
       </span>
      <button class="green_button_right">Add comment</button>
     </form>
@@ -26,7 +16,7 @@
         
 <% _.each(comments, function (comment) { %>
     <div class="comment">
-        <img class="avatar" src="img2/av1.jpg"/>
+        <img class="avatar" src="/images/star_red_full.png"/>
         <div class="right_part"> 
             <div>
                 <b><a href="/#/users/<%= comment.get('author_id')%>"><%= comment.get('author_name') %></a></b>
@@ -46,6 +36,5 @@
         <div class="clear_div"></div>
     </div>
 <% }); %>
-        
-<div class="title" style="text-align:center;"><h4>1-3 of 3</h4></div>
-        
+
+<div class='page-selector'></div>
