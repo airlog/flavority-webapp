@@ -1,3 +1,12 @@
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        var firstValue = Math.floor((Math.random()*10)+1);
+        var secondValue = Math.floor((Math.random()*10)+1);
+        document.getElementById("fNum").innerHTML = firstValue;
+        document.getElementById("sNum").innerHTML = secondValue;
+    });
+</script>
 
 <div id="panel_top">
     <a class="top" href="#/search/lastadded/page/1/">NEW</a>
@@ -15,6 +24,9 @@
     <div id="log_in">
         <a class="top">LOG IN</a>
     </div>
+	<div id="register">
+		<a class="top">REGISTER</a>
+	</div>
 </div>
 
 <div>
@@ -24,6 +36,20 @@
             <span><input type="password" name="password" placeholder="password" required/></span><br/>
             <br/>
             <span><input id="button" type="submit" class="green_button" value="Sign in"/></span>
+        </form>
+    </div>
+</div>
+
+<div>
+    <div id="reg-form">
+        <form action="" name="registerform" id="registerform" autocomplete="off">
+			<span><input type="email" name="email" id="email" placeholder="email address" required/></span><br/>
+			<span><input type="password" name="pass" id="pass" placeholder="enter password" required/></span><br/>
+			<span><input type="password" name="repass" id="repass" placeholder="repeat password" required/></span><br/>
+            <span><label>Before submitting confirm that You are not a chicken!</label><br/>
+			<span><label id="fNum">2</label> + <span><label id="sNum">2</label>=
+			<span><input type="text" id="check" name="check" required//>
+			<span><input id="button1" type="submit" class="green_button" value="Sign up"/></span>
         </form>
     </div>
 </div>

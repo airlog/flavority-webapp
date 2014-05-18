@@ -5,15 +5,15 @@ define([
     'backbone',
     
     'util/loginmanager',
-    'util/regmanager',
     
-    'text!templates/register.html',
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, regManager, registerTemplate, loggedTemplate, notLoggedTemplate) {	
+], function($, _, Backbone, loginManager, loggedTemplate, notLoggedTemplate) {	
 	var PanelTopView = Backbone.View.extend({
+	//TODO: input validation
 		el: $("#panelTop"),
 		formVisible: false,
+		regFormVisible: false,
 		userMenuVisible: false,
 		
 		events: {
@@ -21,7 +21,7 @@ define([
 			'submit #login-form form': 'onLoginFormSubmit',
 
 			'click #register a': 'triggerRegisterForm',
-			'submit #registerform form': 'registerFormSubmit',
+			'submit #reg-form form': 'onRegisterFormSubmit',
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
@@ -29,40 +29,57 @@ define([
 
 		triggerRegisterForm: function()
 		{
-			if(!this.formVisible)
+			if(!this.regFormVisible)
 			{
-				$('#registerform').show();
-				this.formVisible = !this.formVisible;
+				if(this.formVisible)
+				{
+					$('#login-form').hide();
+					this.formVisible = !this.formVisible;
+				}
+				$('#reg-form').show();
+				this.regFormVisible = !this.regFormVisible;
 			}
 			else
 			{
-				$('#registerform').hide();
-				this.formVisible = !this.formVisible;
+				$('#reg-form').hide();
+				this.regFormVisible = !this.regFormVisible;
 			}
 		},
-
-		registerFormSubmit: function()
+		
+		onRegisterFormSubmit: function()
 		{
-			regManager.register($('#registerform input[name=email]').val(),
-								$('#registerform input[name=pass]').val(),
-								{
-									error: function()
-									{
-										alert("Register failed!");
-									},
-									success: function()
-									{
-										alert("Register successful!");
-										location.reload();
-									}
-								}
-								);
+			loginManager.register(un, 
+														p,
+													{
+														error: function(jrxhr, status, exception)
+														{
+															$('#reg-form').hide();
+															this.regFormVisible = !this.regFormVisible;
+															alert("Reg failed: " + exception);
+														},
+														success: function(data, status, jrxhr)
+														{
+															$('#reg-form').hide();
+															this.regFormVisible = !this.regFormVisible;
+															alert("Reg successful");
+														},
+													}
+			);
+			return false;
 		},
 		
 		triggerLoginForm: function() {
-			if (!this.formVisible) $("#login-form").show();
+			if (!this.formVisible)
+			{
+				if(this.regFormVisible)
+				{
+					$("#reg-form").hide();
+					this.regFormVisible = !this.regFormVisible;
+				}
+				$("#login-form").show();
+			}
 			else $("#login-form").hide();
-			this.formVisible = !this.formVisible;
+				this.formVisible = !this.formVisible;
 		},
 		
 		onLoginFormSubmit: function() {

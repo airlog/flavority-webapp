@@ -9,14 +9,14 @@ define([
             },
         };
     })();
-    
-    var loginManager = (function(settings) {        
+	
+	var loginManager = (function(settings) {        
         var defaults = {
             loginUrl: '/auth/signin',
         };
-        
+		
         var mLoginUrl = defaults.loginUrl;
-        
+		
         var storeData = function(data) {
             Storage.getInstance().flavority = JSON.stringify(data);
         };
@@ -52,6 +52,18 @@ define([
                 },
             });
         };
+		
+		var register = function(un, p, opt)
+		{
+			var regUrl = "/auth/signup";
+			 $.ajax(regUrl, {
+				type: 'POST',
+				cache: false,
+				data: {email: un, password: p,},
+				error : opt.error,
+				success : opt.success,
+			});
+		};
         
         var logout = function() {
             removeData();
@@ -64,6 +76,7 @@ define([
         };
                         
         return {
+			register : register,
             login: login,
             logout: logout,
             isLogged: isLogged,
