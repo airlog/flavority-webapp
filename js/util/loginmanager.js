@@ -5,12 +5,12 @@ define([
     var Storage = (function() {
         return {
             getInstance: function () {
-                return sessionStorage;  
+                return sessionStorage;
             },
         };
     })();
-	
-	var loginManager = (function(settings) {        
+    
+    var loginManager = (function(settings) {
         var defaults = {
             loginUrl: '/auth/signin',
         };
@@ -43,7 +43,7 @@ define([
                     password: password,
                 },
                 error: params.error,
-                success: function(data, status, jx) {                    
+                success: function(data, status, jx) {
                     storeData({
                         token: data.token,
                     });
@@ -52,31 +52,18 @@ define([
                 },
             });
         };
-		
-		var register = function(un, p, opt)
-		{
-			var regUrl = "/auth/signup";
-			 $.ajax(regUrl, {
-				type: 'POST',
-				cache: false,
-				data: {email: un, password: p,},
-				error : opt.error,
-				success : opt.success,
-			});
-		};
         
         var logout = function() {
             removeData();
         };
         
         var isLogged = function() {
-            var data = restoreData();           
-            if (data == null || data.token == null) return false;           
+            var data = restoreData();
+            if (data == null || data.token == null) return false;
             return true;
         };
                         
         return {
-			register : register,
             login: login,
             logout: logout,
             isLogged: isLogged,
