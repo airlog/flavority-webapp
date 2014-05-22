@@ -12,13 +12,15 @@ define([
     'views/BestRatedView',
     'views/RecipeView',
     'views/CommentsView',
+    'views/SearchView',
 ], function($, _, Backbone,
         PanelTopView, TagsView, ResultsView, LastAddedView,
-        BestRatedView, RecipeView, CommentsView) {
+        BestRatedView, RecipeView, CommentsView, SearchView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
+            'search/query/:query/:page': 'simpleSearch',
             'recipes/:id/': 'getRecipe',
         },
 
@@ -50,6 +52,17 @@ define([
                     page: page,
                 });
                 resultsView.render();
+            });
+            
+            this.on('route:simpleSearch', function(query, page) {
+                $("#main_left").empty();
+
+                var searchView = new SearchView({
+                    query: query,
+                    page: page,
+                });
+
+                searchView.render();
             });
 
             this.on('route:getRecipe', function(id) {
