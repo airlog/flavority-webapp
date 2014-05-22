@@ -4,7 +4,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    
+
     'views/panelTop',
     'views/TagsView',
     'views/ResultsView',
@@ -21,7 +21,7 @@ define([
             'search/lastadded/page/:page/': 'searchResults',
             'recipes/:id/': 'getRecipe',
         },
-        
+
         initialize: function () {
 //          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 //              options.url = 'http://addressToRestfulServer' + options.url;
@@ -32,29 +32,29 @@ define([
 
             panelTopView.render();
             tagsView.render();
-            
-            this.on('route:home', function() {                           
+
+            this.on('route:home', function() {
                 $("#main_left").empty();
-                
+
                 var lastAddedRecipeView = new LastAddedView();
                 var bestRatedRecipeView = new BestRatedView();
 
                 lastAddedRecipeView.render();
                 bestRatedRecipeView.render();
             });
-            
+
             this.on('route:searchResults', function(page) {
                 $("#main_left").empty();
-                
+
                 var resultsView = new ResultsView({
                     page: page,
                 });
                 resultsView.render();
             });
-                        
+
             this.on('route:getRecipe', function(id) {
                 $("#main_left").empty();
-                
+
                 var recipeView = new RecipeView();
                 var commentsView = new CommentsView();
 
