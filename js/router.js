@@ -12,23 +12,32 @@ define([
     'views/BestRatedView',
     'views/RecipeView',
     'views/CommentsView',
+    'views/UserInfoView',
+    'views/UserRecipesView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView,
-        BestRatedView, RecipeView, CommentsView) {
+        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView,
+        CommentsView, UserInfoView, UserRecipesView) {
+
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
             'recipes/:id/': 'getRecipe',
+            'users/:id/': 'getUser',
         },
 
         initialize: function () {
+
 //          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
 //              options.url = 'http://addressToRestfulServer' + options.url;
 //          });
 
             var panelTopView = new PanelTopView();
             var tagsView = new TagsView();
+            var recipeView = new RecipeView();
+            var commentsView = new CommentsView();
+            var userInfoView = new UserInfoView();
+            var userRecipesView = new UserRecipesView();
 
             panelTopView.render();
             tagsView.render();
@@ -50,16 +59,22 @@ define([
                     page: page,
                 });
                 resultsView.render();
+            });            
+          
+           this.on('route:getRecipe', function(id) {
+                commentsView.setRecipeId(id);
+                commentsView.setPage(0);
+                
+                recipeView.render(id);
+                commentsView.render();
             });
 
-            this.on('route:getRecipe', function(id) {
-                $("#main_left").empty();
-
-                var recipeView = new RecipeView();
-                var commentsView = new CommentsView();
-
-                recipeView.render(id);
-                commentsView.render(id);
+            this.on('route:getUser', function(id) {
+                userRecipesView.setUserId(id);
+                userRecipesView.setPage(0);
+                
+                userInfoView.render(id);
+                userRecipesView.render();
             });
 
             Backbone.history.start();
@@ -68,4 +83,3 @@ define([
 
     return Router;
 });
-
