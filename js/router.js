@@ -13,7 +13,8 @@ define([
     'views/RecipeView',
     'views/CommentsView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView, CommentsView) {
+        PanelTopView, TagsView, ResultsView, LastAddedView,
+        BestRatedView, RecipeView, CommentsView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -31,8 +32,10 @@ define([
 
             panelTopView.render();
             tagsView.render();
-
-            this.on('route:home', function() {
+            
+            this.on('route:home', function() {                           
+                $("#main_left").empty();
+                
                 var lastAddedRecipeView = new LastAddedView();
                 var bestRatedRecipeView = new BestRatedView();
 
@@ -41,13 +44,17 @@ define([
             });
             
             this.on('route:searchResults', function(page) {
+                $("#main_left").empty();
+                
                 var resultsView = new ResultsView({
                     page: page,
                 });
                 resultsView.render();
             });
-            
+                        
             this.on('route:getRecipe', function(id) {
+                $("#main_left").empty();
+                
                 var recipeView = new RecipeView();
                 var commentsView = new CommentsView();
 

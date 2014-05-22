@@ -10,17 +10,24 @@ define([
     'views/StarsView',
 
     'text!templates/results.html',
-], function ($, _, Backbone, RecipeCollection, Spinner, StarsView, resultsTemplate) {
-    var elementString = ".recipe-last-added ";
+    'text!templates/lastadded_window.html',
+], function ($, _, Backbone, RecipeCollection,
+		Spinner, StarsView,
+		resultsTemplate, lastAddedTemplate) {
+    var elementString = "#main_left ";
     var LastAddedView = Backbone.View.extend({
-        el: elementString + '.data',
+        el: elementString,
         render: function () {
+        	var divClass = '.recipe-last-added ';
             var recipes = new RecipeCollection();
             var spin = Spinner().spin();
 
+			// create a container div
+			this.$el.append(_.template(lastAddedTemplate, {}));
+
             // this is to properly place a spinner
             spin.el.style['position'] = null;
-            $(elementString + ".spinner-center")
+            $(elementString + divClass + " .spinner-center")
                 .html(spin.el)
                 .css('position', 'relative');
 
@@ -58,15 +65,15 @@ define([
                     });
 
                     // stop the spinner
-                    $(elementString + '.spinner').remove();
+                    $(elementString + divClass + '.spinner').remove();
                     spin.stop();
 
                     // append compiled template
-                    that.$el.html(compiledTemplate);
+                    $(elementString + divClass + ".data ").html(compiledTemplate);
 
                     // append stars
                     for (var i = 0; i < collection.models.length; i++) {
-                        that.$el
+                        $(elementString + divClass)
                             .find('.stars:eq(' + i + ')')
                             .html(getRankStars(collection.models[i]));
                     }
