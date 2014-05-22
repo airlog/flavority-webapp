@@ -5,18 +5,18 @@ define([
     var Storage = (function() {
         return {
             getInstance: function () {
-                return sessionStorage;  
+                return sessionStorage;
             },
         };
     })();
     
-    var loginManager = (function(settings) {        
+    var loginManager = (function(settings) {
         var defaults = {
             loginUrl: '/auth/signin',
         };
-        
+		
         var mLoginUrl = defaults.loginUrl;
-        
+		
         var storeData = function(data) {
             Storage.getInstance().flavority = JSON.stringify(data);
         };
@@ -43,7 +43,7 @@ define([
                     password: password,
                 },
                 error: params.error,
-                success: function(data, status, jx) {                    
+                success: function(data, status, jx) {
                     storeData({
                         token: data.token,
                     });
@@ -58,8 +58,8 @@ define([
         };
         
         var isLogged = function() {
-            var data = restoreData();           
-            if (data == null || data.token == null) return false;           
+            var data = restoreData();
+            if (data == null || data.token == null) return false;
             return true;
         };
                         

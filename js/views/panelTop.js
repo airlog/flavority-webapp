@@ -5,15 +5,15 @@ define([
     'backbone',
     
     'util/loginmanager',
-    'util/regmanager',
+	'util/regmanager',
     
-    'text!templates/register.html',
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, regManager, registerTemplate, loggedTemplate, notLoggedTemplate) {	
+], function($, _, Backbone, loginManager, regManager, loggedTemplate, notLoggedTemplate) {	
 	var PanelTopView = Backbone.View.extend({
 		el: $("#panelTop"),
 		formVisible: false,
+		regFormVisible: false,
 		userMenuVisible: false,
 		
 		events: {
@@ -21,48 +21,84 @@ define([
 			'submit #login-form form': 'onLoginFormSubmit',
 
 			'click #register a': 'triggerRegisterForm',
-			'submit #registerform form': 'registerFormSubmit',
+			'submit #reg-form form': 'onRegisterFormSubmit',
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
 		},
-
+		
 		triggerRegisterForm: function()
 		{
-			if(!this.formVisible)
+		    var firstValue = Math.floor((Math.random()*10)+1);
+            var secondValue = Math.floor((Math.random()*10)+1);
+            document.getElementById("fNum").innerHTML = firstValue;
+            document.getElementById("sNum").innerHTML = secondValue;
+			
+			if(!this.regFormVisible)
 			{
-				$('#registerform').show();
-				this.formVisible = !this.formVisible;
+				if(this.formVisible)
+				{
+					$('#login-form').hide();
+					this.formVisible = !this.formVisible;
+				}
+				$('#reg-form').show();
+				this.regFormVisible = !this.regFormVisible;
 			}
 			else
 			{
-				$('#registerform').hide();
-				this.formVisible = !this.formVisible;
+				$('#reg-form').hide();
+				this.regFormVisible = !this.regFormVisible;
 			}
 		},
 
-		registerFormSubmit: function()
-		{
-			regManager.register($('#registerform input[name=email]').val(),
-								$('#registerform input[name=pass]').val(),
-								{
-									error: function()
-									{
-										alert("Register failed!");
-									},
-									success: function()
-									{
-										alert("Register successful!");
-										location.reload();
-									}
-								}
-								);
+		
+		onRegisterFormSubmit: function() {
+		    var fVal = Number(document.getElementById("fNum").innerText);
+	        var sVal = Number(document.getElementById("sNum").innerText); 
+		    var ans = Number(document.registerform.check.value); 
+			
+			var pVal = document.getElementById("pass").value;
+			var rpVal = document.getElementById("repass").value;
+
+			if(fVal + sVal == ans) {
+				if(pVal == rpVal) {
+					regManager.register(
+					$('#reg-form input[name=email]').val(),
+					$('#reg-form input[name=repass]').val(),
+					{
+						error: function(jrxhr, status, exception) {
+							alert("error: " + exception);
+						},
+						success: function(data, status, jrxhr) {
+							alert("success");
+							location.reload();
+						},
+					}
+				);
+				}
+				else {
+					alert("Passwords must match!");
+				}
+			}
+			else {
+				alert("Enter correct value!");
+			}
+			
+			return false;
 		},
 		
 		triggerLoginForm: function() {
-			if (!this.formVisible) $("#login-form").show();
+			if (!this.formVisible)
+			{
+				if(this.regFormVisible)
+				{
+					$("#reg-form").hide();
+					this.regFormVisible = !this.regFormVisible;
+				}
+				$("#login-form").show();
+			}
 			else $("#login-form").hide();
-			this.formVisible = !this.formVisible;
+				this.formVisible = !this.formVisible;
 		},
 		
 		onLoginFormSubmit: function() {
@@ -74,7 +110,7 @@ define([
 						alert(status + " " + exception);
 		            },
 					success: function(data, status, jrxhr) {
-						alert(status);		            
+						alert(status);
 						location.reload();
 					},
 				}

@@ -443,7 +443,7 @@ td img {
     border: none;
 }
 /*zrobie to tak jak login form, aby mozna bylo wyswietlic to w tym samym miejscu*/
-#registerform
+#reg-form
 {
 	display: none;
 	width: 240px;
@@ -453,7 +453,7 @@ td img {
 	margin-top: 30px;
 }
 
-#registerform input
+#reg-form input
 {
 	width: 80%;
 	height: 24px;

@@ -4,7 +4,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    
+
     'views/panelTop',
     'views/TagsView',
     'views/ResultsView',
@@ -17,6 +17,7 @@ define([
 ], function($, _, Backbone,
         PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView,
         CommentsView, UserInfoView, UserRecipesView) {
+
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -24,15 +25,12 @@ define([
             'recipes/:id/': 'getRecipe',
             'users/:id/': 'getUser',
         },
-        
-        initialize: function () {
-            $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-                options.url = '//localhost:5000' + options.url;
-            });
 
-//          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-//              options.url = 'http://addressToRestfulServer' + options.url;
-//          });
+        initialize: function () {
+
+          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+              options.url = 'http://addressToRestfulServer' + options.url;
+          });
 
             var panelTopView = new PanelTopView();
             var tagsView = new TagsView();
@@ -45,6 +43,8 @@ define([
             tagsView.render();
 
             this.on('route:home', function() {
+                $("#main_left").empty();
+
                 var lastAddedRecipeView = new LastAddedView();
                 var bestRatedRecipeView = new BestRatedView();
 
@@ -53,12 +53,13 @@ define([
             });
 
             this.on('route:searchResults', function(page) {
+                $("#main_left").empty();
+
                 var resultsView = new ResultsView({
                     page: page,
                 });
                 resultsView.render();
-            });
-            
+            });            
           
            this.on('route:getRecipe', function(id) {
                 commentsView.setRecipeId(id);
