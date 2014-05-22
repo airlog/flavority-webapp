@@ -15,13 +15,12 @@ define([
         render: function(userId) {
             var recipe = new RecipeModel({id:userId});
             
-            $('#panel_right').empty();
+            this.$el.empty();
             
             var spin = new Spinner().spin();
 
             spin.el.style['position'] = null;
-            $('#panel_right')
-                .append("<div style='height: 100px;'><span id='panel_right_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
+            this.$el.append("<div style='height: 100px;'><span id='panel_right_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
             $("#panel_right_spinner").html(spin.el).css('position', 'relative');
 
             var that = this;
@@ -30,7 +29,7 @@ define([
                     var compiledUserInfoTemplate = _.template(userInfoTemplate, {
                         user: user,
                     });
-                    this.$('#panel_right').html(compiledUserInfoTemplate);    
+                    that.$el.html(compiledUserInfoTemplate);    
                 },
 
                 error: function (collection, response, options) {

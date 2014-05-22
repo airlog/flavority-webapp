@@ -12,6 +12,7 @@ define([
 
 ], function($, _, Backbone, RecipeCollection, Spinner, userRecipesTemplate, pageSelectorTemplate) {
     var UserRecipesView = Backbone.View.extend({
+        el: '#main_left',
         // default values
         options: {
             page: 0,
@@ -30,14 +31,11 @@ define([
             this.options.page = page;
         },
         
-        el: '#main_left',
-
         render: function() {
-            console.log('render: UserRecipesView');
             var recipes = new RecipeCollection();
             var spin = new Spinner().spin();
-            $('#main_left').empty()
-            $('#main_left').append("<div id='user_recipes'></div>")
+            this.$el.empty()
+            this.$el.append("<div id='user_recipes'></div>")
             spin.el.style['position'] = null;
             $('#user_recipes')
                 .append("<div style='height: 100px;'><span id='user_recipes_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
@@ -77,24 +75,20 @@ define([
         
         events: {
             'click #user_recipes_page_selector1 .leftarrow': function () {
-                console.log("user_recipes: user_id: "+this.options.user_id+", id: click left: " + this.options.page + " -> " + (this.options.page-1));
                 this.options.page = this.options.page-1;
                 this.render();
             },
 
             'click #user_recipes_page_selector1 .rightarrow': function () {
-                console.log("user_recipes: user_id: "+this.options.user_id+", id: click right: " + this.options.page + " -> " + (this.options.page+1));
                 this.options.page = this.options.page+1;
                 this.render();
             },
             'click #user_recipes_page_selector2 .leftarrow': function () {
-                console.log("user_recipes: user_id: "+this.options.user_id+", id: click left: " + this.options.page + " -> " + (this.options.page-1));
                 this.options.page = this.options.page-1;
                 this.render();
             },
 
             'click #user_recipes_page_selector2 .rightarrow': function () {
-                console.log("user_recipes: user_id: "+this.options.user_id+", id: click right: " + this.options.page + " -> " + (this.options.page+1));
                 this.options.page = this.options.page+1;
                 this.render();
             },

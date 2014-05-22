@@ -28,9 +28,9 @@ define([
 
         initialize: function () {
 
-          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-              options.url = 'http://addressToRestfulServer' + options.url;
-          });
+//          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+//              options.url = 'http://addressToRestfulServer' + options.url;
+//          });
 
             var panelTopView = new PanelTopView();
             var tagsView = new TagsView();
