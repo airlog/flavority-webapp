@@ -1,24 +1,21 @@
 define([
     'jquery',
 ], function($) {
-        var registermanager = (function() {        
+        var regManager = (function() {
             var defaultPath = {
-    			url: '/auth/signup',	//registration address
+             url: '/auth/signup',	//registration address
             };
             
-            var registerUrl = defaultPath.url;		
+            var registerUrl = defaultPath.url;
             
-    		var register = function(username, password, opStatus) {
-                $.ajax({
+            var register = function(un, p, opt) {
+                var regUrl = "/auth/signup";
+                $.ajax(regUrl, {
                     type: 'POST',
-    				url: registerUrl,
                     cache: false,
-                    data: {
-                        email: username,
-                        password: password,
-                    },
-                    error: opStatus.error,
-                    success: opStatus.success,
+                    data: {email: un, password: p,},
+                    error : opt.error,
+                    success : opt.success,
                 });
             };
             
@@ -27,6 +24,6 @@ define([
             };
         })();
 
-    return registermanager;
+    return regManager;
 });
 
