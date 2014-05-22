@@ -5,12 +5,12 @@ define([
     'backbone',
     
     'util/loginmanager',
+	'util/regmanager',
     
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, loggedTemplate, notLoggedTemplate) {	
+], function($, _, Backbone, loginManager, regManager, loggedTemplate, notLoggedTemplate) {	
 	var PanelTopView = Backbone.View.extend({
-	//TODO: input validation
 		el: $("#panelTop"),
 		formVisible: false,
 		regFormVisible: false,
@@ -26,9 +26,14 @@ define([
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
 		},
-
+		
 		triggerRegisterForm: function()
 		{
+		    var firstValue = Math.floor((Math.random()*10)+1);
+            var secondValue = Math.floor((Math.random()*10)+1);
+            document.getElementById("fNum").innerHTML = firstValue;
+            document.getElementById("sNum").innerHTML = secondValue;
+			
 			if(!this.regFormVisible)
 			{
 				if(this.formVisible)
@@ -45,26 +50,40 @@ define([
 				this.regFormVisible = !this.regFormVisible;
 			}
 		},
+
 		
-		onRegisterFormSubmit: function()
-		{
-			loginManager.register(un, 
-														p,
-													{
-														error: function(jrxhr, status, exception)
-														{
-															$('#reg-form').hide();
-															this.regFormVisible = !this.regFormVisible;
-															alert("Reg failed: " + exception);
-														},
-														success: function(data, status, jrxhr)
-														{
-															$('#reg-form').hide();
-															this.regFormVisible = !this.regFormVisible;
-															alert("Reg successful");
-														},
-													}
-			);
+		onRegisterFormSubmit: function() {
+		    var fVal = Number(document.getElementById("fNum").innerText);
+	        var sVal = Number(document.getElementById("sNum").innerText); 
+		    var ans = Number(document.registerform.check.value); 
+			
+			var pVal = document.getElementById("pass").value;
+			var rpVal = document.getElementById("repass").value;
+
+			if(fVal + sVal == ans) {
+				if(pVal == rpVal) {
+					regManager.register(
+					$('#reg-form input[name=email]').val(),
+					$('#reg-form input[name=repass]').val(),
+					{
+						error: function(jrxhr, status, exception) {
+							alert("error: " + exception);
+						},
+						success: function(data, status, jrxhr) {
+							alert("success");
+							location.reload();
+						},
+					}
+				);
+				}
+				else {
+					alert("Passwords must match!");
+				}
+			}
+			else {
+				alert("Enter correct value!");
+			}
+			
 			return false;
 		},
 		
@@ -91,7 +110,7 @@ define([
 						alert(status + " " + exception);
 		            },
 					success: function(data, status, jrxhr) {
-						alert(status);		            
+						alert(status);
 						location.reload();
 					},
 				}
