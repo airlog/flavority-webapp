@@ -15,7 +15,7 @@ define([
         render: function(recipeId) {
             var recipe = new RecipeModel({id:recipeId});
             
-            $('#main_left').empty();
+            $('#main_left').children().remove();
             $('#main_left').append("<div id='recipe_details'></div>");
             $('#main_left').append("<div id='recipe_comments'></div>");
 
@@ -42,7 +42,6 @@ define([
 
                 error: function (collection, response, options) {
                     alert('Retrieving recipe failed: '+ response);
-                    console.log(response);
                 },
 
             }); 
