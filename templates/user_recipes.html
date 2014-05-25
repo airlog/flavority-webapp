@@ -1,0 +1,27 @@
+<div class="title"><h2> <%= title %></h2></div>
+
+<div id='user_recipes_page_selector1'></div>
+
+<div>
+    <% _.each(recipes, function (recipe) { %>
+        <a href="#/recipes/<%= recipe.get('id') %>/"> <!-- TODO: update URL when its ready -->
+            <div class="recipe_box">
+                <div style="text-align: center;">
+                    <img class="recipe"
+                    <% if (recipe.get('photos').length == 0) { %>
+                        src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=37434267"
+                    <% } else { %>
+                        src="data:image/jpeg;base64,<%= recipe.get('photos')[0] %>"
+                    <% } %>
+                    />
+                </div>
+                <div class="stars"><%= recipe.get('rank') %></div>	<!-- TODO: use stars -->
+                <p><%= recipe.get('dishname') %></p>
+            </div>
+        </a>
+    <% }); %>
+</div>
+
+<div class="clear_div"></div>
+
+<div id='user_recipes_page_selector2'></div>

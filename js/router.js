@@ -12,16 +12,19 @@ define([
     'views/BestRatedView',
     'views/RecipeView',
     'views/CommentsView',
+    'views/UserInfoView',
+    'views/UserRecipesView',
     'views/SearchView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView,
-        BestRatedView, RecipeView, CommentsView, SearchView) {
+        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView,
+        CommentsView, UserInfoView, UserRecipesView, SearchView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
             'search/query/:query/:page': 'simpleSearch',
             'recipes/:id/': 'getRecipe',
+            'users/:id/': 'getUser',
         },
 
         initialize: function () {
@@ -31,15 +34,19 @@ define([
 
             var panelTopView = new PanelTopView();
             var tagsView = new TagsView();
+            var lastAddedRecipeView = new LastAddedView();
+            var bestRatedRecipeView = new BestRatedView();
+            var recipeView = new RecipeView();
+            var commentsView = new CommentsView();
+            var searchView = new SearchView();
+            var userInfoView = new UserInfoView();
+            var userRecipesView = new UserRecipesView();
 
             panelTopView.render();
             tagsView.render();
 
             this.on('route:home', function() {
                 $("#main_left").empty();
-
-                var lastAddedRecipeView = new LastAddedView();
-                var bestRatedRecipeView = new BestRatedView();
 
                 lastAddedRecipeView.render();
                 bestRatedRecipeView.render();
@@ -52,27 +59,31 @@ define([
                     page: page,
                 });
                 resultsView.render();
+            });            
+          
+           this.on('route:getRecipe', function(id) {
+                commentsView.setRecipeId(id);
+                commentsView.setPage(0);
+                
+                recipeView.render(id);
+                commentsView.render();
             });
             
             this.on('route:simpleSearch', function(query, page) {
                 $("#main_left").empty();
 
-                var searchView = new SearchView({
-                    query: query,
-                    page: page,
-                });
-
-                searchView.render();
+                searchView
+                    .setQuery(query)
+                    .setPage(parseInt(page))
+                    .render();
             });
 
-            this.on('route:getRecipe', function(id) {
-                $("#main_left").empty();
-
-                var recipeView = new RecipeView();
-                var commentsView = new CommentsView();
-
-                recipeView.render(id);
-                commentsView.render(id);
+            this.on('route:getUser', function(id) {
+                userRecipesView.setUserId(id);
+                userRecipesView.setPage(0);
+                
+                userInfoView.render(id);
+                userRecipesView.render();
             });
 
             Backbone.history.start();
@@ -81,4 +92,3 @@ define([
 
     return Router;
 });
-

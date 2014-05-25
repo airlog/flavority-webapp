@@ -15,9 +15,16 @@ define([
         render: function(recipeId) {
             var recipe = new RecipeModel({id:recipeId});
             
-            $('#main_left').empty();
+            $('#main_left').children().remove();
             $('#main_left').append("<div id='recipe_details'></div>");
             $('#main_left').append("<div id='recipe_comments'></div>");
+
+            var spin = new Spinner().spin();
+
+            spin.el.style['position'] = null;
+            $('#recipe_details')
+                .append("<div style='height: 100px;'><span id='recipe_details_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
+            $("#recipe_details_spinner").html(spin.el).css('position', 'relative');
 
             var that = this;
             recipe.fetch({
@@ -35,7 +42,6 @@ define([
 
                 error: function (collection, response, options) {
                     alert('Retrieving recipe failed: '+ response);
-                    console.log(response);
                 },
 
             }); 

@@ -16,7 +16,7 @@ define([
         resultsTemplate, resultsSpinnerTemplate, pageSelectorTemplate) {
     var getUrlForPage = function (newPage) {
         var parts = window.location.hash.split('/');
-        parts[parts.length - 2] = newPage;
+        parts[parts.length - 1] = newPage;
 
         return parts.join('/');
     };
@@ -56,6 +56,7 @@ define([
             var that = this;
             searchManager.search(
                     atob(this.options.query),
+                    this.options.page,
                     // on success
                     function (collection, response, status) {
                         var getRankStars = function (model) {
@@ -116,6 +117,16 @@ define([
             'click .rightarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page + 1));
             },
+        },
+        
+        setPage: function (page) {
+            this.options.page = page;
+            return this;
+        },
+
+        setQuery: function (query) {
+            this.options.query = query;
+            return this;
         },
     });
 
