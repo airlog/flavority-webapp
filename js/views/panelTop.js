@@ -6,10 +6,14 @@ define([
     
     'util/loginmanager',
 	'util/regmanager',
+	'util/SearchManager',
     
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone, loginManager, regManager, loggedTemplate, notLoggedTemplate) {	
+], function($, _, Backbone,
+		loginManager, regManager, SearchManager,
+		loggedTemplate, notLoggedTemplate) {	
+	var _searchManager = SearchManager();
 	var PanelTopView = Backbone.View.extend({
 		el: $("#panelTop"),
 		formVisible: false,
@@ -25,6 +29,15 @@ define([
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
+
+            'submit #form-search': function (e) {
+                var ele = $(e.currentTarget).find('#searchtext')[0];
+                var text = ele.value;
+                ele.value = "";
+                
+                Backbone.history.navigate('#/search/query/' + btoa(text) + '/1', {trigger: true,});
+                return false;   // do not reload
+            },
 		},
 		
 		triggerRegisterForm: function()
