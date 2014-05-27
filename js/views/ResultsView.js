@@ -114,12 +114,12 @@ define([
         },
 
         events: {
-            'click .leftarrow': function () {
-                window.app.router.navigate(getUrlForPage(this.options.page - 1));
+            'click #recipes-search-results .leftarrow': function () {
+                Backbone.history.navigate(getUrlForPage(this.options.page - 1));
             },
 
-            'click .rightarrow': function () {
-                window.app.router.navigate(getUrlForPage(this.options.page + 1));
+            'click #recipes-search-results .rightarrow': function () {
+                Backbone.history.navigate(getUrlForPage(this.options.page + 1));
             },
         },
     });
