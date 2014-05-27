@@ -41,6 +41,7 @@ define([
             var searchView = new SearchView();
             var userInfoView = new UserInfoView();
             var userRecipesView = new UserRecipesView();
+            var resultsView = new ResultsView();
 
             panelTopView.render();
             tagsView.render();
@@ -55,11 +56,10 @@ define([
             this.on('route:searchResults', function(page) {
                 $("#main_left").empty();
 
-                var resultsView = new ResultsView({
-                    page: page,
-                });
-                resultsView.render();
-            });            
+                resultsView
+                    .setPage(page)
+                    .render();
+            });
           
            this.on('route:getRecipe', function(id) {
                 commentsView.setRecipeId(id);

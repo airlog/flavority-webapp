@@ -46,6 +46,7 @@ define([
             // and set loading view (spinner)
             this.$el.children().remove();
             this.$el.html(resultsSpinnerCompiledTemplate);
+            this.$el.find('div').first().attr('id', 'recipe-search');
 
             // this is to properly place a spinner
             spin.el.style['position'] = null;
@@ -57,6 +58,7 @@ define([
             searchManager.search(
                     atob(this.options.query),
                     this.options.page,
+                    this.options.limit,
                     // on success
                     function (collection, response, status) {
                         var getRankStars = function (model) {
@@ -110,11 +112,11 @@ define([
         },
 
         events: {
-            'click .leftarrow': function () {
+            'click #recipe-search .leftarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page - 1));
             },
 
-            'click .rightarrow': function () {
+            'click #recipe-search .rightarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page + 1));
             },
         },
