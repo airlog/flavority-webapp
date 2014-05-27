@@ -7,11 +7,12 @@ define([
     'collections/CommentCollection',
 
     'views/Spinner',
+    'views/StarsView',
 
     'text!templates/comments.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, CommentCollection, Spinner, commentsTemplate, pageSelectorTemplate) {
+], function($, _, Backbone, CommentCollection, Spinner, StarsView, commentsTemplate, pageSelectorTemplate) {
     var CommentsView = Backbone.View.extend({
         // default values
         options: {
@@ -62,6 +63,13 @@ define([
         },
 
         _fetchPage : function() {
+            var getRankStars = function (comment, name, color) {
+                return new StarsView({
+                    color: color,
+                    rank: parseFloat(comment.get(name))
+                }).getCompiledTemplate();
+            };
+
             var comments = new CommentCollection();
             var that = this;
             
@@ -85,6 +93,15 @@ define([
                         maxPage: Math.ceil(response.all / that.options.limit),
                     });
                     $('#comments_page_selector').html(compiledPageSelectorTemplate);
+                    // append stars
+                    for (var i = 0; i < collection.models.length; i++) {
+                        $("#recipe_comments").find('.stars_taste:eq(' + i + ')')
+                            .html(getRankStars(collection.models[i],"taste","yellow"));
+                    }
+                    for (var i = 0; i < collection.models.length; i++) {
+                        $("#recipe_comments").find('.stars_difficulty:eq(' + i + ')')
+                            .html(getRankStars(collection.models[i],"difficulty", "red"));
+                    }
                 },
 
                 error: function (collection, response, status) {

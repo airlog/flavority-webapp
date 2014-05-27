@@ -22,12 +22,20 @@
                 <b><a href="/#/users/<%= comment.get('author_id')%>"><%= comment.get('author_name') %></a></b>
                 <span class="time"><%= comment.get('date').replace('T',' ').replace(/\..*/, '') %></span></div>
             <div>
-                <span class="taste">
-                    taste: <%= comment.get('taste') %>
+                <span style="float: left;">
+                taste: 
+                <abbr title="<%= comment.get('taste') %>">
+                    <span style="float:left;" class="stars_taste">
+                        <%= comment.get('taste') %>
+                    </span>
+                </abbr>
                 </span>
-                <span class="difficulty">
-                    difficulty:<%= comment.get('difficulty') %>
-                </span>
+                difficulty:
+                <abbr title="<%= comment.get('difficulty') %>">                
+                    <span class="stars_difficulty">
+                        <%= comment.get('difficulty') %>
+                    </span>
+                </abbr>
             </div>
             <div class="text">
                 <%= comment.get('text') %>

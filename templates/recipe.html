@@ -22,16 +22,16 @@
         <div class="recipe_info_c2"><%= recipe.get('portions') %></div>
     </div>
     <div class="normal_table_row">
-        <div class="recipe_info_c1"><b>taste:</b></div>
-        <div class="recipe_info_c2"><%= recipe.get('tasteMark') %></div>
+        <div class="recipe_info_c1"><b>taste (by users):</b></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe.get('taste_comments') %>"><div class="stars_taste_comments"></div></abbr></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>difficulty:</b></div>
-        <div class="recipe_info_c2"><%= recipe.get('rank') %></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe.get('difficulty') %>"><div class="stars_difficulty"></div></abbr></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>difficulty (by users):</b></div>
-        <div class="recipe_info_c2"><%= recipe.get('difficultyMark') %></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe.get('difficulty_comments') %>"><div class="stars_difficulty_comments"></div></abbr></div>
     </div>
 </div>
 

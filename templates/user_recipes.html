@@ -15,7 +15,9 @@
                     <% } %>
                     />
                 </div>
-                <div class="stars"><%= recipe.get('rank') %></div>	<!-- TODO: use stars -->
+                <abbr title="<%= recipe.get('rank') %>">
+                    <div class="stars_taste"><%= recipe.get('rank') %></div>
+                </abbr>
                 <p><%= recipe.get('dishname') %></p>
             </div>
         </a>
