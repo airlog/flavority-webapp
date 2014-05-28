@@ -45,6 +45,7 @@ define([
             // and set loading view (spinner)
             this.$el.children().remove();
             this.$el.html(resultsSpinnerCompiledTemplate);
+            this.$el.find('div').first().attr('id', 'recipe-results');
 
             // this is to properly place a spinner
             spin.el.style['position'] = null;
@@ -114,15 +115,21 @@ define([
         },
 
         events: {
-            'click #recipes-search-results .leftarrow': function () {
+            'click #recipe-results .leftarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page - 1));
             },
 
-            'click #recipes-search-results .rightarrow': function () {
+            'click #recipe-results .rightarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page + 1));
             },
+        },
+
+        setPage: function (page) {
+            this.options.page = parseInt(page);
+            return this;
         },
     });
 	
     return ResultsView;
 });
+

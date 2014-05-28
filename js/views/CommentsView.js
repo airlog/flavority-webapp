@@ -3,8 +3,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-
     'collections/CommentCollection',
+    'models/CommentModel',
 
     'views/Spinner',
     'views/StarsView',
@@ -12,10 +12,13 @@ define([
     'text!templates/comments.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, CommentCollection, Spinner, StarsView, commentsTemplate, pageSelectorTemplate) {
+], function($, _, Backbone, CommentCollection, CommentModel, 
+        Spinner, StarsView, commentsTemplate, pageSelectorTemplate) {
+
     var CommentsView = Backbone.View.extend({
         // default values
         options: {
+            recipe_id: null,
             page: 0,
             limit: 3,
         },
@@ -50,6 +53,37 @@ define([
             'click #comments_page_selector .leftarrow': '_get_previous',
 
             'click  #comments_page_selector .rightarrow': '_get_next',
+
+            'submit #form-add-comment': function (ev) {
+                ev.preventDefault();
+
+                var comment = new CommentModel({
+                    recipe: this.options.recipe_id,
+                    taste: parseFloat($(ev.currentTarget).find('select')[0].value),
+                    difficulty: parseFloat($(ev.currentTarget).find('select')[1].value),
+                    text: $(ev.currentTarget).find('textarea').val(),
+                });
+
+                comment.on("invalid", function(model, error) {
+                    alert(error);
+                    console.log(model);
+                });
+
+                comment.save(comment.toJSON(), {
+                    wait: true,
+
+                    success: function (model, response) {
+                        Backbone.history.navigate(window.location.hash, {trigger: true});
+                    },
+
+                    error: function (err, response) {
+                        alert(err);
+                        console.log(response);
+                    },
+                });
+
+                return false;
+            },
         },
 
          _get_previous: function() {
@@ -79,11 +113,13 @@ define([
                     page: that.options.page,
                     limit: that.options.limit,
                 },
+
                 success: function (collection, response, status) {
                     $('#recipe_comments').children().remove();
                     
                     var compiledCommentsTemplate = _.template(commentsTemplate, {
                         comments: collection.models,
+                        validMarks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
                     });
                     
                     $('#recipe_comments').html(compiledCommentsTemplate);
