@@ -4,13 +4,15 @@ define([
     'underscore',
     'backbone',
     
+    'collections/IngredientCollection',
+
     'util/loginmanager',
 	'util/regmanager',
 	'util/SearchManager',
     
     'text!templates/logged.html',
     'text!templates/not_logged.html',
-], function($, _, Backbone,
+], function($, _, Backbone, IngredientCollection,
 		loginManager, regManager, SearchManager,
 		loggedTemplate, notLoggedTemplate) {	
 	var _searchManager = SearchManager();
@@ -18,7 +20,9 @@ define([
 		el: $("#panelTop"),
 		formVisible: false,
 		regFormVisible: false,
+		advancedSearchFormVisible: false,
 		userMenuVisible: false,
+        ingredients: [],
 		
 		events: {
 			'click #log_in a': 'triggerLoginForm',
@@ -26,6 +30,11 @@ define([
 
 			'click #register a': 'triggerRegisterForm',
 			'submit #reg-form form': 'onRegisterFormSubmit',
+
+			'click #advanced_search a': 'triggerAdvancedSearchForm',
+			'click .advanced-search-add': 'addTextAdvancedSearch',
+			'click .advanced-search-remove': 'removeTextAdvancedSearch',
+			'click #advanced-search-submit': 'onAdvancedSearchSubmit',
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
@@ -40,27 +49,23 @@ define([
             },
 		},
 		
-		triggerRegisterForm: function()
-		{
+		triggerRegisterForm: function() {
 		    var firstValue = Math.floor((Math.random()*10)+1);
             var secondValue = Math.floor((Math.random()*10)+1);
             document.getElementById("fNum").innerHTML = firstValue;
             document.getElementById("sNum").innerHTML = secondValue;
 			
-			if(!this.regFormVisible)
-			{
-				if(this.formVisible)
-				{
-					$('#login-form').hide();
-					this.formVisible = !this.formVisible;
-				}
-				$('#reg-form').show();
-				this.regFormVisible = !this.regFormVisible;
+			if(!this.regFormVisible) {
+                $('#login-form').hide();
+                $('#reg-form').show();
+				$('#advanced-search-form').hide();
+				this.formVisible = false;
+                this.regFormVisible = true;
+				this.advancedSearchFormVisible = false;
 			}
-			else
-			{
+			else {
 				$('#reg-form').hide();
-				this.regFormVisible = !this.regFormVisible;
+				this.regFormVisible = false;
 			}
 		},
 
@@ -101,17 +106,18 @@ define([
 		},
 		
 		triggerLoginForm: function() {
-			if (!this.formVisible)
-			{
-				if(this.regFormVisible)
-				{
-					$("#reg-form").hide();
-					this.regFormVisible = !this.regFormVisible;
-				}
-				$("#login-form").show();
+			if(!this.formVisible) {
+                $('#login-form').show();
+                $('#reg-form').hide();
+				$('#advanced-search-form').hide();
+				this.formVisible = true;
+                this.regFormVisible = false;
+				this.advancedSearchFormVisible = false;
 			}
-			else $("#login-form").hide();
-				this.formVisible = !this.formVisible;
+			else {
+				$('#login-form').hide();
+				this.formVisible = false;
+			}
 		},
 		
 		onLoginFormSubmit: function() {
@@ -143,15 +149,74 @@ define([
 			location.reload();
 		},
 		
-		render: function() {
-			var template = notLoggedTemplate;
-			if (loginManager.isLogged()) template = loggedTemplate;
-			
-			var compiledLoggedTemplate = _.template(template);
-			this.$el.html(compiledLoggedTemplate);
+        triggerAdvancedSearchForm: function() {			
+			if(!this.advancedSearchFormVisible) {
+                this.ingredients = [];
+                $('#login-form').hide();
+                $('#reg-form').hide();
+				$('#advanced-search-form').show();
+                $('#advanced-search-added').empty();
+				this.formVisible = false;
+                this.regFormVisible = false;
+				this.advancedSearchFormVisible = true;
+			}
+			else {
+				$('#advanced-search-form').hide();
+				this.advancedSearchFormVisible = false;
+			}
 		},
-	});
-	
-	return PanelTopView;
+        
+        addTextAdvancedSearch: function(ev) {
+            ev.preventDefault();
+            ingredient = $('#advanced-search-form input[name=ingredient]').val();
+            $('#advanced-search-form input[name=ingredient]').val("");
+            this.ingredients.push(ingredient);
+            $('#advanced-search-added').append("<button id=\"" + ingredient + "\" class=\"advanced-search-remove green_button\" style=\"display:block;\">"+ingredient+" &nbsp; X</button>");
+            console.log(this.ingredients);
+            return false;
+        },
+        
+        removeTextAdvancedSearch: function(ev) {
+            ev.preventDefault();
+            this.ingredients.splice(this.ingredients.indexOf(ev.currentTarget.id), 1);
+            ev.currentTarget.remove();
+            return false;
+        },
+        
+        onAdvancedSearchSubmit: function(ev) {
+            ev.preventDefault();            
+            console.log(JSON.stringify(this.ingredients));
+            $('#advanced-search-form').hide();
+            this.advancedSearchFormVisible = false;            
+            Backbone.history.navigate('#/search/advanced/' + btoa(JSON.stringify(this.ingredients)) + '/1', {trigger: true,});
+            return false;
+       },
+
+		render: function() {
+            var ingredients_collection = new IngredientCollection();
+            var that = this;
+            
+            ingredients_collection.fetch({
+                data: {
+                },
+                
+                success: function (collection, response, status) {
+                    var template = notLoggedTemplate;
+                    if (loginManager.isLogged()) template = loggedTemplate;
+                    
+                    var compiledLoggedTemplate = _.template(template, {
+                        ingredients_list: collection.models,
+                    });
+                    that.$el.html(compiledLoggedTemplate);        
+                },
+
+                error: function (collection, response, status) {
+                    alert('Retrieving comments failed: '+ response);
+                },
+            });
+        },
+    });
+
+    return PanelTopView;
 });
 
