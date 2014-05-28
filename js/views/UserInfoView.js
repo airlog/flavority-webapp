@@ -7,12 +7,20 @@ define([
     'models/UserModel',
 
     'views/Spinner',
+    'views/StarsView',
 
     'text!templates/user_info.html',
-], function($, _, Backbone, RecipeModel, Spinner, userInfoTemplate) {
+], function($, _, Backbone, RecipeModel, Spinner, StarsView, userInfoTemplate) {
     var UserInfoView = Backbone.View.extend({
         el: '#panel_right',
         render: function(userId) {
+
+            var getRankStars = function (user, name) {
+                return new StarsView({
+                    rank: parseFloat(user.get(name))
+                }).getCompiledTemplate();
+            };
+
             var recipe = new RecipeModel({id:userId});
             
             this.$el.empty();
@@ -30,6 +38,9 @@ define([
                         user: user,
                     });
                     that.$el.html(compiledUserInfoTemplate);    
+
+                    that.$('.stars_average_rate').html(getRankStars(user, "average_rate"));
+
                 },
 
                 error: function (collection, response, options) {

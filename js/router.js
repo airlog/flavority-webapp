@@ -80,7 +80,7 @@ define([
 
             this.on('route:getUser', function(id) {
                 userRecipesView.setUserId(id);
-                userRecipesView.setPage(0);
+                userRecipesView.setPage(1);
                 
                 userInfoView.render(id);
                 userRecipesView.render();

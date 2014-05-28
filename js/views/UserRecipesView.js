@@ -6,16 +6,17 @@ define([
     'collections/RecipeCollection',
 
     'views/Spinner',
+    'views/StarsView',
 
     'text!templates/user_recipes.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, RecipeCollection, Spinner, userRecipesTemplate, pageSelectorTemplate) {
+], function($, _, Backbone, RecipeCollection, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
     var UserRecipesView = Backbone.View.extend({
         el: '#main_left',
         // default values
         options: {
-            page: 0,
+            page: 1,
             limit: 15,
         },
 
@@ -32,6 +33,13 @@ define([
         },
         
         render: function() {
+            var getRankStars = function (comment, name, color) {
+                return new StarsView({
+                    color: color,
+                    rank: parseFloat(comment.get(name))
+                }).getCompiledTemplate();
+            };
+
             var recipes = new RecipeCollection();
             var spin = new Spinner().spin();
             this.$el.empty()
@@ -59,11 +67,17 @@ define([
                     $('#user_recipes').html(compiledUserRecipesTemplate);
                     
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
-                        currentPage: that.options.page+1,
+                        currentPage: that.options.page,
                         maxPage: Math.ceil(response.totalElements / that.options.limit),
                     });
                     $('#user_recipes_page_selector1').html(compiledPageSelectorTemplate);
                     $('#user_recipes_page_selector2').html(compiledPageSelectorTemplate);
+                    
+                    for (var i = 0; i < collection.models.length; i++) {
+                        $("#user_recipes").find('.stars_taste:eq(' + i + ')')
+                            .html(getRankStars(collection.models[i],"rank","yellow"));
+                    }
+
                 },
 
                 error: function (collection, response, status) {
