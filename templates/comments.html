@@ -1,9 +1,19 @@
-
+<!--<link rel="stylesheet" type="text/css" href="../css/editor.css">-->
+<link rel="stylesheet" type="text/css" href="../css/jquery-te-1.4.0.css">
+	
 <h3 class="title">Comments</h3>
 
 <div class="comment_add">
     <form id="form-add-comment" action="">
-        <textarea style="width:100%;height:100px;resize:none;" placeholder="Write your comment..." ></textarea><br/>
+        <textarea name="textarea" id="textarea" class="area" placeholder="dupa"></textarea>
+		<script>
+      $('.area').jqte({ sub : false,
+                        sup : false,
+                        remove : false,
+                        rule : false,
+                        source : false});
+    </script>
+		<br/>
         <span class="taste">Taste:
             <select>
                 <option value="---">---</option>

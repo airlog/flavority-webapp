@@ -8,12 +8,15 @@ define([
 
     'views/Spinner',
     'views/StarsView',
-
-    'text!templates/comments.html',
+	
+	'text!templates/comments.html',
     'text!templates/page_selector.html',
+	
+	'js/libs/jquery-te-1.4.0.min.js',
 
 ], function($, _, Backbone, CommentCollection, CommentModel, 
-        Spinner, StarsView, commentsTemplate, pageSelectorTemplate) {
+        Spinner, StarsView, commentsTemplate, pageSelectorTemplate,
+		textEditor) {
 
     var CommentsView = Backbone.View.extend({
         // default values
