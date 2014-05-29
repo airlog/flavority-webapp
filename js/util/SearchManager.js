@@ -11,9 +11,10 @@ define([
              * Sends a AJAX request to the server which should search for a given text
              * in the recipes database.
              */
-            search: function (text, page, limit, successCallback, errorCallback) {
+            search: function (advanced, text, page, limit, successCallback, errorCallback) {
                 _recipes.fetch({
                     data: {
+                        advanced: advanced,
                         limit: limit,
                         short: true,
                         sort_by: 'rate',

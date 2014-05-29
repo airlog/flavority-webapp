@@ -55,7 +55,9 @@ define([
                 .css('position', 'relative');
 
             var that = this;
+                
             searchManager.search(
+                    this.options.advanced,
                     atob(this.options.query),
                     this.options.page,
                     this.options.limit,
@@ -123,6 +125,11 @@ define([
         
         setPage: function (page) {
             this.options.page = page;
+            return this;
+        },
+
+        setAdvanced: function (advanced) {
+            this.options.advanced = advanced;
             return this;
         },
 

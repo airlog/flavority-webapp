@@ -23,6 +23,7 @@ define([
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
             'search/query/:query/:page': 'simpleSearch',
+            'search/advanced/:ingredients/:page': 'advancedSearch',
             'recipes/:id/': 'getRecipe',
             'users/:id/': 'getUser',
         },
@@ -75,6 +76,17 @@ define([
                 searchView
                     .setQuery(query)
                     .setPage(parseInt(page))
+                    .setAdvanced(false)
+                    .render();
+            });
+
+            this.on('route:advancedSearch', function(ingredients, page) {
+                $("#main_left").empty();
+                console.log("advanced: " + ingredients);
+                searchView
+                    .setQuery(ingredients)
+                    .setPage(parseInt(page))
+                    .setAdvanced(true)
                     .render();
             });
 

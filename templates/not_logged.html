@@ -20,7 +20,9 @@
         </form>
     </span>
     <span>|</span>
-    <a class="top" href="advanced.html">ADVANCED SEARCH</a>
+    <div id="advanced_search" style="display:inline; cursor: pointer;">
+        <a class="top">ADVANCED SEARCH</a>
+    </div>
     <div id="log_in">
         <a class="top">LOG IN</a>
     </div>
@@ -54,3 +56,26 @@
     </div>
 </div>
 
+<div>
+    <div id="advanced-search-form" style="width:400px;">
+        <form  class="in_main" action="">
+
+            <label class="label">Ingredients you have: </label>
+            <input name="ingredient" type="text" list="ingredients_list" autocomplete="off"/>
+            <datalist id="ingredients_list">
+                <%  _.each(ingredients_list, function (ingredient) { %>
+                    <option value="<%= ingredient.get('name') %>">
+                <% });%>
+            </datalist>
+
+            <button class="advanced-search-add green_button" onsubmit="">Add</button><br/>
+            <div id="advanced-search-added">
+                
+            </div>
+            
+            <div style="text-align:center;">
+                <button id="advanced-search-submit" class="green_button" onsubmit="">Search</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -459,3 +459,13 @@ td img {
 	font-size: 16px;
 	border: none;
 }
+
+#advanced-search-form
+{
+	display: none;
+	width: 240px;
+	background-color: #e4fcb3;
+	padding: 10px;
+	margin: auto;
+	margin-top: 30px;
+}
