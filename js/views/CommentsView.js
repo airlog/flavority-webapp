@@ -12,8 +12,10 @@ define([
     'text!templates/comments.html',
     'text!templates/page_selector.html',
 
+    'libs/jquery-te-1.4.0.min',
 ], function($, _, Backbone, CommentCollection, CommentModel, 
-        Spinner, StarsView, commentsTemplate, pageSelectorTemplate) {
+        Spinner, StarsView, commentsTemplate, pageSelectorTemplate,
+        textEditor) {
 
     var CommentsView = Backbone.View.extend({
         // default values
@@ -123,6 +125,13 @@ define([
                     });
                     
                     $('#recipe_comments').html(compiledCommentsTemplate);
+                    that.$el.find('.area').jqte({
+                        sub: false,
+                        sup: false,
+                        remove: false,
+                        rule: false,
+                        source: false,
+                    });
                     
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
                         currentPage: that.options.page+1,
