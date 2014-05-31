@@ -12,12 +12,12 @@ define([
 ], function($, _, Backbone, TagCollection, Spinner, tagsTemplate) {
     var reinterpretTags = function (tags) {
         tagsList = [];
-        
+
         // cast to format expected by view function
         tags.forEach(function (model) {
             tagsList.push({
+                id: model.get('id'),
                 tag: model.get('name'),
-                amount: model.get('amount'),
                 count: null,
             });
         });
@@ -25,7 +25,7 @@ define([
         // setting count field, needed for style settings  
         var count = 1, counter = 0, groupSize = tagsList.length / 3;    // length is divided by number of style groups
         tagsList.forEach(function (tag) {
-            tag.count = count;	        
+            tag.count = count;
             if (counter % groupSize == 0) count++;
             counter++;
         });
@@ -45,11 +45,11 @@ define([
             $(elementString + ".spinner-center")
                 .html(spin.el)
                 .css('position', 'relative');
-			
+
             var that = this;
             tags.fetch({
                 data: {
-                    limit: 30,	// amount of tags to retrieve
+                    limit: 30,  // amount of tags to retrieve
                 },
 
                 success: function (collection, response, options) {
