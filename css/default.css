@@ -477,7 +477,11 @@ td img {
 }
 
 .list-inline {
-    display: inline;
+    display: block;
     list-style-type: none;
+}
+
+.list-inline li {
+	display: inline;
 }
 

@@ -27,13 +27,13 @@
         <div>
             <label class="label">Ingredients: </label>
             <div>
-                <input type="number" placeholder="amount"/>
-                <input type="text" list="datalist-units" placeholder="unit"/>
-                <input type="text" list="ingredients_list" placeholder="ingredient"/><!-- list is taken from advanced search -->
+                <input type="number" name="in-ingr-amount" min="0" placeholder="amount"/>
+                <input type="text" list="datalist-units" name="in-ingr-unit" placeholder="unit"/>
+                <input type="text" list="ingredients_list" name="in-ingr-ingredient" placeholder="ingredient"/><!-- list is taken from advanced search -->
                 <button id="btn-append-ingredient" class="green_button">Add</button>
             </div>
-            <ul style="list-style-type: none;">
-                <li><span>jeden</span><img class="btn-img ingredient-remove" src="images/btn_remove.png"/></li>
+            <ul id="list-ingredients" style="list-style-type: none;">
+                <!--<li><input type="hidden" name="in-ingr-key" value="1"/><span>jeden</span><img class="btn-img ingredient-remove" src="images/btn_remove.png"/></li>-->
             </ul>
         </div>
         <div>
@@ -43,12 +43,16 @@
         <div>
             <label class="label">Tags: </label>
             <div>
-                <input type="text" size="40" maxlength="32" placeholder="Type tag name..."/>
+                <input type="text" name="in-tag-name" size="40" maxlength="32" placeholder="Type tag name..."/>
                 <button id="btn-append-tag" class="green_button">Add</button>
             </div>
-            <ul class="list-inline">
-                <li><button class="green_button">tag1<span style="margin-left: 3px;">&times;</span></button></li>
+            <ul id="list-tags" class="list-inline">
+                <!--<li><button class="green_button tag-remove"><span>tag1</span><span style="margin-left: 3px;">&times;</span></button></li>-->
             </ul>
+        </div>
+        <div>
+            <label class="label">Photos: </label>
+            <input type="file"/>
         </div>
     </div>
 </div>
