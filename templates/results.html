@@ -8,7 +8,7 @@
                     <% if (recipe.get('photos').length == 0) { %>
                         src="<%= getDefaultImage() %>"
                     <% } else { %>
-                        src="data:image/jpeg;base64,<%= recipe.get('photos')[0] %>"
+                        src="<%= getImageUrl(recipe.get('photos')[0]) %>"
                     <% } %>
                     />
                 </div>

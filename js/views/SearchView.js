@@ -74,6 +74,7 @@ define([
                 };
                 var compiledResultsTemplate = _.template(resultsTemplate, {
                     recipes: collection.models,
+
                     getDefaultImage: function () {
                         var images = [
                             // paths to default images (when no image for recipe)
@@ -87,6 +88,10 @@ define([
                         };
 
                         return images[randint(0, images.length)];
+                    },
+
+                    getImageUrl: function (imgId) {
+                        return window.app.restapiAddr + "/photos/" + imgId;
                     },
                 });
 

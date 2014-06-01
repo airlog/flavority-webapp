@@ -62,6 +62,10 @@ define([
 
                             return images[randint(0, images.length)];
                         },
+
+                        getImageUrl: function (imgId) {
+                            return window.app.restapiAddr + "/photos/" + imgId;
+                        },
                     });
 
                     // stop the spinner
