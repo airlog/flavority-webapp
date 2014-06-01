@@ -14,9 +14,10 @@ define([
     'views/UserInfoView',
     'views/UserRecipesView',
     'views/SearchView',
+    'views/AddRecipeView',
 ], function($, _, Backbone,
         PanelTopView, TagsView, LastAddedView, BestRatedView, RecipeView,
-        CommentsView, UserInfoView, UserRecipesView, SearchView) {
+        CommentsView, UserInfoView, UserRecipesView, SearchView, AddRecipeView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -26,6 +27,7 @@ define([
             'search/tag/:tag/:page': 'tagSearch',
             'search/advanced/:ingredients/:page': 'advancedSearch',
             'recipes/:id/': 'getRecipe',
+            'recipes/new': 'addRecipe',
             'users/:id/': 'getUser',
         },
 
@@ -39,6 +41,7 @@ define([
             var searchView = new SearchView();
             var userInfoView = new UserInfoView();
             var userRecipesView = new UserRecipesView();
+            var addRecipeView = new AddRecipeView();
 
             panelTopView.render();
             tagsView.render();
@@ -78,6 +81,12 @@ define([
                 
                 recipeView.render(id);
                 commentsView.render();
+            });
+
+            this.on('route:addRecipe', function () {
+                $('#main_left').empty();
+
+                addRecipeView.render();
             });
 
             this.on('route:simpleSearch', function(query, page) {
@@ -126,3 +135,4 @@ define([
 
     return Router;
 });
+
