@@ -202,10 +202,14 @@ define([
                 
                 success: function (collection, response, status) {
                     var template = notLoggedTemplate;
-                    if (loginManager.isLogged()) template = loggedTemplate;
-                    
+                    var name = "";
+                    if (loginManager.isLogged()) {
+                        template = loggedTemplate;
+                        name = loginManager.getName();
+                    }
                     var compiledLoggedTemplate = _.template(template, {
                         ingredients_list: collection.models,
+                        user_name: name,
                     });
                     that.$el.html(compiledLoggedTemplate);        
                 },
@@ -219,4 +223,3 @@ define([
 
     return PanelTopView;
 });
-

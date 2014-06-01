@@ -46,6 +46,7 @@ define([
                 success: function(data, status, jx) {
                     storeData({
                         token: data.token,
+                        name: data.user,
                     });
                     
                     if (params.success != null) params.success(data, status, jx);
@@ -62,11 +63,22 @@ define([
             if (data == null || data.token == null) return false;
             return true;
         };
-                        
+
+        var getName = function() {
+            var data = restoreData();
+            return data.name;
+        };
+        
+        var getToken = function () {
+            return restoreData().token;
+        };
+
         return {
             login: login,
             logout: logout,
             isLogged: isLogged,
+            getName: getName,
+            getToken: getToken,
         };
     })();
 
