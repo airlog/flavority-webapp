@@ -21,6 +21,11 @@ define([
         return parts.join('/');
     };
 
+    var SortingKeys = {
+        ID: 'id',
+        RANK: 'rate',
+        DATE: 'date_added',
+    };
     var elementString = '#main_left ';
     var ResultsView = Backbone.View.extend({
         // default values
@@ -29,6 +34,8 @@ define([
             limit: 30,
             query: null,
             tagList: null,
+            sortBy: SortingKeys.ID,
+            shortJson: false,
         },
 
         options: {},
@@ -123,6 +130,15 @@ define([
                     this.options.limit,
                     successCallback,
                     errorCallback);
+            } else {
+                searchManager.search({
+                        short: this.options.shortJson,
+                        page: this.options.page,
+                        limit: this.options.limit,
+                        sort_by: this.options.sortBy,
+                    },
+                    successCallback,
+                    errorCallback);
             }
         },
 
@@ -137,7 +153,7 @@ define([
         },
 
         clear: function () {
-            $.extend(this.options, this._options_default);
+            $.extend(this.options, this._options_defaults);
             return this;
         },
 
@@ -153,13 +169,27 @@ define([
 
         setQuery: function (query) {
             this.options.query = query;
+            this.options.tagList = null;
             return this;
         },
 
         setTags: function (tagList) {
             this.options.tagList = tagList;
+            this.options.query = null;
             return this;
         },
+
+        setSortingKey: function (key) {
+            this.options.sortBy = key;
+            return this;
+        },
+
+        setShortJsonEnabled: function (b) {
+            this.options.shortJson = b;
+            return this;
+        },
+
+        SortingKeys: SortingKeys,
     });
 
     return ResultsView;

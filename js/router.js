@@ -7,7 +7,6 @@ define([
 
     'views/panelTop',
     'views/TagsView',
-    'views/ResultsView',
     'views/LastAddedView',
     'views/BestRatedView',
     'views/RecipeView',
@@ -16,12 +15,13 @@ define([
     'views/UserRecipesView',
     'views/SearchView',
 ], function($, _, Backbone,
-        PanelTopView, TagsView, ResultsView, LastAddedView, BestRatedView, RecipeView,
+        PanelTopView, TagsView, LastAddedView, BestRatedView, RecipeView,
         CommentsView, UserInfoView, UserRecipesView, SearchView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
-            'search/lastadded/page/:page/': 'searchResults',
+            'search/lastadded/page/:page': 'lastAddedSearch',
+            'search/bestrated/page/:page': 'bestRatedSearch',
             'search/query/:query/:page': 'simpleSearch',
             'search/tag/:tag/:page': 'tagSearch',
             'search/advanced/:ingredients/:page': 'advancedSearch',
@@ -43,7 +43,6 @@ define([
             var searchView = new SearchView();
             var userInfoView = new UserInfoView();
             var userRecipesView = new UserRecipesView();
-            var resultsView = new ResultsView();
 
             panelTopView.render();
             tagsView.render();
@@ -55,11 +54,25 @@ define([
                 bestRatedRecipeView.render();
             });
 
-            this.on('route:searchResults', function(page) {
+            this.on('route:lastAddedSearch', function(page) {
                 $("#main_left").empty();
 
-                resultsView
-                    .setPage(page)
+                searchView
+                    .clear()
+                    .setPage(parseInt(page))
+                    .setShortJsonEnabled(true)
+                    .setSortingKey(searchView.SortingKeys.DATE)
+                    .render();
+           });
+
+            this.on('route:bestRatedSearch', function (page) {
+                $('#main_left').empty();
+
+                searchView
+                    .clear()
+                    .setPage(parseInt(page))
+                    .setShortJsonEnabled(true)
+                    .setSortingKey(searchView.SortingKeys.RANK)
                     .render();
             });
 

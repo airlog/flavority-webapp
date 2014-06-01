@@ -52,6 +52,18 @@ define([
                     error: errorCallback,
                 });
             },
+
+            search: function (data, successCallback, errorCallback, opts) {
+                console.log("custom search, opts = " + opts);
+                var options = {
+                    data: data,
+                    success: successCallback,
+                    error: errorCallback,
+                };
+
+                $.extend(options, opts);
+                _recipes.fetch(options);
+            },
         };
     };
 
