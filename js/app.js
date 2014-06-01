@@ -7,8 +7,20 @@ define([
     'router',       // request router.js
 ], function($, _, Backbone, Router){    
     return {
-        initialize: function () {},
-        router: new Router(),
+        initialize: function () {
+            if (this.restapiAddr != null) {
+                var remote = this.restapiAddr;
+                $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+                    options.url = remote + options.url;
+                });
+            } else this.restapiAddr = "";
+
+            console.log("| Flavority Webapp\n| RESTful Server: " + this.restapiAddr);
+
+            this.router = new Router();
+        },
+        router: null,
+        restapiAddr: null,
     };
 });
 
