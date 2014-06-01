@@ -8,10 +8,12 @@ define([
 
         return {
             /**
-             * Sends a AJAX request to the server which should search for a given text
+             * Sends an AJAX request to the server which should search for a given text
              * in the recipes database.
              */
-            search: function (advanced, text, page, limit, successCallback, errorCallback) {
+            // FIXME: advanced search should be another method
+            searchByText: function (advanced, text, page, limit, successCallback, errorCallback) {
+                console.log("searching by text");
                 _recipes.fetch({
                     data: {
                         advanced: advanced,
@@ -27,9 +29,31 @@ define([
                     error: errorCallback,
                 });
             },
+
+            /**
+             * Sends an AJAX request to the server which should search for recipes marked
+             * with tags identified by given id list.
+             */
+            searchByTags: function (tagIds, page, limit, successCallback, errorCallback) {
+                console.log("searching by tags");
+                _recipes.fetch({
+                    data: {
+                        tag_id: tagIds,
+                        page: page,
+                        limit: limit,
+                        sort_by: 'rate',
+                        short: true,
+                    },
+
+                    traditional: true,	// stacking tag_id
+
+                    success: successCallback,
+
+                    error: errorCallback,
+                });
+            },
         };
     };
 
     return SearchManager;
 });
-

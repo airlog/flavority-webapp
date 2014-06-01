@@ -2,7 +2,7 @@
 <div style="margin-bottom:20px;">
     <span class="sub_title">Tags: &nbsp; </span>
     <% _.each(recipe.get('tags'), function (tag) { %>
-        <button class="green_button"><%= tag['name'] %> </button>
+        <a href="/#/search/tag/<%= tag.id %>/1"><button class="green_button"><%= tag['name'] %></button></a>
     <% }); %>
 </div>
 
@@ -73,3 +73,4 @@
     <%= recipe.get('recipe_text').replace(/\n/g,'<br/><br/>') %>
     </div>
 </div>
+

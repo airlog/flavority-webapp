@@ -23,15 +23,16 @@ define([
             '': 'home',
             'search/lastadded/page/:page/': 'searchResults',
             'search/query/:query/:page': 'simpleSearch',
+            'search/tag/:tag/:page': 'tagSearch',
             'search/advanced/:ingredients/:page': 'advancedSearch',
             'recipes/:id/': 'getRecipe',
             'users/:id/': 'getUser',
         },
 
         initialize: function () {
-//          $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-//              options.url = 'http://addressToRestfulServer' + options.url;
-//          });
+//            $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+//                options.url = 'http://addressToRestfulServer' + options.url;
+//            });
 
             var panelTopView = new PanelTopView();
             var tagsView = new TagsView();
@@ -61,7 +62,7 @@ define([
                     .setPage(page)
                     .render();
             });
-          
+
            this.on('route:getRecipe', function(id) {
                 commentsView.setRecipeId(id);
                 commentsView.setPage(0);
@@ -69,14 +70,25 @@ define([
                 recipeView.render(id);
                 commentsView.render();
             });
-            
+
             this.on('route:simpleSearch', function(query, page) {
                 $("#main_left").empty();
 
                 searchView
+                    .clear()
                     .setQuery(query)
                     .setPage(parseInt(page))
                     .setAdvanced(false)
+                    .render();
+            });
+
+            this.on('route:tagSearch', function (tag, page) {
+                $("#main_left").empty();
+
+                searchView
+                    .clear()
+                    .setTags([parseInt(tag)])
+                    .setPage(parseInt(page))
                     .render();
             });
 
@@ -84,6 +96,7 @@ define([
                 $("#main_left").empty();
                 console.log("advanced: " + ingredients);
                 searchView
+                    .clear()
                     .setQuery(ingredients)
                     .setPage(parseInt(page))
                     .setAdvanced(true)
