@@ -24,9 +24,6 @@ define([
                     },
                     data: formData,
 
-                    beforeSend: function (xhr, settings) {
-                        alert('sending image');
-                    },
                     success: null,
                     error: null,
 
