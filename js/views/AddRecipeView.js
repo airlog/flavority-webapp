@@ -23,12 +23,28 @@ define([
             time: null,
             servings: null,
             difficulty: null,
+            text: null,
             ingredients: {},
             tags: [],
             photos: [],
+            removedPhotos: [],
 
             nextIngredientKey: function () {
                 return this._next_ingredient_key++;
+            },
+
+            validate: function (successCallback, errorCallback) {
+                if (successCallback == null) successCallback = function () { return true; };
+                if (errorCallback == null) errorCallback = function () { return false; };
+
+                if (this.name == null || this.name.length == 0) return errorCallback('name field is not valid');
+                if (this.time == null || !_.isNumber(this.time) || !_.isFinite(this.time)) return errorCallback('time field is not valid');
+                if (this.servings == null || !_.isNumber(this.servings) || !_.isFinite(this.servings)) return errorCallback('servings field is not valid');
+                if (this.difficulty == null || !_.isNumber(this.difficulty) || !_.isFinite(this.difficulty)) return errorCallback('difficulty field is not valid');
+                if (_.size(this.ingredients) == 0) return errorCallback('not enough ingredients');
+                if (this.text == null || this.text.length == 0) return errorCallback('text field is not valid');
+
+                return successCallback();
             },
         }; 
     };
@@ -107,8 +123,8 @@ define([
 
             // add tag
         	'click #btn-append-tag': function (ev) {
-        	    var parent = $(ev.currentTarget).parent();
-        	    var tagName = parent.find('input[name=in-tag-name]').val();
+                var parent = $(ev.currentTarget).parent();
+                var tagName = parent.find('input[name=in-tag-name]').first().val();
                 if (tagName == null || name.length == 0) return;
 
                 // clear
@@ -143,7 +159,6 @@ define([
                 var filename = $(ev.currentTarget).val().split(/[\\\/]/).pop();
             
                 var validateFileInput = function (successCallback, errorCallback) {
-                    return successCallback();
                     if ( ['jpg', 'jpeg', 'png', 'bmp'].indexOf(filename.split('.').pop().toLowerCase()) == -1 ) {
                         return errorCallback('unsupported extension');
                     }
@@ -151,14 +166,15 @@ define([
                     return successCallback();
                 }
 
-                var upload = this.uploadManager.upload;
+                var that = this;
                 validateFileInput(function () {
                     $('#list-files').append(_.template(filelistItemTemplate, {filename: filename}));
                     var item = $('#list-files')
                         .children()
                         .last();
 
-                    upload($(ev.currentTarget).parent(), {
+                    item.find('.photo-remove').hide();
+                    that.uploadManager.upload($(ev.currentTarget).parent(), {
                         progress: function (ev) {
                             item.find('.text-progress').text( ((ev.loaded * 100) / ev.total).toFixed(0) );
                         },
@@ -167,8 +183,10 @@ define([
                             alert('Error!');
                         },
 
-                        success: function ()  {
-                            alert('Success!');
+                        success: function (data, status, xhr) {
+                            that.recipeData.photos.push(parseInt(data.id));
+                            item.find('input[name=in-photo-id]').val(data.id);
+                            item.find('.photo-remove').show();
                         },
                     });
                 }, function (err) {
@@ -176,7 +194,40 @@ define([
                 });
 
                 $(ev.currentTarget).parent()[0].reset();
-            },        	
+            },
+
+            // remove added photo
+            'click #list-files .photo-remove': function (ev) {
+                var pid = parseInt(
+                    $(ev.currentTarget)
+                        .parent()
+                        .find('input[name=in-photo-id]')
+                        .first()
+                        .text());
+                this.recipeData.photos = _.reject(this.recipeData.photos, function (ele) { return pid == ele; });
+                this.recipeData.removedPhotos.push(pid);
+                $(ev.currentTarget).parent().remove();
+            },
+
+            // submit new recipe
+            'submit #form-add-recipe': function (ev) {
+                ev.preventDefault();
+
+                this.recipeData.name = $($('#form-add-recipe')[0][0]).val();
+                this.recipeData.time = parseInt($($('#form-add-recipe')[0][1]).val());
+                this.recipeData.servings = parseInt($($('#form-add-recipe')[0][2]).val());
+                this.recipeData.difficulty = parseFloat($($('#form-add-recipe')[0][3]).val());
+                this.recipeData.text = $($('#form-add-recipe')[0][4]).val()
+                console.log(this.recipeData);
+
+                this.recipeData.validate(function () {
+                    alert('Validation successful');
+                }, function (err) {
+                    alert('Validating form data failed!\nError: ' + err);
+                });
+
+                return false;
+            },
         },
     });
 

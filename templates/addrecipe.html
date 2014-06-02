@@ -11,14 +11,19 @@
         <form id="form-add-recipe"><!-- inputs are added using HTML5 form attribute --></form>
 
         <div>
-            <label class="label">Recipe's name: </label><input form="form-add-recipe" type="text" size="70" maxlength="32" placeholder="Type catchy name..."/>
+            <label class="label">Recipe's name: </label>
+            <input form="form-add-recipe" type="text" name="in-recipe-name" size="70" maxlength="32" pattern="\s{0}(\w.*){5,}" placeholder="Type catchy name..." required/>
         </div>
         <div>
-            <label class="label">Time: </label><input form="form-add-recipe" type="text" size="10" placeholder="e.g. 30m"/>
-            <label class="label">Servings: </label><input form="form-add-recipe" style="width: 50px;" type="number" value="1" min="1"/>
+            <label class="label">Time: </label>
+            <input form="form-add-recipe" type="text" name="in-recipe-time" size="10" pattern="\d+" placeholder="time in minutes" required/>
+            
+            <label class="label">Servings: </label>
+            <input form="form-add-recipe" style="width: 50px;" name="in-recipe-servings" type="number" value="1" min="1" required/>
+            
             <label class="label">Difficulty: </label>
-            <select>
-                <option form="form-add-recipe" value="---">---</option>
+            <select form="form-add-recipe" name="in-recipe-difficulty" required>
+                <option value=""></option>
                 <% _.each(validMarks, function (val) { %>
                     <option value="<%= val.toFixed(1) %>"><%= val.toFixed(1) %></option>
                 <% }); %>
@@ -38,7 +43,7 @@
         </div>
         <div>
             <label class="label">Directions: </label>
-            <textarea form="form-add-recipe" class="area"></textarea>
+            <textarea form="form-add-recipe" class="area" name="in-recipe-text"></textarea>
         </div>
         <div>
             <label class="label">Tags: </label>
@@ -58,6 +63,9 @@
             <!-- uploading progresses -->
             <ul id="list-files" style="list-style-type: none;">
             </ul>
+        </div>
+        <div style="text-align: right;">
+            <input class="green_button" form="form-add-recipe" type="submit" value="Submit"/>
         </div>
     </div>
 </div>
