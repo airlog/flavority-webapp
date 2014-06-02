@@ -71,8 +71,8 @@ define([
 
 		
 		onRegisterFormSubmit: function() {
-		    var fVal = Number(document.getElementById("fNum").innerText);
-	        var sVal = Number(document.getElementById("sNum").innerText); 
+		    var fVal = Number(document.getElementById("fNum").innerHTML);
+	        var sVal = Number(document.getElementById("sNum").innerHTML); 
 		    var ans = Number(document.registerform.check.value); 
 			
 			var pVal = document.getElementById("pass").value;
