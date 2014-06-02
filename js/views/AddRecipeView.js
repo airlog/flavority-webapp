@@ -7,7 +7,7 @@ define([
     'collections/IngredientCollection',
     'collections/UnitCollection',
     'models/RecipeModel',
-	'util/FileUploadManager',
+    'util/FileUploadManager',
 
     'text!templates/addrecipe.html',
     'text!templates/addrecipe_ingredientlist_item.html',
@@ -19,7 +19,7 @@ define([
     var RecipeData = function () {
         return {
             _next_ingredient_key: 0,
-            
+
             dishname: null,
             time: null,
             servings: null,
@@ -55,9 +55,9 @@ define([
                 }
                 return ingr;
             },
-        }; 
+        };
     };
-    
+
     var elementString = '#main_left ';
     var AddRecipeView = Backbone.View.extend({
         recipeData: RecipeData(),
@@ -100,16 +100,16 @@ define([
                         unit = parent.find('input[name=in-ingr-unit]').val(),
                         ingredient = parent.find('input[name=in-ingr-ingredient]').val();
                 if (amount == null
-                        || !isFinite(amount) 
+                        || !isFinite(amount)
                         || unit == null
                         || ingredient == null
                         || ingredient.length == 0) return;
-                
+
                 // clear
                 parent.find('input[name=in-ingr-amount]').val('');
                 parent.find('input[name=in-ingr-unit]').val('');
                 parent.find('input[name=in-ingr-ingredient]').val('');
-                
+
                 // add to view
                 var key = this.recipeData.nextIngredientKey();
                 $('#list-ingredients').append(_.template(ingredientlistItemTemplate, {
@@ -120,18 +120,18 @@ define([
                 }));
 
                 // update state
-        	    this.recipeData.ingredients[key] = [ingredient, amount, unit];
-        	},
+                this.recipeData.ingredients[key] = [ingredient, amount, unit];
+            },
 
-        	// remove ingredient 
-        	'click .ingredient-remove': function (ev) {
+            // remove ingredient
+            'click .ingredient-remove': function (ev) {
                 var key = parseInt($(ev.currentTarget).parent().find('input[name=in-ingr-key]').val());
                 delete this.recipeData.ingredients[key];
                 $(ev.currentTarget).parent().remove();
-        	},
+            },
 
             // add tag
-        	'click #btn-append-tag': function (ev) {
+            'click #btn-append-tag': function (ev) {
                 var parent = $(ev.currentTarget).parent();
                 var tagName = parent.find('input[name=in-tag-name]').first().val();
                 if (tagName == null || tagName.length == 0) return;
@@ -141,32 +141,32 @@ define([
 
                 // multiple tags at a time
                 var that = this;
-        	    tagName.split(/\s+/).forEach(function (name) {
-        	        if (name == null || name.length == 0) return;
+                tagName.split(/\s+/).forEach(function (name) {
+                    if (name == null || name.length == 0) return;
 
                     // add to view
                     $('#list-tags').append(_.template(taglistItemTemplate, {name: name}));
 
-                    // update state                    
+                    // update state
                     that.recipeData.tags.push(name);
-        	    });
-        	},
+                });
+            },
 
-        	// remove tag
-        	'click .tag-remove': function (ev) {
-        	    var tag = $(ev.currentTarget)
-        	        .find('span')
-        	        .first()
-        	        .text();
+            // remove tag
+            'click .tag-remove': function (ev) {
+                var tag = $(ev.currentTarget)
+                    .find('span')
+                    .first()
+                    .text();
 
-        	    this.recipeData.tags = _.reject(this.recipeData.tags, function (ele) { return tag == ele; });
-        	    $(ev.currentTarget).parent().remove();
-        	},
+                this.recipeData.tags = _.reject(this.recipeData.tags, function (ele) { return tag == ele; });
+                $(ev.currentTarget).parent().remove();
+            },
 
             // select file for upload
             'change #form-add-recipe-upload-photo input[name=file]': function (ev) {
                 var filename = $(ev.currentTarget).val().split(/[\\\/]/).pop();
-            
+
                 var validateFileInput = function (successCallback, errorCallback) {
                     if ( ['jpg', 'jpeg', 'png', 'bmp'].indexOf(filename.split('.').pop().toLowerCase()) == -1 ) {
                         return errorCallback('unsupported extension');
@@ -238,7 +238,7 @@ define([
                         recipe_text: data.text,
                         portions: data.servings,
                         difficulty: data.difficulty,
-                    
+
                         // this fields are specific to the remote destination parameters
                         tags: data.tags,
                         ingredients: data.ingredientsToList(),
@@ -265,7 +265,7 @@ define([
                 return false;
             },
         },
-        
+
         clear: function () {
             this.recipeData = RecipeData();
             this.uploadManger = FileUploadManager('/photos/');
