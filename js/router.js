@@ -86,7 +86,9 @@ define([
             this.on('route:addRecipe', function () {
                 $('#main_left').empty();
 
-                addRecipeView.render();
+                addRecipeView
+                    .clear()
+                    .render();
             });
 
             this.on('route:simpleSearch', function(query, page) {

@@ -6,6 +6,7 @@ define([
 
     'collections/IngredientCollection',
     'collections/UnitCollection',
+    'models/RecipeModel',
 	'util/FileUploadManager',
 
     'text!templates/addrecipe.html',
@@ -13,13 +14,13 @@ define([
     'text!templates/addrecipe_taglist_item.html',
     'text!templates/addrecipe_filelist_item.html',
 ], function ($, _, Backbone,
-        IngredientCollection, UnitCollection, FileUploadManager,
+        IngredientCollection, UnitCollection, RecipeModel, FileUploadManager,
         addRecipeTemplate, ingredientlistItemTemplate, taglistItemTemplate, filelistItemTemplate) {
     var RecipeData = function () {
         return {
             _next_ingredient_key: 0,
             
-            name: null,
+            dishname: null,
             time: null,
             servings: null,
             difficulty: null,
@@ -37,7 +38,7 @@ define([
                 if (successCallback == null) successCallback = function () { return true; };
                 if (errorCallback == null) errorCallback = function () { return false; };
 
-                if (this.name == null || this.name.length == 0) return errorCallback('name field is not valid');
+                if (this.dishname == null || this.dishname.length == 0) return errorCallback('name field is not valid');
                 if (this.time == null || !_.isNumber(this.time) || !_.isFinite(this.time)) return errorCallback('time field is not valid');
                 if (this.servings == null || !_.isNumber(this.servings) || !_.isFinite(this.servings)) return errorCallback('servings field is not valid');
                 if (this.difficulty == null || !_.isNumber(this.difficulty) || !_.isFinite(this.difficulty)) return errorCallback('difficulty field is not valid');
@@ -45,6 +46,14 @@ define([
                 if (this.text == null || this.text.length == 0) return errorCallback('text field is not valid');
 
                 return successCallback();
+            },
+
+            ingredientsToList: function () {
+                var ingr = [];
+                for (var key in this.ingredients) {
+                    ingr.push(this.ingredients[key]);
+                }
+                return ingr;
             },
         }; 
     };
@@ -211,23 +220,56 @@ define([
 
             // submit new recipe
             'submit #form-add-recipe': function (ev) {
+                // TODO: user can now submit the form during file upload which shouldn't be possible
                 ev.preventDefault();
 
-                this.recipeData.name = $($('#form-add-recipe')[0][0]).val();
+                this.recipeData.dishname = $($('#form-add-recipe')[0][0]).val();
                 this.recipeData.time = parseInt($($('#form-add-recipe')[0][1]).val());
                 this.recipeData.servings = parseInt($($('#form-add-recipe')[0][2]).val());
                 this.recipeData.difficulty = parseFloat($($('#form-add-recipe')[0][3]).val());
                 this.recipeData.text = $($('#form-add-recipe')[0][4]).val()
-                console.log(this.recipeData);
 
+                var data = this.recipeData;
                 this.recipeData.validate(function () {
-                    alert('Validation successful');
+                    var recipe = new RecipeModel({
+                        // this fields are valid backbone representation
+                        dish_name: data.dishname,
+                        preparation_time: data.time,
+                        recipe_text: data.text,
+                        portions: data.servings,
+                        difficulty: data.difficulty,
+                    
+                        // this fields are specific to the remote destination parameters
+                        tags: data.tags,
+                        ingredients: data.ingredientsToList(),
+                        photos: data.photos,
+                    });
+
+                    recipe.save({}, {
+                        wait: true,
+
+                        success: function (model, status, xhr) {
+                            // navigae to just added recipe's page
+                            Backbone.history.navigate('#/recipes/' + model.get('id') + '/', {trigger: true});
+                        },
+
+                        error: function (err, status, xhr) {
+                            alert('Error saving!');
+                            console.log(err);
+                        },
+                    });
                 }, function (err) {
                     alert('Validating form data failed!\nError: ' + err);
                 });
 
                 return false;
             },
+        },
+        
+        clear: function () {
+            this.recipeData = RecipeData();
+            this.uploadManger = FileUploadManager('/photos/');
+            return this;
         },
     });
 
