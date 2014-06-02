@@ -125,7 +125,7 @@ define([
         	'click #btn-append-tag': function (ev) {
                 var parent = $(ev.currentTarget).parent();
                 var tagName = parent.find('input[name=in-tag-name]').first().val();
-                if (tagName == null || name.length == 0) return;
+                if (tagName == null || tagName.length == 0) return;
 
                 // clear
                 parent.find('input[name=in-tag-name]').val('');
