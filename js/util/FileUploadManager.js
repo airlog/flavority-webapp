@@ -3,28 +3,23 @@ define([
     'jquery',
     'underscore',
 ], function ($, _) {
-    var FileUploadManager = function (url, options) {
+    var FileUploadManager = function (url) {
         var _url = url;
-        var _options = {
-            progress: function (ev) {},
-            abort: function () {},
-            error: function () {},
-            success: function () {},
-        };
-
-        $.extend(_options, options);        
 
         return {
             upload: function (fileInput, options) {
                 if (options == null) options = {};
                 var formData = new FormData(fileInput[0]);
                 
-                $.extend(options, {
+                var progressCallback = function () {};
+                if (options.hasOwnProperty('progress') == true) progressCallback = options.progress;
+
+                var settings = {
                     url: _url,
                     type: 'POST',
                     xhr: function () {
                         var myXhr = $.ajaxSettings.xhr();
-                        if (myXhr.upload) myXhr.upload.addEventListener('progress', _options.progress, false);
+                        if (myXhr.upload) myXhr.upload.addEventListener('progress', progressCallback, false);
                         return myXhr;
                     },
                     data: formData,
@@ -32,14 +27,17 @@ define([
                     beforeSend: function (xhr, settings) {
                         alert('sending image');
                     },
-                    success: _options.success,
-                    error: _options.error,
+                    success: null,
+                    error: null,
 
                     cache: false,
                     contentType: false,
                     processData: false,
-                });
-                $.ajax(options);
+                };
+
+                $.extend(settings, options);
+
+                $.ajax(settings);
             },
         };
     };

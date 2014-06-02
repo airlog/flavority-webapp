@@ -11,9 +11,10 @@ define([
     'text!templates/addrecipe.html',
     'text!templates/addrecipe_ingredientlist_item.html',
     'text!templates/addrecipe_taglist_item.html',
+    'text!templates/addrecipe_filelist_item.html',
 ], function ($, _, Backbone,
         IngredientCollection, UnitCollection, FileUploadManager,
-        addRecipeTemplate, ingredientlistItemTemplate, taglistItemTemplate) {
+        addRecipeTemplate, ingredientlistItemTemplate, taglistItemTemplate, filelistItemTemplate) {
     var RecipeData = function () {
         return {
             _next_ingredient_key: 0,
@@ -36,23 +37,7 @@ define([
     var AddRecipeView = Backbone.View.extend({
         recipeData: RecipeData(),
 
-        uploadManager: FileUploadManager('/photos/', {
-            progress: function (ev) {
-                alert('Progress!');
-            },
-
-            abort: function () {
-                alert('Abort!');
-            },
-
-            error: function () {
-                alert('Error!');
-            },
-
-            success: function ()  {
-                alert('Success!');
-            },
-        }),
+        uploadManager: FileUploadManager('/photos/'),
 
         el: elementString,
 
@@ -155,9 +140,10 @@ define([
 
             // select file for upload
             'change #form-add-recipe-upload-photo input[name=file]': function (ev) {
+                var filename = $(ev.currentTarget).val().split(/[\\\/]/).pop();
+            
                 var validateFileInput = function (successCallback, errorCallback) {
-                    var filename = $(ev.currentTarget).val().split(/[\\\/]/).pop();
-
+                    return successCallback();
                     if ( ['jpg', 'jpeg', 'png', 'bmp'].indexOf(filename.split('.').pop().toLowerCase()) == -1 ) {
                         return errorCallback('unsupported extension');
                     }
@@ -167,7 +153,24 @@ define([
 
                 var upload = this.uploadManager.upload;
                 validateFileInput(function () {
-                    upload($(ev.currentTarget).parent());
+                    $('#list-files').append(_.template(filelistItemTemplate, {filename: filename}));
+                    var item = $('#list-files')
+                        .children()
+                        .last();
+
+                    upload($(ev.currentTarget).parent(), {
+                        progress: function (ev) {
+                            item.find('.text-progress').text( ((ev.loaded * 100) / ev.total).toFixed(0) );
+                        },
+
+                        error: function () {
+                            alert('Error!');
+                        },
+
+                        success: function ()  {
+                            alert('Success!');
+                        },
+                    });
                 }, function (err) {
                     alert('File validation failed: ' + err + '!');
                 });
