@@ -6,12 +6,13 @@ define([
 
     'collections/IngredientCollection',
     'collections/UnitCollection',
+	'util/FileUploadManager',
 
     'text!templates/addrecipe.html',
     'text!templates/addrecipe_ingredientlist_item.html',
     'text!templates/addrecipe_taglist_item.html',
 ], function ($, _, Backbone,
-        IngredientCollection, UnitCollection,
+        IngredientCollection, UnitCollection, FileUploadManager,
         addRecipeTemplate, ingredientlistItemTemplate, taglistItemTemplate) {
     var RecipeData = function () {
         return {
@@ -34,9 +35,27 @@ define([
     var elementString = '#main_left ';
     var AddRecipeView = Backbone.View.extend({
         recipeData: RecipeData(),
-        
+
+        uploadManager: FileUploadManager('/photos/', {
+            progress: function (ev) {
+                alert('Progress!');
+            },
+
+            abort: function () {
+                alert('Abort!');
+            },
+
+            error: function () {
+                alert('Error!');
+            },
+
+            success: function ()  {
+                alert('Success!');
+            },
+        }),
+
         el: elementString,
-        
+
         render: function () {
             var that = this;
             (new UnitCollection()).fetch({
@@ -133,6 +152,28 @@ define([
         	    this.recipeData.tags = _.reject(this.recipeData.tags, function (ele) { return tag == ele; });
         	    $(ev.currentTarget).parent().remove();
         	},
+
+            // select file for upload
+            'change #form-add-recipe-upload-photo input[name=file]': function (ev) {
+                var validateFileInput = function (successCallback, errorCallback) {
+                    var filename = $(ev.currentTarget).val().split(/[\\\/]/).pop();
+
+                    if ( ['jpg', 'jpeg', 'png', 'bmp'].indexOf(filename.split('.').pop().toLowerCase()) == -1 ) {
+                        return errorCallback('unsupported extension');
+                    }
+
+                    return successCallback();
+                }
+
+                var upload = this.uploadManager.upload;
+                validateFileInput(function () {
+                    upload($(ev.currentTarget).parent());
+                }, function (err) {
+                    alert('File validation failed: ' + err + '!');
+                });
+
+                $(ev.currentTarget).parent()[0].reset();
+            },        	
         },
     });
 
