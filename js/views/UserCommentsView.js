@@ -48,7 +48,12 @@ define([
             var comments = new CommentCollection();
             var spin = new Spinner().spin();
             var elementName = "#comments1";
-            if (whichComments == 2) elementName = "#comments2";
+            var elementName2 = "comments1";
+            if (whichComments == 2) {
+                 elementName = "#comments2";
+                 elementName2 = "comments2";
+            }
+            $(elementName).empty();
             
             if (!loginManager.isLogged()) {
                 //TO DO  niezalogowany na stronie mycomments
@@ -57,13 +62,13 @@ define([
 
             spin.el.style['position'] = null;
             $(elementName)
-                .append("<div style='height: 100px;'><span id='"+elementName+"_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
+                .append("<div style='height: 100px;'><span id='"+elementName2+"_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
             $(elementName+"_spinner").html(spin.el).css('position', 'relative');
             var headers = { 'X-Flavority-Token': loginManager.getToken() };
 
-            var another_comments = false;
+            var about_me = false;
             var my_comments = false;
-            if (whichComments == 1) another_comments = true;
+            if (whichComments == 1) about_me = true;
             if (whichComments == 2) my_comments = true;
             var page = this.options.page1;
             if (whichComments == 2) page = this.options.page2;
@@ -72,7 +77,7 @@ define([
             comments.fetch({
                headers: headers,
                data: {
-                    another_comments: another_comments,
+                    about_me: about_me,
                     my_comments: my_comments,
                     page: page,
                     limit: that.options.limit,
