@@ -48,18 +48,29 @@ define([
                 }).getCompiledTemplate();
             };
 
-            var url = "/recipes/";
             var headers = {};
             var title = "User's recipes";
+            var data = {
+                    short: true,
+                    user_id: this.options.user_id,
+                    page: this.options.page,
+                    limit: this.options.limit,
+                };
+
             if (this.options.searchId) {
                 if (!loginManager.isLogged()) {
                     console.log("Niezalogowany!");
                     //TO DO niezalogowany wszedł na strone myrecipes
                 }
-                url = "/myrecipes/";
                 token = loginManager.getToken();
                 headers = {'X-Flavority-Token': token};
                 title = "My recipes";
+                data = {
+                    myrecipes: this.options.searchId,
+                    short: true,
+                    page: this.options.page,
+                    limit: this.options.limit,
+                };
             }
 
             var recipes = new RecipeCollection();
@@ -72,14 +83,8 @@ define([
             $("#user_recipes_spinner").html(spin.el).css('position', 'relative');
             var that = this;
             recipes.fetch({
-                url: url,
                 headers: headers,
-                data: {
-                    short: true,
-                    user_id: that.options.user_id,
-                    page: that.options.page,
-                    limit: that.options.limit,
-                },
+                data: data,
                 success: function (collection, response, status) {
                     $('#user_recipes').empty();
                     
