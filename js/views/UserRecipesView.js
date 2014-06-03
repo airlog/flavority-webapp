@@ -64,7 +64,7 @@ define([
                 }
                 token = loginManager.getToken();
                 headers = {'X-Flavority-Token': token};
-                title = "My recipes";
+                title = "Your recipes";
                 data = {
                     myrecipes: this.options.searchId,
                     short: true,

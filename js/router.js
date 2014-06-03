@@ -13,10 +13,11 @@ define([
     'views/CommentsView',
     'views/UserInfoView',
     'views/UserRecipesView',
+    'views/UserCommentsView',
     'views/SearchView',
 ], function($, _, Backbone,
         PanelTopView, TagsView, LastAddedView, BestRatedView, RecipeView,
-        CommentsView, UserInfoView, UserRecipesView, SearchView) {
+        CommentsView, UserInfoView, UserRecipesView, UserCommentsView, SearchView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -41,6 +42,7 @@ define([
             var searchView = new SearchView();
             var userInfoView = new UserInfoView();
             var userRecipesView = new UserRecipesView();
+            var userCommentsView = new UserCommentsView();
 
             panelTopView.render();
 
@@ -78,7 +80,7 @@ define([
 
            this.on('route:getRecipe', function(id) {
                 commentsView.setRecipeId(id);
-                commentsView.setPage(0);
+                commentsView.setPage(1);
                 
                 recipeView.render(id);
                 commentsView.render();
@@ -140,8 +142,11 @@ define([
             });
 
             this.on('route:myComments', function() {
-                
+                userCommentsView.setPage1(1);
+                userCommentsView.setPage2(1);
                 userInfoView.setSearchId(true);
+
+                userCommentsView.render();
                 userInfoView.render(null);
             });
 
