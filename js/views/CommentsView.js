@@ -134,8 +134,8 @@ define([
                     });
                     
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
-                        currentPage: that.options.page+1,
-                        maxPage: Math.ceil(response.all / that.options.limit),
+                        currentPage: that.options.page,
+                        maxPage: Math.ceil(response.totalElements / that.options.limit),
                     });
                     $('#comments_page_selector').html(compiledPageSelectorTemplate);
                     // append stars

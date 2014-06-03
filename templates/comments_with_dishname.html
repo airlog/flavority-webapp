@@ -1,32 +1,8 @@
-<h3 class="title">Comments</h3>
-
-<div class="comment_add">
-    <form id="form-add-comment" action="">
-        <textarea class="area" placeholder="Write your comment..."></textarea><br/>
-        <span class="taste">Taste:
-            <select>
-                <option value="---">---</option>
-                <% _.each(validMarks, function (val) { %>
-                    <option value="<%= val.toFixed(1) %>"><%= val.toFixed(1) %></option>
-                <% }); %>
-            </select>
-        </span>
-        <span class="difficulty">Difficulty:
-            <select>
-                <option value="---">---</option>
-                <% _.each(validMarks, function (val) { %>
-                    <option value="<%= val.toFixed(1) %>"><%= val.toFixed(1) %></option>
-                <% }); %>
-            </select>
-        </span>
-        <button class="green_button_right">Add comment</button>
-    </form>
-</div>
-        
 <% _.each(comments, function (comment) { %>
     <div class="comment">
         <img class="avatar" src="/images/star_red_full.png"/>
         <div class="right_part"> 
+        <div><a class="sansie_one" href="/#/recipes/<%= comment.get('recipe_id')%>/"><%= comment.get('recipe_name')%></a></div>
             <div>
                 <b><a href="/#/users/<%= comment.get('author_id')%>/"><%= comment.get('author_name') %></a></b>
                 <span class="time"><%= comment.get('date').replace('T',' ').replace(/\..*/, '') %></span></div>
@@ -38,7 +14,7 @@
                         </span>
                     </abbr>
                 </span>
-                <abbr title=" difficulty:<%= comment.get('difficulty') %>">                
+                <abbr title="difficulty: <%= comment.get('difficulty') %>">                
                     <span class="stars_difficulty">
                         <%= comment.get('difficulty') %>
                     </span>
@@ -51,6 +27,3 @@
         <div class="clear_div"></div>
     </div>
 <% }); %>
-
-<div id='comments_page_selector'></div>
-
