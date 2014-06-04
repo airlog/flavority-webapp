@@ -92,6 +92,9 @@ define([
 
             this.on('route:addRecipe', function () {
                 $('#main_left').empty();
+                
+                userInfoView.setSearchId(true);              
+                userInfoView.render(null);
 
                 addRecipeView
                     .clear()
