@@ -223,6 +223,14 @@ define([
                 // TODO: user can now submit the form during file upload which shouldn't be possible
                 ev.preventDefault();
 
+                // prohibit submitting form when files are being uploaded
+                if (this.uploadManager.getActiveCount() != 0) {
+                    alert('Can\'t submit new recipe when files are being uploaded!');
+                    console.log('active uploads' + this.uploadManager.getActiveCount());
+
+                    return false;
+                }
+
                 this.recipeData.dishname = $($('#form-add-recipe')[0][0]).val();
                 this.recipeData.time = parseInt($($('#form-add-recipe')[0][1]).val());
                 this.recipeData.servings = parseInt($($('#form-add-recipe')[0][2]).val());
@@ -249,7 +257,7 @@ define([
                         wait: true,
 
                         success: function (model, status, xhr) {
-                            // navigae to just added recipe's page
+                            // navigate to just added recipe's page
                             Backbone.history.navigate('#/recipes/' + model.get('id') + '/', {trigger: true});
                         },
 
