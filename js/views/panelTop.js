@@ -38,6 +38,8 @@ define([
 		    
 			'click #actions_button1': 'onTriggerUserMenu',
 			'click #user_actions a[name=logout]': 'onLogout',
+			'click #user_actions a[name=myrecipes]': 'goToMyRecipes',
+			'click #user_actions a[name=mycomments]': 'goToMyComments',
 
             'submit #form-search': function (e) {
                 var ele = $(e.currentTarget).find('#searchtext')[0];
@@ -71,8 +73,8 @@ define([
 
 		
 		onRegisterFormSubmit: function() {
-		    var fVal = Number(document.getElementById("fNum").innerText);
-	        var sVal = Number(document.getElementById("sNum").innerText); 
+		    var fVal = Number(document.getElementById("fNum").innerHTML);
+	        var sVal = Number(document.getElementById("sNum").innerHTML); 
 		    var ans = Number(document.registerform.check.value); 
 			
 			var pVal = document.getElementById("pass").value;
@@ -192,6 +194,18 @@ define([
             return false;
        },
 
+        goToMyRecipes: function() {
+            $('#user_actions').hide();
+            this.userMenuVisible = false;
+            Backbone.history.navigate('#/myrecipes', {trigger: true,});            
+        },
+
+        goToMyComments: function() {
+            $('#user_actions').hide();
+            this.userMenuVisible = false;            
+            Backbone.history.navigate('#/mycomments', {trigger: true,});            
+        },
+        
 		render: function() {
             var ingredients_collection = new IngredientCollection();
             var that = this;

@@ -4,15 +4,25 @@ define([
     'underscore',
     'backbone',
 
+    'util/loginmanager',
+
     'models/UserModel',
 
     'views/Spinner',
     'views/StarsView',
 
     'text!templates/user_info.html',
-], function($, _, Backbone, RecipeModel, Spinner, StarsView, userInfoTemplate) {
+], function($, _, Backbone, loginManager, UserModel, Spinner, StarsView, userInfoTemplate) {
     var UserInfoView = Backbone.View.extend({
         el: '#panel_right',
+        options: {
+            searchId: false,
+        },
+
+        setSearchId: function(search) {
+            this.options.searchId = search;
+        },
+
         render: function(userId) {
 
             var getRankStars = function (user, name) {
@@ -20,8 +30,18 @@ define([
                     rank: parseFloat(user.get(name))
                 }).getCompiledTemplate();
             };
-
-            var recipe = new RecipeModel({id:userId});
+            
+            var user = new UserModel({id:userId});
+            var myHeaders = {};
+            if (this.options.searchId) {
+                if (!loginManager.isLogged()) {
+                    console.log("Niezalogowany!");
+                    //TO DO niezalogowany wszedł na strone mycomments lub myrecipes
+                }
+                user = new UserModel();
+                token = loginManager.getToken();
+                myHeaders = {'X-Flavority-Token': token};
+            }
             
             this.$el.empty();
             
@@ -32,7 +52,8 @@ define([
             $("#panel_right_spinner").html(spin.el).css('position', 'relative');
 
             var that = this;
-            recipe.fetch({
+            user.fetch({
+                headers: myHeaders,
                 success: function (user, response, options) {
                     var compiledUserInfoTemplate = _.template(userInfoTemplate, {
                         user: user,
