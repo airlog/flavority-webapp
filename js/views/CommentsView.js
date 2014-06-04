@@ -3,6 +3,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
+
+    'util/loginmanager',
+
     'collections/CommentCollection',
     'models/CommentModel',
 
@@ -13,7 +16,7 @@ define([
     'text!templates/page_selector.html',
 
     'libs/jquery-te-1.4.0.min',
-], function($, _, Backbone, CommentCollection, CommentModel, 
+], function($, _, Backbone, loginManager, CommentCollection, CommentModel, 
         Spinner, StarsView, commentsTemplate, pageSelectorTemplate,
         textEditor) {
 
@@ -71,7 +74,18 @@ define([
                     console.log(model);
                 });
 
+                var headers = {};
+                if (loginManager.isLogged()) {
+                    token = loginManager.getToken();
+                    headers = {'X-Flavority-Token': token};
+                }
+                else {
+                    alert("Jesteś nie zalogowany.");
+                    return;
+                }
+                
                 comment.save(comment.toJSON(), {
+                    headers: headers,
                     wait: true,
 
                     success: function (model, response) {
