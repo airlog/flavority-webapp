@@ -1,3 +1,7 @@
+/**
+*Module that manages user's comments view.
+*@module UserCommentsView
+*/
 define([
     'jquery',
     'underscore',
@@ -18,33 +22,34 @@ define([
         Spinner, StarsView, userCommentsTemplate, commentsTemplate, pageSelectorTemplate) {
     var UserCommentsView = Backbone.View.extend({
         el: '#main_left',
-        // default values
+        /**Default values*/
         options: {
             page1: 1,
             page2: 1,
             limit: 3,
         },
-
+        /**Initialises view*/
         initialize: function (options) {
             $.extend(this.options, options);
         },
-
+        /**Sets page number one*/
         setPage1: function(page) {
             this.options.page1 = page;
         },
-
+        /**Sets page number two*/
         setPage2: function(page) {
             this.options.page2 = page;
         },
-
+        /**Returns stars amount*/
         _getRankStars: function (comment, name, color) {
             return new StarsView({
                 color: color,
                 rank: parseFloat(comment.get(name))
             }).getCompiledTemplate();
         },
-        
+        /**Should fetch comments from database*/
         _fetchComments: function(whichComments) {
+            /**All comments set*/
             var comments = new CommentCollection();
             var spin = new Spinner().spin();
             var elementName = "#comments1";
@@ -74,6 +79,7 @@ define([
             if (whichComments == 2) page = this.options.page2;
 
             var that = this;
+            /**Fetch action*/
             comments.fetch({
                headers: headers,
                data: {
@@ -82,6 +88,7 @@ define([
                     page: page,
                     limit: that.options.limit,
                 },
+                /**If fetch was successful*/
                 success: function (collection, response, status) {
                     $(elementName).empty();
                     
@@ -106,7 +113,7 @@ define([
                             .html(that._getRankStars(collection.models[i],"difficulty","red"));
                     }
                 },
-
+                /**Fetch failed*/
                 error: function (collection, response, status) {
                     alert('Retrieving user comments failed: '+ response);
                     console.log(response);
@@ -114,7 +121,7 @@ define([
             });
 
         },
-        
+        /**render view*/
         render: function() {
             this.$el.empty()
                         

@@ -1,4 +1,7 @@
-
+/**
+*Module that manages search view.
+*@module SearchView
+*/
 define([
     'jquery',
     'underscore',
@@ -14,21 +17,23 @@ define([
     'text!templates/page_selector.html',
 ], function ($, _, Backbone, SearchManager, Spinner, StarsView,
         resultsTemplate, resultsSpinnerTemplate, pageSelectorTemplate) {
+    /**Returns new URL*/
     var getUrlForPage = function (newPage) {
         var parts = window.location.hash.split('/');
         parts[parts.length - 1] = newPage;
 
         return parts.join('/');
     };
-
+    /**Holds recipe sort possibilities*/
     var SortingKeys = {
         ID: 'id',
         RANK: 'rate',
         DATE: 'date_added',
     };
     var elementString = '#main_left ';
+    /**Result View object*/
     var ResultsView = Backbone.View.extend({
-        // default values
+        /**Default values*/
         _options_defaults: {
             page: 1,
             limit: 30,
@@ -39,7 +44,7 @@ define([
         },
 
         options: {},
-
+        /**Initialises view*/
         initialize: function (options) {
             $.extend(this.options, this._options_defaults);
             $.extend(this.options, options);
@@ -47,7 +52,7 @@ define([
         },
 
         el: elementString,
-
+        /**Renders view*/
         render: function() {
             var searchManager = SearchManager();
             var resultsSpinnerCompiledTemplate = _.template(resultsSpinnerTemplate, {});
@@ -146,7 +151,7 @@ define([
                     errorCallback);
             }
         },
-
+        /**Page change events*/
         events: {
             'click #recipe-search .leftarrow': function () {
                 Backbone.history.navigate(getUrlForPage(this.options.page - 1));
@@ -161,29 +166,29 @@ define([
             $.extend(this.options, this._options_defaults);
             return this;
         },
-
+        /**Sets page to chosen value*/
         setPage: function (page) {
             this.options.page = page;
             return this;
         },
-
+        /**Sets advanced options*/
         setAdvanced: function (advanced) {
             this.options.advanced = advanced;
             return this;
         },
-
+        /**Sets query*/
         setQuery: function (query) {
             this.options.query = query;
             this.options.tagList = null;
             return this;
         },
-
+        /**Sets tags*/
         setTags: function (tagList) {
             this.options.tagList = tagList;
             this.options.query = null;
             return this;
         },
-
+        /**Sets sorting option*/
         setSortingKey: function (key) {
             this.options.sortBy = key;
             return this;

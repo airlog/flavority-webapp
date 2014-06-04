@@ -1,4 +1,7 @@
-
+/**
+*Module that manages single recipe view.
+*@module RecipeView
+*/
 define([
     'jquery',
     'underscore',
@@ -13,15 +16,16 @@ define([
 ], function($, _, Backbone, RecipeModel, Spinner, StarsView, recipeTemplate) {
     var RecipeView = Backbone.View.extend({
         el: '#recipe_details',
+        /**Render view*/
         render: function(recipeId) {
-
+            /**Represents amount of recipe's stars*/
             var getRankStars = function (recipe, name, color) {
                 return new StarsView({
                     color: color,
                     rank: parseFloat(recipe.get(name))
                 }).getCompiledTemplate();
             };
-
+            /**Actual recipe*/
             var recipe = new RecipeModel({id:recipeId});
             
             $('#main_left').children().remove();
@@ -36,6 +40,7 @@ define([
             $("#recipe_details_spinner").html(spin.el).css('position', 'relative');
 
             var that = this;
+            /**Will fetch actual recipe from database*/
             recipe.fetch({
                 success: function (recipe, response, options) {
                     length = recipe.get('ingredients').length

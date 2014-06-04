@@ -1,8 +1,13 @@
-
+/**
+*Module that manages spinner view.
+*@module Spinner
+*/
 define([
     'spin',
 ], function (Spin) {
+    /**Spinner variable*/
     var Spinner = function (jqelement) {
+        /**Spin action*/
         var spin = new Spin({
             lines: 13,              // The number of lines to draw
             length: 14,             // The length of each line

@@ -1,4 +1,7 @@
-
+/**
+*Module that defines prefilter and main dependencies
+*@module app
+*/
 define([
     // These are path alias that we configured in our bootstrap
     'jquery',       // lib/jquery/jquery
@@ -7,6 +10,9 @@ define([
     'router',       // request router.js
 ], function($, _, Backbone, Router){    
     return {
+		/**
+		*Function that initialises prefilter
+		*/
         initialize: function () {
             if (this.restapiAddr != null) {
                 var remote = this.restapiAddr;
@@ -16,11 +22,13 @@ define([
             } else this.restapiAddr = "";
 
             console.log("| Flavority Webapp\n| RESTful Server: " + this.restapiAddr);
-
+			/**
+			*Main application router property
+			*/
             this.router = new Router();
         },
         router: null,
-        restapiAddr: null,
+        restapiAddr: '//localhost:5000',
     };
 });
 

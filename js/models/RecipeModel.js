@@ -1,3 +1,7 @@
+/**
+*Module that represents Recipe model.
+*@module RecipeModel
+*/
 define([
     'jquery',
     'underscore',

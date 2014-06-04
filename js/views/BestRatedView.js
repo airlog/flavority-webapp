@@ -1,4 +1,7 @@
-
+/**
+*Module that manages top rated recipes view.
+*@module BestRatedView
+*/
 define([
     'jquery',
     'underscore',
@@ -17,10 +20,13 @@ define([
     var elementString = "#main_left ";
     var LastAddedView = Backbone.View.extend({
         el: elementString,
-
+		/**Render function*/
         render: function () {
+			/**Class of recipes in CSS file*/
             var divClass = '.recipe-best-rated ';
+			/**Whole recipes set*/
             var recipes = new RecipeCollection();
+			/**Spinner*/
             var spin = Spinner().spin();
 
             // create a container div
@@ -39,7 +45,7 @@ define([
                     short: true,            // short JSON (see API)
                     sort_by: 'rate',        // sort by rate, best - on top
                 },
-
+				/**If fetch was successful*/
                 success: function (collection, response, options) {
                     var getRankStars = function (model) {
                         return new StarsView({
@@ -83,7 +89,7 @@ define([
                             .html(getRankStars(collection.models[i]));
                     }
                 },
-
+				/**In case of failure log some errors*/
                 error: function (collection, response, options) {
                     alert('Error retrieving last added recipes');
                     console.log(response);

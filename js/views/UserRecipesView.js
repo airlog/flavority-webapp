@@ -1,3 +1,7 @@
+/**
+*Module that manages user's recipes view.
+*@module UserRecipesView
+*/
 define([
     'jquery',
     'underscore',
@@ -14,33 +18,34 @@ define([
     'text!templates/page_selector.html',
 
 ], function($, _, Backbone, loginManager, RecipeCollection, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
+    /**Variable that represents class object*/
     var UserRecipesView = Backbone.View.extend({
         el: '#main_left',
-        // default values
+        /**Default values*/
         options: {
             page: 1,
             limit: 15,
             searchId: false,
         },
-
+        /**Initialises view*/
         initialize: function (options) {
             $.extend(this.options, options);
         },
-
+        /**Sets search ID*/
         setSearchId: function(search) {
             this.options.searchId = search;
         },
-
+        /**Sets user ID*/
         setUserId: function(id) {
             this.options.user_id = id;
         },
-        
+        /**Sets page*/
         setPage: function(page) {
             this.options.page = page;
         },
-        
+        /**Performs render for view*/
         render: function() {
-            
+            /**Retrives stars amount for recipe*/
             var getRankStars = function (comment, name, color) {
                 return new StarsView({
                     color: color,
@@ -85,6 +90,7 @@ define([
             recipes.fetch({
                 headers: headers,
                 data: data,
+                /**If fetch was successful*/
                 success: function (collection, response, status) {
                     $('#user_recipes').empty();
                     
@@ -108,14 +114,14 @@ define([
                     }
 
                 },
-
+                /**If fetch failed, print error*/
                 error: function (collection, response, status) {
                     alert('Retrieving user recipes failed: '+ response);
                     console.log(response);
                 },
             }); 
         },
-        
+        /**Events performed in view*/
         events: {
             'click #user_recipes_page_selector1 .leftarrow': function () {
                 this.options.page = this.options.page-1;

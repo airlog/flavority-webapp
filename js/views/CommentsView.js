@@ -1,4 +1,7 @@
-
+/**
+*Module that manages comments view.
+*@module CommentsView
+*/
 define([
     'jquery',
     'underscore',
@@ -16,29 +19,29 @@ define([
 ], function($, _, Backbone, CommentCollection, CommentModel, 
         Spinner, StarsView, commentsTemplate, pageSelectorTemplate,
         textEditor) {
-
+	/**View variable initialisation*/
     var CommentsView = Backbone.View.extend({
-        // default values
+        /**Default values*/
         options: {
             recipe_id: null,
             page: 0,
             limit: 3,
         },
-
+		/**Initialisation*/
         initialize: function (options) {
             $.extend(this.options, options);
         },
-
+		/**Sets id for recipe*/ 
         setRecipeId: function(id) {
             this.options.recipe_id = id;
         },
-        
+        /**Sets page in view*/
         setPage: function(page) {
             this.options.page = page;
         },
         
         el: '#main_left',
-
+		/**Renders view*/
         render: function() {
             var spin = new Spinner().spin();
 
@@ -50,7 +53,7 @@ define([
             
             this._fetchPage();
         },
-        
+        /**View events*/
         events: {
             'click #comments_page_selector .leftarrow': '_get_previous',
 
@@ -87,17 +90,17 @@ define([
                 return false;
             },
         },
-
+		/**Shows previous page in view*/
          _get_previous: function() {
             this.options.page = this.options.page-1;
             this._fetchPage();
         },
-        
+        /**Shows next page in view*/
         _get_next: function() {
             this.options.page = this.options.page+1;
             this._fetchPage();
         },
-
+		/**Fetches page*/
         _fetchPage : function() {
             var getRankStars = function (comment, name, color) {
                 return new StarsView({

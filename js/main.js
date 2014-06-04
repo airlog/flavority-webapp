@@ -1,5 +1,11 @@
-
+/**
+*Module that defines paths to required dependencies
+*@module main
+*/
 require.config({
+	/**
+	*Defined paths to dependencies
+	*/
     paths: {       
         // order of this group must not be changed
         jquery: '//code.jquery.com/jquery-2.1.0.min',
@@ -28,8 +34,12 @@ require.config({
 
 require([
     'app',
-], function (App) {
-    App.initialize();
-    window.app = App;	// attaching application for global scope
+], 
+	/**
+	*Function will initialise application and attach it for global scope
+	*/
+	function (App) {
+		App.initialize();
+		window.app = App;	// attaching application for global scope
 });
 

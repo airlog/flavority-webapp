@@ -1,4 +1,7 @@
-
+/**
+*Module that manages tags view.
+*@module TagsView
+*/
 define([
     'jquery',
     'underscore',
@@ -11,9 +14,10 @@ define([
     'text!templates/tags.html',
 ], function($, _, Backbone, TagCollection, Spinner, tagsTemplate) {
     var reinterpretTags = function (tags) {
+        /**Empty tag collection*/
         tagsList = [];
 
-        // cast to format expected by view function
+        /**Cast to format expected by view function*/
         tags.forEach(function (model) {
             tagsList.push({
                 id: model.get('id'),
@@ -22,7 +26,7 @@ define([
             });
         });
 
-        // setting count field, needed for style settings  
+        /**Setting count field, needed for style settings*/
         var count = 1, counter = 0, groupSize = tagsList.length / 3;    // length is divided by number of style groups
         tagsList.forEach(function (tag) {
             tag.count = count;

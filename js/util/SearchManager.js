@@ -1,9 +1,14 @@
-
+/**
+*Module that manages searching.
+*@module SearchManager
+*/
 define([
     'jquery',
     'collections/RecipeCollection',
 ], function ($, RecipeCollection) {
+    /**Class contructor*/
     var SearchManager = function () {
+        /**Set of fetched recipes*/
         var _recipes = new RecipeCollection();
 
         return {
@@ -45,7 +50,7 @@ define([
                         short: true,
                     },
 
-                    traditional: true,	// stacking tag_id
+                    traditional: true,    // stacking tag_id
 
                     success: successCallback,
 

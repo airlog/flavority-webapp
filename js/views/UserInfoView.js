@@ -1,4 +1,7 @@
-
+/**
+*Module that manages user's info view.
+*@module UserInfoView
+*/
 define([
     'jquery',
     'underscore',
@@ -13,24 +16,25 @@ define([
 
     'text!templates/user_info.html',
 ], function($, _, Backbone, loginManager, UserModel, Spinner, StarsView, userInfoTemplate) {
+    /**Variable that represents class object*/
     var UserInfoView = Backbone.View.extend({
         el: '#panel_right',
         options: {
             searchId: false,
         },
-
+        /**Sets proper search ID*/
         setSearchId: function(search) {
             this.options.searchId = search;
         },
-
+        /**Render view*/
         render: function(userId) {
-
+            /**Returns stars amount*/
             var getRankStars = function (user, name) {
                 return new StarsView({
                     rank: parseFloat(user.get(name))
                 }).getCompiledTemplate();
             };
-            
+            /**Represents ser model*/
             var user = new UserModel({id:userId});
             var myHeaders = {};
             if (this.options.searchId) {
@@ -52,6 +56,7 @@ define([
             $("#panel_right_spinner").html(spin.el).css('position', 'relative');
 
             var that = this;
+            /**Fetch from database*/
             user.fetch({
                 headers: myHeaders,
                 success: function (user, response, options) {

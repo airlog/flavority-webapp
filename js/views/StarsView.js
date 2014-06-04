@@ -1,4 +1,7 @@
-
+/**
+*Module that manages stars view.
+*@module StarsView
+*/
 define([
     'jquery',
     'underscore',
@@ -6,7 +9,9 @@ define([
 
     'text!templates/stars.html',
 ], function ($, _, Backbone, starsTemplate) {
+    /**Variable that holds stars object*/
     var StarsView = Backbone.View.extend({
+        /**OPtions for object*/
         options: {
             el: '.stars',
             rank: 0.0,          // valid: >= 0.0, <= 5.0
@@ -22,16 +27,16 @@ define([
                 red: 'star_red_full.png',
             },
         },
-
+        /**Should initialize object*/
         initialize: function (options) {
             $.extend(this.options, options);
             this.options.rank = parseFloat(this.options.rank);  // ensure float
         },
-
+        /**Should render object*/
         render: function () {
             $(this.options.el).html(this.getCompiledTemplate());
         },
-
+        /**Should return template*/
         getCompiledTemplate: function () {
             var rank = this.options.rank;
             var elem = this.el;
@@ -46,12 +51,12 @@ define([
 
             return elem;
         },
-
+        /**Should return star with color*/
         _getColoredStar: function (star, color) {
             if (color == 'red') return star.red;
             else return star.yellow;
         },
-
+        /*8Should return image and rank*/
         _getImage: function (rank, color) {
             var image = this.options.star_empty;
 

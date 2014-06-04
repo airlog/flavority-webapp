@@ -1,4 +1,7 @@
-
+/**
+*Module that manages upper panel view.
+*@module panelTop
+*/
 define([
     'jquery',
     'underscore',
@@ -7,39 +10,46 @@ define([
     'collections/IngredientCollection',
 
     'util/loginmanager',
-	'util/regmanager',
-	'util/SearchManager',
+    'util/regmanager',
+    'util/SearchManager',
     
     'text!templates/logged.html',
     'text!templates/not_logged.html',
 ], function($, _, Backbone, IngredientCollection,
-		loginManager, regManager, SearchManager,
-		loggedTemplate, notLoggedTemplate) {	
-	var _searchManager = SearchManager();
-	var PanelTopView = Backbone.View.extend({
-		el: $("#panelTop"),
-		formVisible: false,
-		regFormVisible: false,
-		advancedSearchFormVisible: false,
-		userMenuVisible: false,
+        loginManager, regManager, SearchManager,
+        loggedTemplate, notLoggedTemplate) {
+    /**Variable represents search manager*/
+    var _searchManager = SearchManager();
+    /**Variable that represents upper panel*/
+    var PanelTopView = Backbone.View.extend({
+        el: $("#panelTop"),
+        /**Bool variable that tells if login form is visible*/
+        formVisible: false,
+        /**Bool variable that tells if register form is visible*/
+        regFormVisible: false,
+        /**Bool variable that tells if advanced search form is visible*/
+        advancedSearchFormVisible: false,
+        /**Bool variable that tells if user menu is visible*/
+        userMenuVisible: false,
+        /**Ingredients collection variable*/
         ingredients: [],
-		
-		events: {
-			'click #log_in a': 'triggerLoginForm',
-			'submit #login-form form': 'onLoginFormSubmit',
+        /**Events fired by upper panel*/
+        events: {
+            'click #log_in a': 'triggerLoginForm',
+            'submit #login-form form': 'onLoginFormSubmit',
 
-			'click #register a': 'triggerRegisterForm',
-			'submit #reg-form form': 'onRegisterFormSubmit',
+            'click #register a': 'triggerRegisterForm',
+            'submit #reg-form form': 'onRegisterFormSubmit',
 
-			'click #advanced_search a': 'triggerAdvancedSearchForm',
-			'click .advanced-search-add': 'addTextAdvancedSearch',
-			'click .advanced-search-remove': 'removeTextAdvancedSearch',
-			'click #advanced-search-submit': 'onAdvancedSearchSubmit',
-		    
-			'click #actions_button1': 'onTriggerUserMenu',
-			'click #user_actions a[name=logout]': 'onLogout',
-			'click #user_actions a[name=myrecipes]': 'goToMyRecipes',
-			'click #user_actions a[name=mycomments]': 'goToMyComments',
+            'click #advanced_search a': 'triggerAdvancedSearchForm',
+            'click .advanced-search-add': 'addTextAdvancedSearch',
+            'click .advanced-search-remove': 'removeTextAdvancedSearch',
+            'click #advanced-search-submit': 'onAdvancedSearchSubmit',
+            
+            'click #actions_button1': 'onTriggerUserMenu',
+            'click #user_actions a[name=logout]': 'onLogout',
+            'click #user_actions a[name=myrecipes]': 'goToMyRecipes',
+            'click #user_actions a[name=mycomments]': 'goToMyComments',
 
             'submit #form-search': function (e) {
                 var ele = $(e.currentTarget).find('#searchtext')[0];
@@ -49,125 +59,125 @@ define([
                 Backbone.history.navigate('#/search/query/' + btoa(text) + '/1', {trigger: true,});
                 return false;   // do not reload
             },
-		},
-		
-		triggerRegisterForm: function() {
-		    var firstValue = Math.floor((Math.random()*10)+1);
+        },
+        /**Handles register form show/hide*/
+        triggerRegisterForm: function() {
+            var firstValue = Math.floor((Math.random()*10)+1);
             var secondValue = Math.floor((Math.random()*10)+1);
             document.getElementById("fNum").innerHTML = firstValue;
             document.getElementById("sNum").innerHTML = secondValue;
-			
-			if(!this.regFormVisible) {
+            
+            if(!this.regFormVisible) {
                 $('#login-form').hide();
                 $('#reg-form').show();
-				$('#advanced-search-form').hide();
-				this.formVisible = false;
+                $('#advanced-search-form').hide();
+                this.formVisible = false;
                 this.regFormVisible = true;
-				this.advancedSearchFormVisible = false;
-			}
-			else {
-				$('#reg-form').hide();
-				this.regFormVisible = false;
-			}
-		},
+                this.advancedSearchFormVisible = false;
+            }
+            else {
+                $('#reg-form').hide();
+                this.regFormVisible = false;
+            }
+        },
 
-		
-		onRegisterFormSubmit: function() {
-		    var fVal = Number(document.getElementById("fNum").innerHTML);
-	        var sVal = Number(document.getElementById("sNum").innerHTML); 
-		    var ans = Number(document.registerform.check.value); 
-			
-			var pVal = document.getElementById("pass").value;
-			var rpVal = document.getElementById("repass").value;
+        /**Register form submit action*/
+        onRegisterFormSubmit: function() {
+            var fVal = Number(document.getElementById("fNum").innerHTML);
+            var sVal = Number(document.getElementById("sNum").innerHTML); 
+            var ans = Number(document.registerform.check.value); 
+            
+            var pVal = document.getElementById("pass").value;
+            var rpVal = document.getElementById("repass").value;
 
-			if(fVal + sVal == ans) {
-				if(pVal == rpVal) {
-					regManager.register(
-					$('#reg-form input[name=email]').val(),
-					$('#reg-form input[name=repass]').val(),
-					{
-						error: function(jrxhr, status, exception) {
-							alert("error: " + exception);
-						},
-						success: function(data, status, jrxhr) {
-							alert("success");
-							location.reload();
-						},
-					}
-				);
-				}
-				else {
-					alert("Passwords must match!");
-				}
-			}
-			else {
-				alert("Enter correct value!");
-			}
-			
-			return false;
-		},
-		
-		triggerLoginForm: function() {
-			if(!this.formVisible) {
+            if(fVal + sVal == ans) {
+                if(pVal == rpVal) {
+                    regManager.register(
+                    $('#reg-form input[name=email]').val(),
+                    $('#reg-form input[name=repass]').val(),
+                    {
+                        error: function(jrxhr, status, exception) {
+                            alert("error: " + exception);
+                        },
+                        success: function(data, status, jrxhr) {
+                            alert("success");
+                            location.reload();
+                        },
+                    }
+                );
+                }
+                else {
+                    alert("Passwords must match!");
+                }
+            }
+            else {
+                alert("Enter correct value!");
+            }
+            
+            return false;
+        },
+        /**Handles login form show/hide*/
+        triggerLoginForm: function() {
+            if(!this.formVisible) {
                 $('#login-form').show();
                 $('#reg-form').hide();
-				$('#advanced-search-form').hide();
-				this.formVisible = true;
+                $('#advanced-search-form').hide();
+                this.formVisible = true;
                 this.regFormVisible = false;
-				this.advancedSearchFormVisible = false;
-			}
-			else {
-				$('#login-form').hide();
-				this.formVisible = false;
-			}
-		},
-		
-		onLoginFormSubmit: function() {
-			loginManager.login(
-				$('#login-form input[name=email]').val(),
-				$('#login-form input[name=password]').val(),
-				{
-					error: function(jrxhr, status, exception) {
-						alert(status + " " + exception);
-		            },
-					success: function(data, status, jrxhr) {
-						alert(status);
-						location.reload();
-					},
-				}
-			);
-		    
-			return false;   // no need to trigger default from behaviour
-		},
-		
-		onTriggerUserMenu: function(event) {
-			if (this.userMenuVisible) $('#user_actions').hide();
-			else $('#user_actions').show();
-			this.userMenuVisible = !this.userMenuVisible;
-		},
-		
-		onLogout: function() {
-			loginManager.logout();
-			location.reload();
-		},
-		
-        triggerAdvancedSearchForm: function() {			
-			if(!this.advancedSearchFormVisible) {
+                this.advancedSearchFormVisible = false;
+            }
+            else {
+                $('#login-form').hide();
+                this.formVisible = false;
+            }
+        },
+        /**Login form submit action*/
+        onLoginFormSubmit: function() {
+            loginManager.login(
+                $('#login-form input[name=email]').val(),
+                $('#login-form input[name=password]').val(),
+                {
+                    error: function(jrxhr, status, exception) {
+                        alert(status + " " + exception);
+                    },
+                    success: function(data, status, jrxhr) {
+                        alert(status);
+                        location.reload();
+                    },
+                }
+            );
+            
+            return false;   // no need to trigger default from behaviour
+        },
+        /**Handles user menu show/hide*/
+        onTriggerUserMenu: function(event) {
+            if (this.userMenuVisible) $('#user_actions').hide();
+            else $('#user_actions').show();
+            this.userMenuVisible = !this.userMenuVisible;
+        },
+        /**Handles log out action*/
+        onLogout: function() {
+            loginManager.logout();
+            location.reload();
+        },
+        /**Handles advanced search show/hide*/
+        triggerAdvancedSearchForm: function() {            
+            if(!this.advancedSearchFormVisible) {
                 this.ingredients = [];
                 $('#login-form').hide();
                 $('#reg-form').hide();
-				$('#advanced-search-form').show();
+                $('#advanced-search-form').show();
                 $('#advanced-search-added').empty();
-				this.formVisible = false;
+                this.formVisible = false;
                 this.regFormVisible = false;
-				this.advancedSearchFormVisible = true;
-			}
-			else {
-				$('#advanced-search-form').hide();
-				this.advancedSearchFormVisible = false;
-			}
-		},
-        
+                this.advancedSearchFormVisible = true;
+            }
+            else {
+                $('#advanced-search-form').hide();
+                this.advancedSearchFormVisible = false;
+            }
+        },
+        /**Handles text addition to search form*/
         addTextAdvancedSearch: function(ev) {
             ev.preventDefault();
             ingredient = $('#advanced-search-form input[name=ingredient]').val();
@@ -177,14 +187,14 @@ define([
             console.log(this.ingredients);
             return false;
         },
-        
+        /**Handles text removal to search form*/
         removeTextAdvancedSearch: function(ev) {
             ev.preventDefault();
             this.ingredients.splice(this.ingredients.indexOf(ev.currentTarget.id), 1);
             ev.currentTarget.remove();
             return false;
         },
-        
+        /**Performs advanced search form action*/
         onAdvancedSearchSubmit: function(ev) {
             ev.preventDefault();            
             console.log(JSON.stringify(this.ingredients));
@@ -193,20 +203,20 @@ define([
             Backbone.history.navigate('#/search/advanced/' + btoa(JSON.stringify(this.ingredients)) + '/1', {trigger: true,});
             return false;
        },
-
+        /**Should move user to his/hers recipes view*/
         goToMyRecipes: function() {
             $('#user_actions').hide();
             this.userMenuVisible = false;
             Backbone.history.navigate('#/myrecipes', {trigger: true,});            
         },
-
+        /**Should move user to his/hers comments view*/
         goToMyComments: function() {
             $('#user_actions').hide();
             this.userMenuVisible = false;            
             Backbone.history.navigate('#/mycomments', {trigger: true,});            
         },
-        
-		render: function() {
+        /**Render view*/
+        render: function() {
             var ingredients_collection = new IngredientCollection();
             var that = this;
             

@@ -1,4 +1,7 @@
-
+/**
+*Module that defines routing paths for actions
+*@module router
+*/
 define([
     // These are path alias that we configured in our bootstrap
     'jquery',
@@ -18,6 +21,9 @@ define([
 ], function($, _, Backbone,
         PanelTopView, TagsView, LastAddedView, BestRatedView, RecipeView,
         CommentsView, UserInfoView, UserRecipesView, UserCommentsView, SearchView) {
+	/**
+	*Represents router and its routing routines in specific address variants
+	*/
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -31,17 +37,30 @@ define([
             'myrecipes': 'myRecipes',
             'mycomments': 'myComments',
         },
-
+		
+		/**
+		*Initialises all application views.
+		*/
         initialize: function () {
+			/**Upper panel view*/
             var panelTopView = new PanelTopView();
+			/**Tags view*/
             var tagsView = new TagsView();
+			/**Newest recipes view*/
             var lastAddedRecipeView = new LastAddedView();
+			/**Best rated recipes view*/
             var bestRatedRecipeView = new BestRatedView();
+			/**Recipes view*/
             var recipeView = new RecipeView();
+			/**Comments view*/
             var commentsView = new CommentsView();
+			/**Search view*/
             var searchView = new SearchView();
+			/**User's information view*/
             var userInfoView = new UserInfoView();
+			/**User's recipes view*/
             var userRecipesView = new UserRecipesView();
+			/**User's comments view*/
             var userCommentsView = new UserCommentsView();
 
             panelTopView.render();

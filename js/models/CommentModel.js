@@ -1,9 +1,13 @@
-
+/**
+*Module that represents Comment model.
+*@module CommentModel
+*/
 define([
     'jquery',
     'underscore',
     'backbone',
 ], function ($, _, Backbone) {
+    /**Class constructor*/
     var CommentModel = Backbone.Model.extend({
         urlRoot: '/comments/',
         
@@ -16,7 +20,7 @@ define([
             taste: 0.0, 
             text: null,
         },
-        
+        /**Validates comment*/
         validate: function (attrs) {
             if (attrs.taste == null || attrs.difficulty == null || attrs.text == null) return 'null exception';
             

@@ -1,4 +1,7 @@
-
+/**
+*Module that manages newest added recipes view.
+*@module LastAddedView
+*/
 define([
     'jquery',
     'underscore',
@@ -14,12 +17,18 @@ define([
 ], function ($, _, Backbone, RecipeCollection,
         Spinner, StarsView,
         resultsTemplate, lastAddedTemplate) {
+    /**Reference to proper CSS element*/
     var elementString = "#main_left ";
+    /**Variable represents view*/
     var LastAddedView = Backbone.View.extend({
         el: elementString,
+        /**Renders view*/
         render: function () {
+            /**Class from CSS*/
             var divClass = '.recipe-last-added ';
+            /**Whole recipes collection*/
             var recipes = new RecipeCollection();
+            /**Spinner*/
             var spin = Spinner().spin();
 
             // create a container div
@@ -32,13 +41,14 @@ define([
                 .css('position', 'relative');
 
             var that = this;
+            /**Fetches needed recipes from database*/
             recipes.fetch({
                 data: {
                     limit: 4,               // how much elements to retrieve
                     short: true,            // short JSON (see API)
                     sort_by: 'date_added',  // sort by addition date, most recent - on top
                 },
-
+                /**If fetching was successful*/ 
                 success: function (collection, response, options) {
                     var getRankStars = function (model) {
                         return new StarsView({
@@ -82,7 +92,7 @@ define([
                             .html(getRankStars(collection.models[i]));
                     }
                 },
-
+                /**Fetching failed so throw some errors*/
                 error: function (collection, response, options) {
                     alert('Error retrieving last added recipes');
                     console.log(response);
