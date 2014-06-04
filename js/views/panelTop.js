@@ -40,6 +40,7 @@ define([
 			'click #user_actions a[name=logout]': 'onLogout',
 			'click #user_actions a[name=myrecipes]': 'goToMyRecipes',
 			'click #user_actions a[name=mycomments]': 'goToMyComments',
+			'click #user_actions a[name=addrecipe]': 'goToAddRecipe',
 
             'submit #form-search': function (e) {
                 var ele = $(e.currentTarget).find('#searchtext')[0];
@@ -204,6 +205,12 @@ define([
             $('#user_actions').hide();
             this.userMenuVisible = false;            
             Backbone.history.navigate('#/mycomments', {trigger: true,});            
+        },
+
+        goToAddRecipe: function() {
+            $('#user_actions').hide();
+            this.userMenuVisible = false;            
+            Backbone.history.navigate('#/recipes/new', {trigger: true,});            
         },
         
 		render: function() {
