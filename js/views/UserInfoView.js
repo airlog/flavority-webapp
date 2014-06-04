@@ -58,11 +58,11 @@ define([
                     var compiledUserInfoTemplate = _.template(userInfoTemplate, {
                         user: user,
                         getImageUrl: function() {
-							if(user.get('avatar') == "") {
-								return 'images/default_avatar.png';
+                            if(user.get('avatar') == "") {
+                                return 'images/default_avatar.png';
                             } else {
-								return window.app.restapiAddr + "/photos/" + user.get('avatar') + '/';
-							}
+                                return window.app.restapiAddr + "/photos/" + user.get('avatar') + '/';
+                            }
                         }
                     });
                     that.$el.html(compiledUserInfoTemplate);    
