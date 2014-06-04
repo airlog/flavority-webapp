@@ -1,0 +1,72 @@
+<div>
+    <div class="title"><h2>Add recipe</h2></div>
+    <div>
+        <datalist id="datalist-units">
+            <% _.each(units, function(model) { %>
+                <option value="<%= model.get('name') %>"/>
+            <% }); %>
+        </datalist>
+    </div>
+    <div class="in_main">
+        <form id="form-add-recipe"><!-- inputs are added using HTML5 form attribute --></form>
+
+        <div>
+            <label class="label">Recipe's name: </label>
+            <input form="form-add-recipe" type="text" name="in-recipe-name" size="70" maxlength="32" pattern="\s{0}(\w.*){5,}" placeholder="Type catchy name..." required/>
+        </div>
+        <div>
+            <label class="label">Time: </label>
+            <input form="form-add-recipe" type="text" name="in-recipe-time" size="10" pattern="\d+" placeholder="time in minutes" required/>
+            
+            <label class="label">Servings: </label>
+            <input form="form-add-recipe" style="width: 50px;" name="in-recipe-servings" type="number" value="1" min="1" required/>
+            
+            <label class="label">Difficulty: </label>
+            <select form="form-add-recipe" name="in-recipe-difficulty" required>
+                <option value=""></option>
+                <% _.each(validMarks, function (val) { %>
+                    <option value="<%= val.toFixed(1) %>"><%= val.toFixed(1) %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div>
+            <label class="label">Ingredients: </label>
+            <div>
+                <input type="number" name="in-ingr-amount" min="0" placeholder="amount"/>
+                <input type="text" list="datalist-units" name="in-ingr-unit" placeholder="unit"/>
+                <input type="text" list="ingredients_list" name="in-ingr-ingredient" placeholder="ingredient"/><!-- list is taken from advanced search -->
+                <button id="btn-append-ingredient" class="green_button">Add</button>
+            </div>
+            <ul id="list-ingredients" style="list-style-type: none;">
+                <!--<li><input type="hidden" name="in-ingr-key" value="1"/><span>jeden</span><img class="btn-img ingredient-remove" src="images/btn_remove.png"/></li>-->
+            </ul>
+        </div>
+        <div>
+            <label class="label">Directions: </label>
+            <textarea form="form-add-recipe" class="area" name="in-recipe-text"></textarea>
+        </div>
+        <div>
+            <label class="label">Tags: </label>
+            <div>
+                <input type="text" name="in-tag-name" size="40" maxlength="32" placeholder="Type tag name..."/>
+                <button id="btn-append-tag" class="green_button">Add</button>
+            </div>
+            <ul id="list-tags" class="list-inline">
+                <!--<li><button class="green_button tag-remove"><span>tag1</span><span style="margin-left: 3px;">&times;</span></button></li>-->
+            </ul>
+        </div>
+        <div>
+            <label class="label">Photos: </label>
+            <form id="form-add-recipe-upload-photo">
+                <input type="file" name="file"/>
+            </form>
+            <!-- uploading progresses -->
+            <ul id="list-files" style="list-style-type: none;">
+            </ul>
+        </div>
+        <div style="text-align: right;">
+            <input class="green_button" form="form-add-recipe" type="submit" value="Submit"/>
+        </div>
+    </div>
+</div>
+

@@ -330,7 +330,7 @@ img.star {
 
 /* for adding new recipe */
 
-form.in_main{
+.in_main, form.in_main{
 	background-color: #e4fcb3;
 	padding: 10px 20px 10px 20px;	
 }
@@ -469,3 +469,19 @@ td img {
 	margin: auto;
 	margin-top: 30px;
 }
+
+.btn-img {
+    width: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.list-inline {
+    display: block;
+    list-style-type: none;
+}
+
+.list-inline li {
+	display: inline;
+}
+
