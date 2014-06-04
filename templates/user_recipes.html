@@ -8,11 +8,11 @@
             <div class="recipe_box">
                 <div style="text-align: center;">
                     <img class="recipe"
-                    <% if (recipe.get('photos').length == 0) { %>
-                        src="http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=37434267"
-                    <% } else { %>
-                        src="data:image/jpeg;base64,<%= recipe.get('photos')[0] %>"
-                    <% } %>
+                        <% if (recipe.get('photos').length == 0) { %>
+                            src="<%= getDefaultImage() %>"
+                        <% } else { %>
+                            src="<%= getImageUrl(recipe.get('photos')[0]) %>"
+                        <% } %>
                     />
                 </div>
                 <abbr title="<%= recipe.get('rank') %>">
