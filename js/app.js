@@ -28,7 +28,7 @@ define([
             this.router = new Router();
         },
         router: null,
-        restapiAddr: '//localhost:5000',
+        restapiAddr: null,
     };
 });
 
