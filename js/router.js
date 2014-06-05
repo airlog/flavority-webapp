@@ -5,7 +5,7 @@ define([
     'underscore',
     'backbone',
 
-    'views/panelTop',
+    'views/PanelTopView',
     'views/TagsView',
     'views/LastAddedView',
     'views/BestRatedView',
