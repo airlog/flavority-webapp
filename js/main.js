@@ -11,7 +11,6 @@ require.config({
 //        underscore: 'libs/underscore/underscore',
 //        backbone: 'libs/backbone/backbone',
 
-
         //
         // remote dependancies
         //
@@ -23,7 +22,15 @@ require.config({
         //
 
         templates: '../templates',
-    }
+        jqte: 'libs/jquery-te-1.4.0.min',
+    },
+
+    shim: {
+        'jqte': {
+            deps: ['jquery',],
+            exports: 'jQuery.fn.jqte',
+        },
+    },
 });
 
 require([
