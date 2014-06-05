@@ -2,7 +2,10 @@
 define([
     'jquery',
     'underscore',
-], function ($, _) {
+    
+    'util/loginmanager',
+
+], function ($, _, loginManager) {
     var FileUploadManager = function (url) {
         var _url = url;
         var _activeUploads = 0;
@@ -27,9 +30,20 @@ define([
                     delete options['error'];
                 }
 
+				var headers = {};
+				if (loginManager.isLogged()) {
+					token = loginManager.getToken();
+					headers = {'X-Flavority-Token': token};
+				}
+				else {
+					alert("Jesteś nie zalogowany.");
+					return;
+				}
+
                 _activeUploads++;
                 var settings = {
                     url: _url,
+					headers: headers,
                     type: 'POST',
                     xhr: function () {
                         var myXhr = $.ajaxSettings.xhr();
