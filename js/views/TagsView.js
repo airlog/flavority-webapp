@@ -22,14 +22,14 @@ define([
             });
         });
 
-        // setting count field, needed for style settings  
+        // setting count field, needed for style settings
         var count = 1, counter = 0, groupSize = tagsList.length / 3;    // length is divided by number of style groups
         tagsList.forEach(function (tag) {
             tag.count = count;
             if (counter % groupSize == 0) count++;
             counter++;
         });
-        
+
         return _.shuffle(tagsList);
     };
 
@@ -67,6 +67,7 @@ define([
 
                     that.$el.html(compiledTagsTemplate);    
                     $(elementString + '.spinner').remove();
+
                 },
 
                 error: function (collection, response, options) {

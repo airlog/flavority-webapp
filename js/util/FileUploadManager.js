@@ -2,7 +2,7 @@
 define([
     'jquery',
     'underscore',
-    
+
     'util/loginmanager',
 
 ], function ($, _, loginManager) {
@@ -30,20 +30,20 @@ define([
                     delete options['error'];
                 }
 
-				var headers = {};
-				if (loginManager.isLogged()) {
-					token = loginManager.getToken();
-					headers = {'X-Flavority-Token': token};
-				}
-				else {
-					alert("Jesteś nie zalogowany.");
-					return;
-				}
+                var headers = {};
+                if (loginManager.isLogged()) {
+                    token = loginManager.getToken();
+                    headers = {'X-Flavority-Token': token};
+                }
+                else {
+                    alert("Jesteś nie zalogowany.");
+                    return;
+                }
 
                 _activeUploads++;
                 var settings = {
                     url: _url,
-					headers: headers,
+                    headers: headers,
                     type: 'POST',
                     xhr: function () {
                         var myXhr = $.ajaxSettings.xhr();

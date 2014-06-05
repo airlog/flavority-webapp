@@ -5,7 +5,7 @@ define([
     'underscore',   // lib/underscore/underscore
     'backbone',     // lib/backbone/backbone
     'router',       // request router.js
-], function($, _, Backbone, Router){    
+], function($, _, Backbone, Router) {
     return {
         initialize: function () {
             if (this.restapiAddr != null) {

@@ -14,7 +14,7 @@ define([
     'text!templates/comments_with_dishname.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, CommentCollection, loginManager, 
+], function($, _, Backbone, CommentCollection, loginManager,
         Spinner, StarsView, userCommentsTemplate, commentsTemplate, pageSelectorTemplate) {
     var UserCommentsView = Backbone.View.extend({
         el: '#main_left',
@@ -43,7 +43,7 @@ define([
                 rank: parseFloat(comment.get(name))
             }).getCompiledTemplate();
         },
-        
+
         _fetchComments: function(whichComments) {
             var comments = new CommentCollection();
             var spin = new Spinner().spin();
@@ -54,7 +54,7 @@ define([
                  elementName2 = "comments2";
             }
             $(elementName).empty();
-            
+
             if (!loginManager.isLogged()) {
                 //TO DO  niezalogowany na stronie mycomments
                 console.log("Niezalogowany");
@@ -84,11 +84,11 @@ define([
                 },
                 success: function (collection, response, status) {
                     $(elementName).empty();
-                    
+
                     var compiledCommentsTemplate = _.template(commentsTemplate, {
                         comments: collection.models,
                     });
-                    
+
                     $(elementName).html(compiledCommentsTemplate);
 
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
@@ -96,7 +96,7 @@ define([
                         maxPage:  Math.ceil(response.totalElements / that.options.limit),
                     });
                     $('#user_comments_page_selector_'+whichComments).html(compiledPageSelectorTemplate);
-                    
+
                     for (var i = 0; i < collection.models.length; i++) {
                         $(elementName).find('.stars_taste:eq(' + i + ')')
                             .html(that._getRankStars(collection.models[i],"taste","yellow"));
@@ -114,19 +114,19 @@ define([
             });
 
         },
-        
+
         render: function() {
             this.$el.empty()
-                        
+
             var compiledUserCommentsTemplate = _.template(userCommentsTemplate);
-                    
+
             $('#main_left').html(compiledUserCommentsTemplate);
 
             this._fetchComments(1);
             this._fetchComments(2);
-            
+
         },
-        
+
         events: {
             'click #user_comments_page_selector_1 .leftarrow': function () {
                 this.options.page1 = this.options.page1-1;

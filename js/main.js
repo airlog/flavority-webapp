@@ -1,6 +1,6 @@
 
 require.config({
-    paths: {       
+    paths: {
         // order of this group must not be changed
         jquery: '//code.jquery.com/jquery-2.1.0.min',
         underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min',
@@ -19,9 +19,9 @@ require.config({
         text: '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',  // plugin for require.js, allows loading text files
 
         //
-        // local dependancies        
+        // local dependancies
         //
-               
+
         templates: '../templates',
     }
 });
@@ -30,6 +30,6 @@ require([
     'app',
 ], function (App) {
     App.initialize();
-    window.app = App;	// attaching application for global scope
+    window.app = App;   // attaching application for global scope
 });
 

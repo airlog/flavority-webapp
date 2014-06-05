@@ -23,7 +23,7 @@ define([
             };
 
             var recipe = new RecipeModel({id:recipeId});
-            
+
             $('#main_left').children().remove();
             $('#main_left').append("<div id='recipe_details'></div>");
             $('#main_left').append("<div id='recipe_comments'></div>");
@@ -65,8 +65,8 @@ define([
                         },
 
                     });
-                    this.$('#recipe_details').html(compiledRecipeTemplate);   
-                    
+                    this.$('#recipe_details').html(compiledRecipeTemplate);
+
 
                     this.$('.stars_difficulty').html(getRankStars(recipe, "difficulty", "red"));
                     this.$('.stars_difficulty_comments').html(getRankStars(recipe, "difficulty_comments", "red"));
@@ -77,7 +77,7 @@ define([
                     alert('Retrieving recipe failed: '+ response);
                 },
 
-            }); 
+            });
         },
     });
 

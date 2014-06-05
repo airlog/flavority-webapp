@@ -67,7 +67,7 @@ define([
                     .setSortingKey(searchView.SortingKeys.DATE)
                     .render();
                 tagsView.render();
-           });
+            });
 
             this.on('route:bestRatedSearch', function (page) {
                 $('#main_left').empty();
@@ -81,10 +81,10 @@ define([
                 tagsView.render();
             });
 
-           this.on('route:getRecipe', function(id) {
+            this.on('route:getRecipe', function(id) {
                 commentsView.setRecipeId(id);
                 commentsView.setPage(1);
-                
+
                 recipeView.render(id);
                 commentsView.render();
                 tagsView.render();
@@ -92,8 +92,8 @@ define([
 
             this.on('route:addRecipe', function () {
                 $('#main_left').empty();
-                
-                userInfoView.setSearchId(true);              
+
+                userInfoView.setSearchId(true);
                 userInfoView.render(null);
 
                 addRecipeView
@@ -141,7 +141,7 @@ define([
                 userRecipesView.setSearchId(false);
                 userRecipesView.setUserId(id);
                 userRecipesView.setPage(1);
-                
+
                 userInfoView.render(id);
                 userRecipesView.render();
             });
@@ -150,7 +150,7 @@ define([
                 userRecipesView.setPage(1);
                 userInfoView.setSearchId(true);
                 userRecipesView.setSearchId(true);
-                
+
                 userRecipesView.render();
                 userInfoView.render(null);
             });

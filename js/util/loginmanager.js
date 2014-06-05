@@ -9,31 +9,31 @@ define([
             },
         };
     })();
-    
+
     var loginManager = (function(settings) {
         var defaults = {
             loginUrl: '/auth/signin',
         };
-		
+
         var mLoginUrl = defaults.loginUrl;
-		
+
         var storeData = function(data) {
             Storage.getInstance().flavority = JSON.stringify(data);
         };
-        
+
         var restoreData = function() {
             var data = Storage.getInstance().flavority;
             if (data != null && data != '') {
                 return JSON.parse(data);
             }
-            
+
             return null;
         };
-        
+
         var removeData = function() {
             Storage.getInstance().removeItem('flavority');
         };
-        
+
         var login = function(username, password, params) {
             $.ajax(mLoginUrl, {
                 type: 'POST',
@@ -48,16 +48,16 @@ define([
                         token: data.token,
                         name: data.user,
                     });
-                    
+
                     if (params.success != null) params.success(data, status, jx);
                 },
             });
         };
-        
+
         var logout = function() {
             removeData();
         };
-        
+
         var isLogged = function() {
             var data = restoreData();
             if (data == null || data.token == null) return false;
@@ -68,7 +68,7 @@ define([
             var data = restoreData();
             return data.name;
         };
-        
+
         var getToken = function () {
             return restoreData().token;
         };

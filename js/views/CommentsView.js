@@ -16,7 +16,7 @@ define([
     'text!templates/page_selector.html',
 
     'libs/jquery-te-1.4.0.min',
-], function($, _, Backbone, loginManager, CommentCollection, CommentModel, 
+], function($, _, Backbone, loginManager, CommentCollection, CommentModel,
         Spinner, StarsView, commentsTemplate, pageSelectorTemplate,
         textEditor) {
 
@@ -35,11 +35,11 @@ define([
         setRecipeId: function(id) {
             this.options.recipe_id = id;
         },
-        
+
         setPage: function(page) {
             this.options.page = page;
         },
-        
+
         el: '#main_left',
 
         render: function() {
@@ -50,10 +50,10 @@ define([
             $('#recipe_comments')
                 .append("<div style='height: 100px;'><span id='recipe_comments_spinner' style='position: absolute; display: block; top: 50%;left: 50%;'></span></div>");
             $("#recipe_comments_spinner").html(spin.el).css('position', 'relative');
-            
+
             this._fetchPage();
         },
-        
+
         events: {
             'click #comments_page_selector .leftarrow': '_get_previous',
 
@@ -83,7 +83,7 @@ define([
                     alert("Jesteś nie zalogowany.");
                     return;
                 }
-                
+
                 comment.save(comment.toJSON(), {
                     headers: headers,
                     wait: true,
@@ -106,7 +106,7 @@ define([
             this.options.page = this.options.page-1;
             this._fetchPage();
         },
-        
+
         _get_next: function() {
             this.options.page = this.options.page+1;
             this._fetchPage();
@@ -122,7 +122,7 @@ define([
 
             var comments = new CommentCollection();
             var that = this;
-            
+
             comments.fetch({
                 data: {
                     recipe_id: that.options.recipe_id,
@@ -132,12 +132,12 @@ define([
 
                 success: function (collection, response, status) {
                     $('#recipe_comments').children().remove();
-                    
+
                     var compiledCommentsTemplate = _.template(commentsTemplate, {
                         comments: collection.models,
                         validMarks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
                     });
-                    
+
                     $('#recipe_comments').html(compiledCommentsTemplate);
                     that.$el.find('.area').jqte({
                         sub: false,
@@ -146,7 +146,7 @@ define([
                         rule: false,
                         source: false,
                     });
-                    
+
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
                         currentPage: that.options.page,
                         maxPage: Math.ceil(response.totalElements / that.options.limit),
@@ -166,8 +166,8 @@ define([
                 error: function (collection, response, status) {
                     alert('Retrieving comments failed: '+ response);
                 },
-            }); 
-        } 
+            });
+        }
     });
 
     return CommentsView;

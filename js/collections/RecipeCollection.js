@@ -6,7 +6,7 @@ define([
 ], function($, _, Backbone){
     var RecipeCollection = Backbone.Collection.extend({
         url: '/recipes/',
-        
+
         // out API gives a dictionary with a key 'recipes' which contains the proper elements
         // this method is invoked by Backbone after each fetch
         parse: function (response, options) {

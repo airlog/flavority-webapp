@@ -3,11 +3,11 @@ define([
 ], function($) {
         var regManager = (function() {
             var defaultPath = {
-             url: '/auth/signup',	//registration address
+                url: '/auth/signup',   //registration address
             };
-            
+
             var registerUrl = defaultPath.url;
-            
+
             var register = function(un, p, opt) {
                 var regUrl = "/auth/signup";
                 $.ajax(regUrl, {
@@ -18,7 +18,7 @@ define([
                     success : opt.success,
                 });
             };
-            
+
             return {
                 register: register,
             };

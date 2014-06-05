@@ -34,13 +34,13 @@ define([
         setUserId: function(id) {
             this.options.user_id = id;
         },
-        
+
         setPage: function(page) {
             this.options.page = page;
         },
-        
+
         render: function() {
-            
+
             var getRankStars = function (comment, name, color) {
                 return new StarsView({
                     color: color,
@@ -87,7 +87,7 @@ define([
                 data: data,
                 success: function (collection, response, status) {
                     $('#user_recipes').empty();
-                    
+
                     var compiledUserRecipesTemplate = _.template(userRecipesTemplate, {
                         title: title,
                         recipes: collection.models,
@@ -110,16 +110,16 @@ define([
                             return window.app.restapiAddr + "/photos/" + imgId;
                         },
                     });
-                    
+
                     $('#user_recipes').html(compiledUserRecipesTemplate);
-                    
+
                     var compiledPageSelectorTemplate = _.template(pageSelectorTemplate, {
                         currentPage: that.options.page,
                         maxPage: Math.ceil(response.totalElements / that.options.limit),
                     });
                     $('#user_recipes_page_selector1').html(compiledPageSelectorTemplate);
                     $('#user_recipes_page_selector2').html(compiledPageSelectorTemplate);
-                    
+
                     for (var i = 0; i < collection.models.length; i++) {
                         $("#user_recipes").find('.stars_taste:eq(' + i + ')')
                             .html(getRankStars(collection.models[i],"rank","yellow"));
@@ -131,9 +131,9 @@ define([
                     alert('Retrieving user recipes failed: '+ response);
                     console.log(response);
                 },
-            }); 
+            });
         },
-        
+
         events: {
             'click #user_recipes_page_selector1 .leftarrow': function () {
                 this.options.page = this.options.page-1;

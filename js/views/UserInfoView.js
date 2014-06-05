@@ -30,7 +30,7 @@ define([
                     rank: parseFloat(user.get(name))
                 }).getCompiledTemplate();
             };
-            
+
             var user = new UserModel({id:userId});
             var myHeaders = {};
             if (this.options.searchId) {
@@ -42,9 +42,9 @@ define([
                 token = loginManager.getToken();
                 myHeaders = {'X-Flavority-Token': token};
             }
-            
+
             this.$el.empty();
-            
+
             var spin = new Spinner().spin();
 
             spin.el.style['position'] = null;
@@ -58,7 +58,7 @@ define([
                     var compiledUserInfoTemplate = _.template(userInfoTemplate, {
                         user: user,
                     });
-                    that.$el.html(compiledUserInfoTemplate);    
+                    that.$el.html(compiledUserInfoTemplate);
 
                     that.$('.stars_average_rate').html(getRankStars(user, "average_rate"));
 
@@ -69,7 +69,7 @@ define([
                     console.log(response);
                 },
 
-            }); 
+            });
         },
     });
 

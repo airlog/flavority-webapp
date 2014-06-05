@@ -254,19 +254,19 @@ define([
                         photos: data.photos,
                     });
 
-					var headers = {};
-					if (loginManager.isLogged()) {
-						token = loginManager.getToken();
-						headers = {'X-Flavority-Token': token};
-					}
-					else {
-						alert("Jesteś nie zalogowany.");
-						return;
-					}
+                    var headers = {};
+                    if (loginManager.isLogged()) {
+                        token = loginManager.getToken();
+                        headers = {'X-Flavority-Token': token};
+                    }
+                    else {
+                        alert("Jesteś nie zalogowany.");
+                        return;
+                    }
 
                     recipe.save({}, {
-						headers: headers,
-						
+                        headers: headers,
+
                         wait: true,
 
                         success: function (model, status, xhr) {

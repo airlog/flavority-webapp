@@ -45,7 +45,7 @@ define([
                         short: true,
                     },
 
-                    traditional: true,	// stacking tag_id
+                    traditional: true,  // stacking tag_id
 
                     success: successCallback,
 
