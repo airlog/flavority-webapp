@@ -1,8 +1,19 @@
-
-<div id="tags">
-    <a class="t<%= tags[0]['count']%>" href="/#/search/tag/<%= tags[0]['id'] %>/1"><%= tags[0]['tag']%></a><br/>
-    <% for (i = 1; i < tags.length-2; i++) { %>
-        <a class="t<%= tags[i]['count']%>" href="/#/search/tag/<%= tags[i]['id'] %>/1"><%= tags[i]['tag']%></a>
-    <% } %>
-    <br/><a class="t<%= tags[tags.length-1]['count']%>" href="/#/search/tag/<%= tags[tags.length - 1]['id'] %>/1"><%= tags[tags.length-1]['tag']%></a>
+<div class="tags-most-popular">
+    <h3 class="title">Tags:</h3>
+    <div style="height: 100px;" class="spinner">
+        <span class="spinner-center" style="position: absolute;display: block;top: 50%;left: 50%;"></span>
+    </div>
+    <div class="data">
+        <div id="tags">
+            <% if (tags.length > 0) { %>
+                <a class="t<%= tags[0]['count']%>" href="/#/search/tag/<%= tags[0]['id'] %>/1"><%= tags[0]['tag']%></a><br/>
+            <% } %>
+            <% for (i = 1; i < tags.length-2; i++) { %>
+                <a class="t<%= tags[i]['count']%>" href="/#/search/tag/<%= tags[i]['id'] %>/1"><%= tags[i]['tag']%></a>
+            <% } %>
+            <% if (tags.length > 0) { %>
+                <br/><a class="t<%= tags[tags.length-1]['count']%>" href="/#/search/tag/<%= tags[tags.length - 1]['id'] %>/1"><%= tags[tags.length-1]['tag']%></a>
+            <% } %>
+        </div>
+    </div>
 </div>
