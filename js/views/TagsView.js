@@ -35,10 +35,13 @@ define([
 
     var elementString = '.tags-most-popular ';
     var TagsView = Backbone.View.extend({
-        el: $(elementString + '.data'),
+        el: $("#panel_right"),
         render: function() {
             var tags = new TagCollection();
             var spin = new Spinner().spin();
+			
+			var compiledTagsTemplate = _.template(tagsTemplate, {tags: []});
+			this.$el.html(compiledTagsTemplate);
 
             // this is to properly place a spinner
             spin.el.style['position'] = null;
@@ -53,15 +56,17 @@ define([
                 },
 
                 success: function (collection, response, options) {
-                    var compiledTagsTemplate = _.template(tagsTemplate, {
+                    compiledTagsTemplate = _.template(tagsTemplate, {
                         tags: reinterpretTags(collection.models),
                     });
 
                     // stop the spinner
                     $(elementString + '.spinner').remove();
                     spin.stop();
+					that.$el.empty();
 
                     that.$el.html(compiledTagsTemplate);    
+                    $(elementString + '.spinner').remove();
                 },
 
                 error: function (collection, response, options) {
@@ -69,7 +74,7 @@ define([
                     console.log(response);
                 },
 
-            }); 
+            });
         },
     });
 
