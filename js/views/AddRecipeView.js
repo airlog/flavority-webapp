@@ -8,13 +8,14 @@ define([
     'collections/UnitCollection',
     'models/RecipeModel',
     'util/FileUploadManager',
+    'util/loginmanager',
 
     'text!templates/addrecipe.html',
     'text!templates/addrecipe_ingredientlist_item.html',
     'text!templates/addrecipe_taglist_item.html',
     'text!templates/addrecipe_filelist_item.html',
 ], function ($, _, Backbone,
-        IngredientCollection, UnitCollection, RecipeModel, FileUploadManager,
+        IngredientCollection, UnitCollection, RecipeModel, FileUploadManager, loginManager,
         addRecipeTemplate, ingredientlistItemTemplate, taglistItemTemplate, filelistItemTemplate) {
     var RecipeData = function () {
         return {
@@ -253,7 +254,19 @@ define([
                         photos: data.photos,
                     });
 
+					var headers = {};
+					if (loginManager.isLogged()) {
+						token = loginManager.getToken();
+						headers = {'X-Flavority-Token': token};
+					}
+					else {
+						alert("Jesteś nie zalogowany.");
+						return;
+					}
+
                     recipe.save({}, {
+						headers: headers,
+						
                         wait: true,
 
                         success: function (model, status, xhr) {
