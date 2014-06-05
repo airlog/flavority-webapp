@@ -39,9 +39,9 @@ define([
         render: function() {
             var tags = new TagCollection();
             var spin = new Spinner().spin();
-			
-			var compiledTagsTemplate = _.template(tagsTemplate, {tags: []});
-			this.$el.html(compiledTagsTemplate);
+            
+            var compiledTagsTemplate = _.template(tagsTemplate, {tags: []});
+            this.$el.html(compiledTagsTemplate);
 
             // this is to properly place a spinner
             spin.el.style['position'] = null;
@@ -63,7 +63,7 @@ define([
                     // stop the spinner
                     $(elementString + '.spinner').remove();
                     spin.stop();
-					that.$el.empty();
+                    that.$el.empty();
 
                     that.$el.html(compiledTagsTemplate);    
                     $(elementString + '.spinner').remove();
