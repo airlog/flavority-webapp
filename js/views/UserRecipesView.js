@@ -6,6 +6,7 @@ define([
     'util/loginmanager',
 
     'collections/RecipeCollection',
+    'models/RecipeModel',
 
     'views/Spinner',
     'views/StarsView',
@@ -13,7 +14,7 @@ define([
     'text!templates/user_recipes.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, loginManager, RecipeCollection, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
+], function($, _, Backbone, loginManager, RecipeCollection, RecipeModel, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
     var UserRecipesView = Backbone.View.extend({
         el: '#main_left',
         // default values
@@ -59,9 +60,10 @@ define([
 
             if (this.options.searchId) {
                 if (!loginManager.isLogged()) {
-                    console.log("Niezalogowany!");
+                    console.log("You are not logged!");
                     //TO DO niezalogowany wszedł na strone myrecipes
                 }
+                
                 token = loginManager.getToken();
                 headers = {'X-Flavority-Token': token};
                 title = "Your recipes";
@@ -90,6 +92,7 @@ define([
 
                     var compiledUserRecipesTemplate = _.template(userRecipesTemplate, {
                         title: title,
+                        delete_option: that.options.searchId,
                         recipes: collection.models,
                         getDefaultImage: function () {
                             var images = [
@@ -153,6 +156,37 @@ define([
                 this.options.page = this.options.page+1;
                 this.render();
             },
+
+            'click .delete_recipe': function (ev) {
+                recipe_id = $(ev.currentTarget).parent().find('input[name=recipe_id]').val();
+                recipe = new RecipeModel({id: recipe_id});
+                
+                if (!loginManager.isLogged()) {
+                    console.log("You are not logged!");
+                } else {                
+                    token = loginManager.getToken();
+                    headers = {'X-Flavority-Token': token};
+                }
+                
+                that = this;
+                if (!confirm('Are you sure you want to remove this recipe?')) {
+                    return;
+                }
+                
+                recipe.destroy({
+                    headers: headers,
+
+                    success: function (model, response, options) {
+                        that.render();
+                    },
+
+                    error: function (response, status, options) {
+                        alert('Error while removing a recipe!');
+                        console.log(response);
+                    },
+                })
+            },
+
         },
     });
 
