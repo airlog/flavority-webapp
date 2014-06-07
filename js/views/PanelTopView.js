@@ -216,19 +216,24 @@ define([
         render: function() {
             var ingredients_collection = new IngredientCollection();
             var that = this;
+            
+            var template = notLoggedTemplate;
+            var compiledLoggedTemplate = _.template(template, {
+                ingredients_list: [],
+                user_name: "",
+            });
+            this.$el.html(compiledLoggedTemplate);
 
             ingredients_collection.fetch({
-                data: {
-                },
+                data: {},
 
                 success: function (collection, response, status) {
-                    var template = notLoggedTemplate;
                     var name = "";
                     if (loginManager.isLogged()) {
                         template = loggedTemplate;
                         name = loginManager.getName();
                     }
-                    var compiledLoggedTemplate = _.template(template, {
+                    compiledLoggedTemplate = _.template(template, {
                         ingredients_list: collection.models,
                         user_name: name,
                     });
