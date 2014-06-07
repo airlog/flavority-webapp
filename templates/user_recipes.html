@@ -4,23 +4,35 @@
 
 <div>
     <% _.each(recipes, function (recipe) { %>
-        <a href="#/recipes/<%= recipe.get('id') %>/"> <!-- TODO: update URL when its ready -->
-            <div class="recipe_box">
-                <div style="text-align: center;">
-                    <img class="recipe"
+        <div class="recipe_box">
+            <% if (delete_option) {%>
+                <div style="cursor: pointer; text-align:right; z-index: 1; position: relative;  margin-bottom: -29px; margin-right: -1px;">
+                    <abbr title="remove recipe?">
+                        <input name="recipe_id" type="hidden" value=<%= recipe.get('id') %> />
+                        <img class="delete_recipe" style="width: 25px; height: 25px; margin: 0px" alt="" src="/images/btn_remove.png"/>
+                    </abbr>
+                </div>
+            <% } %>
+            <div style="text-align: center;">
+                <a href="#/recipes/<%= recipe.get('id') %>/">
+                    <img alt="" class="recipe"
                         <% if (recipe.get('photos').length == 0) { %>
                             src="<%= getDefaultImage() %>"
                         <% } else { %>
                             src="<%= getImageUrl(recipe.get('photos')[0]) %>"
                         <% } %>
                     />
-                </div>
-                <abbr title="<%= recipe.get('rank') %>">
-                    <div class="stars_taste"><%= recipe.get('rank') %></div>
-                </abbr>
-                <p><%= recipe.get('dishname') %></p>
+                </a>
             </div>
-        </a>
+            <abbr title="<%= recipe.get('rank') %>">
+                <div class="stars_taste"><%= recipe.get('rank') %></div>
+            </abbr>
+            <p>
+                <a href="#/recipes/<%= recipe.get('id') %>/">
+                    <%= recipe.get('dishname') %>
+                </a>
+            </p>
+        </div>
     <% }); %>
 </div>
 
