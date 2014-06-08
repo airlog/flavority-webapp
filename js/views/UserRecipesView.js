@@ -16,7 +16,7 @@ define([
     'text!templates/page_selector.html',
 
 ], function($, _, Backbone, loginManager, RecipeCollection, FavoriteModel,
-		RecipeModel, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
+        RecipeModel, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
     var UserRecipesView = Backbone.View.extend({
         el: '#main_left',
         // default values
@@ -60,11 +60,11 @@ define([
             var headers = {};
             var title = "User's recipes";
             var data = {
-				short: true,
-				user_id: this.options.user_id,
-				page: this.options.page,
-				limit: this.options.limit,
-			};
+                short: true,
+                user_id: this.options.user_id,
+                page: this.options.page,
+                limit: this.options.limit,
+            };
 
             if (this.options.searchId) {
                 if (!loginManager.isLogged()) {
@@ -81,13 +81,13 @@ define([
                     limit: this.options.limit,
                 };
                 if (this.options.favorite) {
-					url = "/favorite/";
-					title = "Your favorite recipes";
-					data = {
-						page: this.options.page,
-						limit: this.options.limit,
-					};
-				}
+                    url = "/favorite/";
+                    title = "Your favorite recipes";
+                    data = {
+                        page: this.options.page,
+                        limit: this.options.limit,
+                    };
+                }
             }
 
             var recipes = new RecipeCollection();
@@ -100,7 +100,7 @@ define([
             $("#user_recipes_spinner").html(spin.el).css('position', 'relative');
             var that = this;
             recipes.fetch({
-				url: url,
+                url: url,
                 headers: headers,
                 data: data,
                 success: function (collection, response, status) {
@@ -176,10 +176,9 @@ define([
             'click .delete_recipe': function (ev) {
                 recipe_id = $(ev.currentTarget).parent().find('input[name=recipe_id]').val();
                 recipe = new RecipeModel({id: recipe_id});
-				if (this.options.favorite) {
-					recipe = new FavoriteModel({id: recipe_id});
-					console.log("delete favorite recipe: " + recipe_id);
-				}
+                if (this.options.favorite) {
+                    recipe = new FavoriteModel({id: recipe_id});
+                }
 
                 if (!loginManager.isLogged()) {
                     console.log("You are not logged!");
@@ -192,7 +191,7 @@ define([
                 if (!confirm('Are you sure you want to remove this recipe?')) {
                     return;
                 }
-				
+                
                 recipe.destroy({
                     headers: headers,
 
