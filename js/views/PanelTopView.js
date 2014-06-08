@@ -38,9 +38,10 @@ define([
 
             'click #actions_button1': 'onTriggerUserMenu',
             'click #user_actions a[name=logout]': 'onLogout',
+            'click #user_actions a[name=addrecipe]': 'goToAddRecipe',
             'click #user_actions a[name=myrecipes]': 'goToMyRecipes',
             'click #user_actions a[name=mycomments]': 'goToMyComments',
-            'click #user_actions a[name=addrecipe]': 'goToAddRecipe',
+            'click #user_actions a[name=favorite]': 'goToFavoriteRecipes',
 
             'submit #form-search': function (e) {
                 var ele = $(e.currentTarget).find('#searchtext')[0];
@@ -199,6 +200,12 @@ define([
             $('#user_actions').hide();
             this.userMenuVisible = false;
             Backbone.history.navigate('#/myrecipes', {trigger: true,});
+        },
+
+        goToFavoriteRecipes: function() {
+            $('#user_actions').hide();
+            this.userMenuVisible = false;
+            Backbone.history.navigate('#/favorite', {trigger: true,});
         },
 
         goToMyComments: function() {

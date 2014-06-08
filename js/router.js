@@ -32,6 +32,7 @@ define([
             'users/:id/': 'getUser',
             'myrecipes': 'myRecipes',
             'mycomments': 'myComments',
+            'favorite': 'favoriteRecipes',
         },
 
         initialize: function () {
@@ -139,6 +140,7 @@ define([
             this.on('route:getUser', function(id) {
                 userInfoView.setSearchId(false);
                 userRecipesView.setSearchId(false);
+                userRecipesView.setFavorite(false);
                 userRecipesView.setUserId(id);
                 userRecipesView.setPage(1);
 
@@ -150,6 +152,17 @@ define([
                 userRecipesView.setPage(1);
                 userInfoView.setSearchId(true);
                 userRecipesView.setSearchId(true);
+                userRecipesView.setFavorite(false);
+
+                userRecipesView.render();
+                userInfoView.render(null);
+            });
+
+            this.on('route:favoriteRecipes', function() {
+                userRecipesView.setPage(1);
+                userInfoView.setSearchId(true);
+                userRecipesView.setSearchId(true);
+                userRecipesView.setFavorite(true);
 
                 userRecipesView.render();
                 userInfoView.render(null);
