@@ -16,9 +16,11 @@ define([
     'views/UserCommentsView',
     'views/SearchView',
     'views/AddRecipeView',
+    'views/UserSettingsView',
 ], function($, _, Backbone,
         PanelTopView, TagsView, LastAddedView, BestRatedView, RecipeView,
-        CommentsView, UserInfoView, UserRecipesView, UserCommentsView, SearchView, AddRecipeView) {
+        CommentsView, UserInfoView, UserRecipesView, UserCommentsView, SearchView, AddRecipeView,
+        UserSettingsView) {
     var Router = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -33,6 +35,7 @@ define([
             'myrecipes': 'myRecipes',
             'mycomments': 'myComments',
             'favorite': 'favoriteRecipes',
+            'me/settings': 'userSettings',
         },
 
         initialize: function () {
@@ -47,6 +50,7 @@ define([
             var userRecipesView = new UserRecipesView();
             var userCommentsView = new UserCommentsView();
             var addRecipeView = new AddRecipeView();
+            var userSettingsView = new UserSettingsView();
 
             panelTopView.render();
 
@@ -175,6 +179,15 @@ define([
 
                 userCommentsView.render();
                 userInfoView.render(null);
+            });
+
+            this.on('route:userSettings', function () {
+                $('#main_left').empty();
+
+                userSettingsView
+                    .clear()
+                    .render();
+                tagsView.render();
             });
 
             Backbone.history.start();
