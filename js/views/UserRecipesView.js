@@ -180,6 +180,7 @@ define([
                     recipe = new FavoriteModel({id: recipe_id});
                 }
 
+                var headers = {};
                 if (!loginManager.isLogged()) {
                     console.log("You are not logged!");
                 } else {                
@@ -196,7 +197,6 @@ define([
                     headers: headers,
 
                     success: function (model, response, options) {
-                        alert("Hurra!");
                         that.render();
                     },
 
@@ -206,7 +206,6 @@ define([
                     },
                 })
             },
-
         },
     });
 

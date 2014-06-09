@@ -490,3 +490,29 @@ td img {
 	height: 150px;
 }
 
+.recipe_view_add_favorite {
+	color: #666666;
+	cursor: pointer;
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+.recipe_view_add_favorite:hover {
+	color: #CE0000;
+	-webkit-filter: grayscale(0%);
+	-moz-filter: grayscale(0%);
+	filter: grayscale(0%);
+}
+
+.recipe_view_remove_favorite {
+	cursor: pointer;
+	color: #CE0000;
+}
+
+.recipe_view_remove_favorite:hover {
+	color: #666666;
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
