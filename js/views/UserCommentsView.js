@@ -87,6 +87,13 @@ define([
 
                     var compiledCommentsTemplate = _.template(commentsTemplate, {
                         comments: collection.models,
+                        getImageUrl: function (imgId) {
+                            if(imgId == "") {
+                                return 'images/default_avatar.png';
+                            } else {
+                                return window.app.restapiAddr + "/photos/" + imgId;
+                            }
+                        },
                     });
 
                     $(elementName).html(compiledCommentsTemplate);
