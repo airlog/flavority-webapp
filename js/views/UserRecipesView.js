@@ -6,6 +6,7 @@ define([
     'util/loginmanager',
 
     'collections/RecipeCollection',
+    'models/FavoriteModel',
     'models/RecipeModel',
 
     'views/Spinner',
@@ -14,7 +15,8 @@ define([
     'text!templates/user_recipes.html',
     'text!templates/page_selector.html',
 
-], function($, _, Backbone, loginManager, RecipeCollection, RecipeModel, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
+], function($, _, Backbone, loginManager, RecipeCollection, FavoriteModel,
+        RecipeModel, Spinner, StarsView, userRecipesTemplate, pageSelectorTemplate) {
     var UserRecipesView = Backbone.View.extend({
         el: '#main_left',
         // default values
@@ -22,6 +24,7 @@ define([
             page: 1,
             limit: 15,
             searchId: false,
+            favorite: false,
         },
 
         initialize: function (options) {
@@ -30,6 +33,10 @@ define([
 
         setSearchId: function(search) {
             this.options.searchId = search;
+        },
+
+        setFavorite: function(favorite) {
+            this.options.favorite = favorite;
         },
 
         setUserId: function(id) {
@@ -49,21 +56,21 @@ define([
                 }).getCompiledTemplate();
             };
 
+            var url = "/recipes/";
             var headers = {};
             var title = "User's recipes";
             var data = {
-                    short: true,
-                    user_id: this.options.user_id,
-                    page: this.options.page,
-                    limit: this.options.limit,
-                };
+                short: true,
+                user_id: this.options.user_id,
+                page: this.options.page,
+                limit: this.options.limit,
+            };
 
             if (this.options.searchId) {
                 if (!loginManager.isLogged()) {
                     console.log("You are not logged!");
                     //TO DO niezalogowany wszedł na strone myrecipes
                 }
-                
                 token = loginManager.getToken();
                 headers = {'X-Flavority-Token': token};
                 title = "Your recipes";
@@ -73,6 +80,14 @@ define([
                     page: this.options.page,
                     limit: this.options.limit,
                 };
+                if (this.options.favorite) {
+                    url = "/favorite/";
+                    title = "Your favorite recipes";
+                    data = {
+                        page: this.options.page,
+                        limit: this.options.limit,
+                    };
+                }
             }
 
             var recipes = new RecipeCollection();
@@ -85,6 +100,7 @@ define([
             $("#user_recipes_spinner").html(spin.el).css('position', 'relative');
             var that = this;
             recipes.fetch({
+                url: url,
                 headers: headers,
                 data: data,
                 success: function (collection, response, status) {
@@ -160,7 +176,11 @@ define([
             'click .delete_recipe': function (ev) {
                 recipe_id = $(ev.currentTarget).parent().find('input[name=recipe_id]').val();
                 recipe = new RecipeModel({id: recipe_id});
-                
+                if (this.options.favorite) {
+                    recipe = new FavoriteModel({id: recipe_id});
+                }
+
+                var headers = {};
                 if (!loginManager.isLogged()) {
                     console.log("You are not logged!");
                 } else {                
@@ -186,7 +206,6 @@ define([
                     },
                 })
             },
-
         },
     });
 

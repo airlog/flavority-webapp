@@ -1,43 +1,73 @@
-<div class="title"><h2><%= recipe.get('dish_name') %></h2></div>
+
+<% if (my_recipe) { %>
+	<div style="margin: 20px 0px -20px 0px; text-align: right;">
+		<button class="recipe_view_edit green_button" >
+			Edit
+			<img style="width: 16px; height: 16px;" src="images/btn_edit.png">
+		</button>
+		<button class="recipe_view_remove green_button" >
+			Remove
+			<img style="width: 16px; height: 16px;" src="images/btn_remove.png">
+		</button>
+	</div>
+<% } %>
+
+<div class="title"><h2><%= recipe['dish_name'] %></h2></div>
+
+<div style="margin: 10px 0px 20px 20px;">
+	<% if (favorite) {%>
+		<span class="recipe_view_remove_favorite" >
+			<img style="width: 16px; height: 16px;" src="images/heart.png">
+			<span class="sansie_one">Remove from favorite recipes</span>
+		</span>
+	<% } else { %>
+		<span class="recipe_view_add_favorite">
+			<img style="width: 16px; height: 16px;" src="images/heart.png">
+			<span class="sansie_one">Add to favorite recipes</span>
+		</span>
+	<% } %>
+</div>
+
 <div style="margin-bottom:20px;">
     <span class="sub_title">Tags: &nbsp; </span>
-    <% _.each(recipe.get('tags'), function (tag) { %>
+    <% _.each(recipe['tags'], function (tag) { %>
         <a href="/#/search/tag/<%= tag.id %>/1"><button class="green_button"><%= tag['name'] %></button></a>
     <% }); %>
 </div>
 
 <img class="big_image" alt=""
-    <% if (recipe.get('photos').length == 0) { %>
+    <% if (recipe['photos'].length == 0) { %>
         src="<%= getDefaultImage() %>"
     <% } else { %>
-        src="<%= getImageUrl(recipe.get('photos')[0]) %>"
+        src="<%= getImageUrl(recipe['photos'][0]) %>"
     <% } %>
 />
 
 <div class="recipe_info_table">
+    
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>author:</b></div>
-        <div class="recipe_info_c2"><a href="/#/users/<%= recipe.get('author_id') %>/"><%= recipe.get('author_name') %></a></div>
+        <div class="recipe_info_c2"><a href="/#/users/<%= recipe['author_id'] %>/"><%= recipe['author_name'] %></a></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>time:</b></div>
-        <div class="recipe_info_c2"><%= recipe.get('preparation_time') %></div>
+        <div class="recipe_info_c2"><%= recipe['preparation_time'] %></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>servings:</b></div>
-        <div class="recipe_info_c2"><%= recipe.get('portions') %></div>
+        <div class="recipe_info_c2"><%= recipe['portions'] %></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>taste (by users):</b></div>
-        <div class="recipe_info_c2"><abbr title="<%= recipe.get('taste_comments') %>"><div class="stars_taste_comments"></div></abbr></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe['taste_comments'] %>"><div class="stars_taste_comments"></div></abbr></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>difficulty:</b></div>
-        <div class="recipe_info_c2"><abbr title="<%= recipe.get('difficulty') %>"><div class="stars_difficulty"></div></abbr></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe['difficulty'] %>"><div class="stars_difficulty"></div></abbr></div>
     </div>
     <div class="normal_table_row">
         <div class="recipe_info_c1"><b>difficulty (by users):</b></div>
-        <div class="recipe_info_c2"><abbr title="<%= recipe.get('difficulty_comments') %>"><div class="stars_difficulty_comments"></div></abbr></div>
+        <div class="recipe_info_c2"><abbr title="<%= recipe['difficulty_comments'] %>"><div class="stars_difficulty_comments"></div></abbr></div>
     </div>
 </div>
 
@@ -76,7 +106,7 @@
 <div class="clear_div">
     <h4 class="sub_title">Directions</h4>
     <div id="directions">
-    <%= recipe.get('recipe_text').replace(/\n/g,'<br/><br/>') %>
+    <%= recipe['recipe_text'].replace(/\n/g,'<br/><br/>') %>
     </div>
 </div>
 
