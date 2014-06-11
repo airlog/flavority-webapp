@@ -25,7 +25,7 @@
         
 <% _.each(comments, function (comment) { %>
     <div class="comment">
-        <img class="avatar" src="/images/star_red_full.png"/>
+        <img class="avatar" src="<%= getImageUrl(comment.get('author_avatar')) %>" />
         <div class="right_part"> 
             <div>
                 <b><a href="/#/users/<%= comment.get('author_id')%>/"><%= comment.get('author_name') %></a></b>

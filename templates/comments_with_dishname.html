@@ -1,6 +1,6 @@
 <% _.each(comments, function (comment) { %>
     <div class="comment">
-        <img class="avatar" src="/images/star_red_full.png"/>
+        <img class="avatar" src="<%= getImageUrl(comment.get('author_avatar')) %>" />
         <div class="right_part"> 
         <div><a class="sansie_one" href="/#/recipes/<%= comment.get('recipe_id')%>/"><%= comment.get('recipe_name')%></a></div>
             <div>
